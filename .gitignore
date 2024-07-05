@@ -1,8 +1,10 @@
 
-/bin
 *.dll
 *.pdb
-!/bin/Release/Gw2Archipelago.bhm
 /Content
 /obj
 /packages
+/bin/Debug/*
+/bin/Release/*
+!bin/Release/*.bhm
+.vs/Gw2Archipelago/v16/.suo
