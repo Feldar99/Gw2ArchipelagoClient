@@ -1,0 +1,8 @@
+
+/bin
+*.dll
+*.pdb
+!/bin/Release/Gw2Archipelago.bhm
+/Content
+/obj
+/packages

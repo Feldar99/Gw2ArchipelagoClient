@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <StartAction>Program</StartAction>
+    <StartProgram>C:\Users\Paul\Documents\Blish.HUD.1.1.1\Blish HUD.exe</StartProgram>
+    <StartArguments>--debug --module "C:\Users\Paul\VisualStudioProjects\Gw2Archipelago\bin\Debug\Gw2Archipelago.bhm"</StartArguments>
+  </PropertyGroup>
+</Project>

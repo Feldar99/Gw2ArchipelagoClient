@@ -1,0 +1,38 @@
+{
+  "name": "Archipelago",
+  "version": "0.1.0",
+  "namespace": "feldar.archipelago",
+  "package": "Gw2Archipelago.dll",
+  "manifest_version": 1,
+
+  "description": "Archipelago is a multi-game randomizer. This module uses your API key to unlock items in other Archipelago worlds and keeps track of what skills and equipment you are allowed to use based on what the other worlds have unlocked for you.",
+  "dependencies": {
+    "bh.blishhud": ">=1.1.0"
+  },
+  "url": "https://github.com/Feldar99/Gw2Archipelago",
+  "contributors": [
+    {
+      "name": "Feldar"
+    }
+  ],
+  "directories": [ "archipelagoData" ],
+
+  "api_permissions": {
+    "account": {
+      "optional": false,
+      "details": "Required to check progress for unlocking multi-world items"
+    },
+    "progression": {
+      "optional": true,
+      "details": "Required for achievements, quests, or world bosses to unlock multi-world items"
+    },
+    "characters": {
+      "optional": true,
+      "details": "Required for quests or skill/trait training to unlock multi-world items"
+    },
+    "builds": {
+      "optional": true,
+      "details": "Required for skill/trait training to unlock multi-world items"
+    }
+  }
+}
