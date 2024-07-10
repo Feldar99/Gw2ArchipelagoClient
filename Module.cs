@@ -28,6 +28,7 @@ using SystemFile = System.IO.File;
 using Archipelago.MultiClient.Net.Helpers;
 using Archipelago.MultiClient.Net.Packets;
 using Archipelago.MultiClient.Net.Enums;
+using System.Threading;
 
 namespace Gw2Archipelago
 {
@@ -79,6 +80,8 @@ namespace Gw2Archipelago
         // State Info
         bool unlockingItems = false;
 
+        private Timer reconnectTimer;
+
         [ImportingConstructor]
         public Module([Import("ModuleParameters")] ModuleParameters moduleParameters) : base(moduleParameters) { }
 
@@ -102,10 +105,17 @@ namespace Gw2Archipelago
             await ConnectToArchipelago();
         }
 
-        private void ConnectToArchipelago(object sender, MouseEventArgs e)
+        private async void StartReconnectTimer(object sender, MouseEventArgs e)
         {
-            
-            Task.WhenAny(ConnectToArchipelago(), Task.Delay(TimeSpan.FromSeconds(5)));
+            if (reconnectTimer == null)
+            {
+                reconnectTimer = new Timer(ConnectToArchipelago, null, 5000, 60000);
+            }
+        }
+
+        private async void ConnectToArchipelago(Object stateInfo)
+        {
+            await ConnectToArchipelago();
         }
 
         private void DisconnectFromArchipelago()
@@ -134,10 +144,25 @@ namespace Gw2Archipelago
                 DisconnectFromArchipelago();
             }
             logger.Debug("Connecting to " + apServerUrl.Value);
-            apSession = ArchipelagoSessionFactory.CreateSession(apServerUrl.Value);
-            LoginResult result = apSession.TryConnectAndLogin("Guild Wars 2", slotName.Value, Archipelago.MultiClient.Net.Enums.ItemsHandlingFlags.AllItems);
-            if (result.Successful)
+            bool success = false;
+            LoginResult result = null;
+            try
             {
+                apSession = ArchipelagoSessionFactory.CreateSession(apServerUrl.Value);
+                result = apSession.TryConnectAndLogin("Guild Wars 2", slotName.Value, Archipelago.MultiClient.Net.Enums.ItemsHandlingFlags.AllItems);
+                success = result.Successful;
+            }
+            catch (UriFormatException) {
+                logger.Error("Could not parse URI {}", apServerUrl.Value);
+
+            }
+            if (success)
+            {
+                if (reconnectTimer != null)
+                {
+                    reconnectTimer = null;
+                }
+
                 LoginSuccessful loginSuccess = (LoginSuccessful)result;
                 slotData = loginSuccess.SlotData;
                 logger.Debug("Connetion Successful");
@@ -640,6 +665,10 @@ namespace Gw2Archipelago
                 string locationName = apSession.Locations.GetLocationNameFromId(location_id);
                 string[] splitName = locationName.Split(' ');
                 string regionName = splitName[0];
+                string locationType = splitName[1];
+                logger.Debug("Generating Location: {}, type: {}, region: {}", locationName, locationType, regionName);
+                bool success = false;
+
                 Region region = RegionExtensions.FromName(regionName).Value;
                 if (!regionToGroups.ContainsKey(regionName))
                 {
@@ -647,9 +676,6 @@ namespace Gw2Archipelago
                     visitedAchievements[regionName] = new HashSet<int>();
                     visitedCategories[regionName] = new HashSet<int>();
                 }
-                string locationType = splitName[1];
-                logger.Debug("Generating Location: {}, type: {}, region: {}", locationName, locationType, regionName);
-                bool success = false;
                 if (locationType.Equals("ACHIEVEMENT"))
                 {
                     success = await randomAchievement(regionToGroups[regionName], achievementProgress, region, storyline, locationName, visitedCategories[regionName], visitedAchievements[regionName]);
@@ -668,11 +694,22 @@ namespace Gw2Archipelago
                 }
             }
 
-            foreach (var location in unsuccessfulLocations)
+            foreach (var locationName in unsuccessfulLocations)
             {
+                string[] splitName = locationName.Split(' ');
+                string locationType = splitName[1];
+                logger.Debug("Generating Location: {}, type: {}, region: {}", locationName, locationType, "OPEN_WORLD");
+                bool success = false;
+                if (locationType.Equals("ACHIEVEMENT"))
+                {
+                    success = await randomAchievement(regionToGroups["OPEN_WORLD"], achievementProgress, Region.OPEN_WORLD, storyline, locationName, visitedCategories["OPEN_WORLD"], visitedAchievements["OPEN_WORLD"]);
+                }
 
-                logger.Warn("Sending location {} because it couldn't be filled", location);
-                apSession.Locations.CompleteLocationChecks(new long[] { apSession.Locations.GetLocationIdFromName("Guild Wars 2", location) });
+                if (!success)
+                {
+                    logger.Warn("Sending location {} because it couldn't be filled", locationName);
+                    apSession.Locations.CompleteLocationChecks(new long[] { apSession.Locations.GetLocationIdFromName("Guild Wars 2", locationName) });
+                }
             }
 
 
@@ -776,7 +813,7 @@ namespace Gw2Archipelago
                 Location = new Point(0, 0),
                 Parent = mainWindow,
             };
-            connectButton.Click += ConnectToArchipelago;
+            connectButton.Click += StartReconnectTimer;
 
             generateButton = new StandardButton()
             {
