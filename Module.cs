@@ -67,7 +67,7 @@ namespace Gw2Archipelago
         private Panel                          itemPanel;
         private Scrollbar                      itemScrollbar;
         private Dictionary<long, int>          itemCounts = new Dictionary<long, int>();
-        private List<Label>                    itemLabels = new List<Label>();
+        private Dictionary<long, Label>        itemLabels = new Dictionary<long, Label>();
         private int                            itemPanelY = 0;
         private int                            mistFragments = 0;
         private Label                          mistFragmentLabel;
@@ -247,7 +247,7 @@ namespace Gw2Archipelago
             {
                 if (itemPanel != null)
                 {
-                    itemPanel.RemoveChild(label);
+                    itemPanel.RemoveChild(label.Value);
                 }
             }
             itemPanelY = 0;
@@ -297,23 +297,24 @@ namespace Gw2Archipelago
                 mistFragments++;
                 return;
             }
-            var itemLabel = new Label()
-            {
-                Text = itemName,
-                Size = new Point(300, 30),
-                Location = new Point(0, itemPanelY),
-                Parent = itemPanel,
-            };
-            itemPanelY += itemLabel.Height + 5;
             if (itemCounts.ContainsKey(itemId))
             {
                 itemCounts[itemId]++;
+                itemLabels[itemId].Text = itemName + " x" + itemCounts[itemId];
             }
             else
             {
-                itemCounts[itemId] = 0;
+                itemCounts[itemId] = 1; 
+                var itemLabel = new Label()
+                {
+                    Text = itemName,
+                    Size = new Point(300, 30),
+                    Location = new Point(0, itemPanelY),
+                    Parent = itemPanel,
+                };
+                itemPanelY += itemLabel.Height + 5;
+                itemLabels.Add(itemId, itemLabel);
             }
-            itemLabels.Add(itemLabel);
 
         }
 
@@ -780,7 +781,7 @@ namespace Gw2Archipelago
 
             locationPanel = new Panel() {
                 Location = new Point(10, 35),
-                Size = new Point(350, 570),
+                Size = new Point(350, 520),
                 Parent = mainWindow,
             };
 
@@ -794,13 +795,13 @@ namespace Gw2Archipelago
             itemPanel = new Panel()
             {
                 Location = new Point(370, 35),
-                Size = new Point(300, 570),
+                Size = new Point(300, 520),
                 Parent = mainWindow,
             };
 
             itemScrollbar = new Scrollbar(itemPanel)
             {
-                //Location = new Point(360, 35),
+                Location = new Point(360, 35),
                 Size = new Point(10, 570),
                 Parent = mainWindow,
             };
@@ -872,7 +873,7 @@ namespace Gw2Archipelago
             {
                 Text = achievement.Name + " (" + achievementLocation.LocationName + ")",
                 Icon = icon,
-                MaxFill = achievement.Tiers[achievement.Tiers.Count - 1].Count,
+                MaxFill = achievement.Tiers[achievementLocation.Tier].Count,
                 ShowFillFraction = true,
                 FillColor = XnaColor.White
             };
@@ -897,14 +898,14 @@ namespace Gw2Archipelago
             {
                 Text = storyline.GetName() + " Quests",
                 Icon = icon,
-                MaxFill = completeQuestCount,
+                MaxFill = completeQuestCount + incompleteQuestCount,
                 ShowFillFraction = true,
                 FillColor = XnaColor.White
             };
             button.Parent = locationPanel;
             button.Location = new Point(0, locationPanelY);
             locationPanelY += button.Height + 5;
-            button.CurrentFill = incompleteQuestCount;
+            button.CurrentFill = completeQuestCount;
 
             return button;
         }
@@ -912,7 +913,6 @@ namespace Gw2Archipelago
         private void UpdateAchievementProgress (DetailsButton button, AccountAchievement progress)
         {
             logger.Debug("Updating Progress Button: {}/{}", progress.Current, progress.Max);
-            button.MaxFill = progress.Max;
             button.CurrentFill = progress.Current;
         }
 
