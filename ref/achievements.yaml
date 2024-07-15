@@ -74,12 +74,12 @@ categories:
   104: HeartOfThorns
   108: HeartOfThorns
   109: HeartOfThorns
-  110: HeartOfThorns
+  110: None # HoT Elite Specs
   111: HeartOfThorns
   112: HeartOfThorns
   114: Core
   116: HeartOfThorns
-  117: Any
+  117: None # Specializatin Collections
   118: FRACTAL
   121: HeartOfThorns
   122: HeartOfThorns
@@ -120,7 +120,7 @@ categories:
   175: HeartOfThorns
   176: PathOfFire
   177: Core
-  178: PathOfFire
+  178: None # PoF Elite Specs
   179: PathOfFire
   180: Core
   181: PathOfFire
@@ -244,7 +244,7 @@ categories:
   321: EndOfDragons
   322: EndOfDragons
   323: EndOfDragons
-  324: EndOfDragons
+  324: None #EoD Elite Specs
   325: EndOfDragons
   326: EndOfDragons
   328: Season1
