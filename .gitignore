@@ -8,3 +8,5 @@
 /bin/Release/*
 !bin/Release/*.bhm
 .vs/Gw2Archipelago/v16/.suo
+bin/Release/Gw2Archipelago.bhm
+.vs/Gw2Archipelago/v16/.suo

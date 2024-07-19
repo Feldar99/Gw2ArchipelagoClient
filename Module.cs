@@ -194,8 +194,13 @@ namespace Gw2Archipelago
                         foreach (var location in locations)
                         {
                             logger.Debug("Loaded Location - BitCount: {}, Tier: {}, Repeated: {}", location.BitCount, location.Tier, location.Repeated);
+                            if (location.CateoryId != 0)
+                            {
+                                location.Category = await Gw2ApiManager.Gw2ApiClient.V2.Achievements.Categories.GetAsync(location.CateoryId);
+                            }
                             if (!location.LocationComplete)
                             {
+                                
                                 tasks.Add(locationChecker.AddAchievmentLocation(location));
                             }
                         }
@@ -536,7 +541,7 @@ namespace Gw2Archipelago
 
                         }
                         
-                        await locationChecker.AddAchievmentLocation(achievementId, achievement, progress, locationName);
+                        await locationChecker.AddAchievmentLocation(achievementId, achievement, category, progress, locationName);
                         return true;
 
                     }
@@ -856,23 +861,13 @@ namespace Gw2Archipelago
         {
 
             var achievement = achievementLocation.Achievement;
+            var category = achievementLocation.Category;
             var progress = achievementLocation.Progress;
-            var iconPath = achievement.Icon.Url != null ? achievement.Icon.Url.LocalPath.Split(new char[] { '/' }, 3)[2].Split('.')[0] : null;
-            Texture2D icon;
-            if (iconPath != null)
-            {
-                //icon = GameService.Content.GetRenderServiceTexture(iconPath);
-                icon = ContentsManager.GetTexture("archipelago64.png");
-            }
-            else
-            {
-                icon = ContentsManager.GetTexture("archipelago64.png");
-            }
+            
 
             var button = new DetailsButton()
             {
                 Text = achievement.Name + " (" + achievementLocation.LocationName + ")",
-                Icon = icon,
                 MaxFill = achievement.Tiers[achievementLocation.Tier].Count,
                 ShowFillFraction = true,
                 FillColor = XnaColor.White
@@ -880,6 +875,23 @@ namespace Gw2Archipelago
             button.Parent = locationPanel;
             button.Location = new Point(0, locationPanelY);
             locationPanelY += button.Height + 5;
+
+            var iconPath = achievement.Icon.Url;
+            if (iconPath == null && category != null)
+            {
+                iconPath = category.Icon.Url;
+            }
+
+            if (iconPath != null)
+            {
+                var relativePath = iconPath.LocalPath.Split(new char[] { '/' }, 3)[2].Split('.')[0];
+                logger.Debug("iconPath: {}, relativePath: {}", iconPath, relativePath);
+                button.Icon = GameService.Content.GetRenderServiceTexture(relativePath);
+            }
+            else
+            {
+                button.Icon = ContentsManager.GetTexture("archipelago64.png");
+            }
 
             if (progress != null)
             {

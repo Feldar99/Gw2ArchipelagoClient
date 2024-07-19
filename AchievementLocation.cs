@@ -12,6 +12,7 @@ namespace Gw2Archipelago
     {
         public Achievement Achievement;
         private AccountAchievement progress;
+        private AchievementCategory category;
 
         [JsonInclude]
         public bool Done = false;
@@ -23,6 +24,19 @@ namespace Gw2Archipelago
         public int Tier = 0;
         [JsonInclude]
         public int Id;
+
+        [JsonInclude]
+        public int CateoryId;
+
+        [JsonIgnore]
+        public AchievementCategory Category
+        {
+            get { return category; }
+            set {
+                category = value;
+                CateoryId = category.Id;
+            }
+        }
 
         [JsonIgnore]
         public AccountAchievement Progress

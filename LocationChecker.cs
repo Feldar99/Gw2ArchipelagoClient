@@ -56,20 +56,21 @@ namespace Gw2Archipelago
             return questStatus.QuestLocations;
         }
 
-        public async Task AddAchievmentLocation(int id, Achievement achievement, AccountAchievement progress, string name)
+        public async Task AddAchievmentLocation(int achievementId, Achievement achievement, AchievementCategory category, AccountAchievement progress, string name)
         {
             if (achievement == null)
             {
-                achievement = await gw2ApiManager.Gw2ApiClient.V2.Achievements.GetAsync(id);
+                achievement = await gw2ApiManager.Gw2ApiClient.V2.Achievements.GetAsync(achievementId);
             }
-            logger.Debug("Added achievement: {} ({}) -> {}", achievement.Name, id, name);
+            logger.Debug("Added achievement: {} ({}) -> {}", achievement.Name, achievementId, name);
             AchievementLocation location = new AchievementLocation();
             location.Achievement = achievement;
+            location.Category = category;
             location.LocationName = name;
             // Don't override serialized data on load
             location.Progress = progress;
-            location.Id = id;
-            achievementLocations.Add(id, location);
+            location.Id = achievementId;
+            achievementLocations.Add(achievementId, location);
 
         }
 
