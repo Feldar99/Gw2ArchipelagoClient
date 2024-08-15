@@ -1,6 +1,6 @@
 {
   "name": "Archipelago",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "namespace": "feldar.archipelago",
   "package": "Gw2Archipelago.dll",
   "manifest_version": 1,
@@ -28,11 +28,15 @@
     },
     "characters": {
       "optional": true,
-      "details": "Required for quests or skill/trait training to unlock multi-world items"
+      "details": "Required for quests or skill/trait training and item purchases to unlock multi-world items"
     },
     "builds": {
       "optional": true,
       "details": "Required for skill/trait training to unlock multi-world items"
+    },
+    "inventories": {
+      "optional": true,
+      "details": "Required for item purchases to unlock multi-world items"
     }
   }
 }

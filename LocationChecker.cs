@@ -12,6 +12,8 @@ using Blish_HUD.Settings;
 using Gw2Sharp.WebApi.V2;
 using Gw2Sharp.WebApi.V2.Models;
 using Gw2Archipelago;
+using YamlDotNet.Serialization;
+using System.IO;
 
 namespace Gw2Archipelago
 {
@@ -26,19 +28,21 @@ namespace Gw2Archipelago
 
         private Dictionary<int, AchievementLocation> achievementLocations = new Dictionary<int, AchievementLocation>();
         private QuestStatus questStatus = new QuestStatus();
+        private Dictionary<int, ItemLocation> itemLocations = new Dictionary<int, ItemLocation>();
 
         public delegate void AchievementEvent(AchievementLocation achievementLocation);
         public delegate void QuestEvent(Location questLocation, int questId);
+        public delegate void ItemEvent(ItemLocation itemLocation);
 
         public event AchievementEvent AchievementProgressed;
         public event AchievementEvent AchievementCompleted;
         public event QuestEvent QuestCompleted;
+        public event ItemEvent ItemAcquired;
 
         public LocationChecker(Gw2ApiManager gw2ApiManager, SettingEntry<string> characterName)
         {
             this.gw2ApiManager = gw2ApiManager;
             this.characterName = characterName;
-
         }
 
         public void StartTimer()
@@ -89,6 +93,19 @@ namespace Gw2Archipelago
             questStatus.QuestLocations.Enqueue(location);
         }
 
+        public void AddItemLocation(bool complete, string name, List<int> itemIds)
+        {
+            ItemLocation location = new ItemLocation();
+            location.LocationName = name;
+            location.LocationComplete = complete;
+
+            foreach (var id in itemIds)
+            {
+                location.targetQuantities[id] = -1;
+                itemLocations[id] = location;
+            }
+        }
+
         public void AddQuestLocation(Location location)
         {
             questStatus.QuestLocations.Enqueue(location);
@@ -127,6 +144,7 @@ namespace Gw2Archipelago
             var quests       = UpdateCategory(new[] { TokenPermission.Account, TokenPermission.Characters, TokenPermission.Progression }, gw2ApiManager.Gw2ApiClient.V2.Characters[characterName.Value].Quests.GetAsync(),      "quests",       HandleQuests);
             var training     = UpdateCategory(new[] { TokenPermission.Account, TokenPermission.Characters, TokenPermission.Builds      }, gw2ApiManager.Gw2ApiClient.V2.Characters[characterName.Value].Training.GetAsync(),    "training",     HandleTraining);
             var worldBosses  = UpdateCategory(new[] { TokenPermission.Account, TokenPermission.Progression                             }, gw2ApiManager.Gw2ApiClient.V2.Account.WorldBosses.GetAsync(),                         "world bosses", HandleWorldBosses);
+            var items        = UpdateCategory(new[] { TokenPermission.Account, TokenPermission.Characters, TokenPermission.Inventories }, gw2ApiManager.Gw2ApiClient.V2.Characters[characterName.Value].Inventory.GetAsync(),   "items",    HandleItems);
 
             var tasks = new List<Task> { achievements, quests, training, worldBosses };
             await Task.WhenAll(tasks);
@@ -156,6 +174,50 @@ namespace Gw2Archipelago
             catch (Exception ex)
             {
                 logger.Warn(ex, "Failed to load {name}", name);
+            }
+        }
+
+
+
+        private void HandleItems(CharactersInventory inventory)
+        {
+            logger.Debug("Updating Items");
+            var itemQuantities = new Dictionary<int, int>(); //id -> quantity
+            foreach (var bag in inventory.Bags)
+            {
+                foreach (var item in bag.Inventory)
+                {
+                    if (item == null || !itemLocations.ContainsKey(item.Id))
+                    {
+                        continue;
+                    }
+                    if (itemQuantities.ContainsKey(item.Id))
+                    {
+                        itemQuantities[item.Id] += item.Count;
+                    }
+                    else
+                    {
+                        itemQuantities[item.Id] = item.Count;
+                    }
+                }
+            }
+
+            foreach (var itemLocationPair in itemLocations)
+            {
+                var itemId = itemLocationPair.Key;
+                var itemLocation = itemLocationPair.Value;
+                var targetQuantity = itemLocation.targetQuantities[itemId];
+                var quantity = 0;
+                itemQuantities.TryGetValue(itemId, out quantity);
+                logger.Debug("location: {}, quantity: {}, targetQuantity: {}", itemLocation.LocationName, quantity, targetQuantity);
+                if (quantity >= targetQuantity && targetQuantity != -1)
+                {
+                    ItemAcquired.Invoke(itemLocation);
+                }
+                else
+                {
+                    itemLocation.targetQuantities[itemId] = quantity + 1;
+                }
             }
         }
 
@@ -250,6 +312,10 @@ namespace Gw2Archipelago
         public int GetCompleteQuestCount()
         {
             return questStatus.CompleteQuestCount;
+        }
+        public IEnumerable<ItemLocation> GetItemLocations()
+        {
+            return itemLocations.Values.Distinct();
         }
 
 

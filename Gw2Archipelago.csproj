@@ -182,6 +182,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AchievementData.cs" />
+    <Compile Include="ArchipelagoWindow.cs" />
+    <Compile Include="ItemLocation.cs" />
     <Compile Include="Location.cs" />
     <Compile Include="AchievementLocation.cs" />
     <Compile Include="LocationChecker.cs" />
