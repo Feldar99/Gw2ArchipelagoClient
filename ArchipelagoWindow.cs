@@ -29,7 +29,7 @@ namespace Gw2Archipelago
         private StandardButton generateButton;
         private Dictionary<int, DetailsButton> achievementButtons = new Dictionary<int, DetailsButton>();
         private DetailsButton questButton;
-        private Dictionary<string, DetailsButton> itemLocationButtons = new Dictionary<string, DetailsButton>();
+        private Dictionary<string, DetailsButton> genericLocationButtons = new Dictionary<string, DetailsButton>();
         private Panel itemPanel;
         private Scrollbar itemScrollbar;
         private Dictionary<long, Label> itemLabels = new Dictionary<long, Label>();
@@ -199,9 +199,33 @@ namespace Gw2Archipelago
                 button.Location = new Point(0, locationPanelY);
                 locationPanelY += questButton.Height + 5;
                 button.CurrentFill = 0;
-                itemLocationButtons.Add(location.LocationName, button);
+                genericLocationButtons.Add(location.LocationName, button);
             }
 
+        }
+
+        internal void CreatePoiButtons(IEnumerable<PoiLocation> poiLocations)
+        {
+
+            Texture2D icon = contentsManager.GetTexture("archipelago64.png");
+
+            foreach (var location in poiLocations)
+            {
+
+                var button = new DetailsButton()
+                {
+                    Text = location.LocationName,
+                    Icon = icon,
+                    MaxFill = 1,
+                    ShowFillFraction = true,
+                    FillColor = XnaColor.White
+                };
+                button.Parent = locationPanel;
+                button.Location = new Point(0, locationPanelY);
+                locationPanelY += questButton.Height + 5;
+                button.CurrentFill = 0;
+                genericLocationButtons.Add(location.LocationName, button);
+            }
         }
 
         internal void CreateQuestButton(Storyline storyline, int incompleteQuestCount, int completeQuestCount)

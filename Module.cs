@@ -86,7 +86,8 @@ namespace Gw2Archipelago
             locationChecker.AchievementProgressed += UpdateAchievementProgress;
             locationChecker.AchievementCompleted += SendLocationCompletion;
             locationChecker.QuestCompleted += SendLocationCompletion;
-            locationChecker.ItemAcquired += SendItemCompletion;
+            locationChecker.ItemAcquired += SendLocationCompletion;
+            locationChecker.PoiDiscovered += SendLocationCompletion;
         }
 
         protected override async Task LoadAsync()
@@ -149,25 +150,47 @@ namespace Gw2Archipelago
 
 
                 var deserializer = new DeserializerBuilder()
-                    .WithNamingConvention(UnderscoredNamingConvention.Instance)
+                    .WithNamingConvention(LowerCaseNamingConvention.Instance)
                     .WithAttemptingUnquotedStringTypeDeserialization()
                     .Build();
 
                 Dictionary<string, List<int>> itemIdsByName = new Dictionary<string, List<int>>();
-                var reader = new StreamReader(ContentsManager.GetFileStream("Items.yaml"));
-                var itemData = deserializer.Deserialize<Dictionary<string, Dictionary<string, Dictionary<string, List<int>>>>>(reader);
-
-                foreach (var storylineData in itemData)
                 {
-                    foreach (var mapData in storylineData.Value)
+                    var reader = new StreamReader(ContentsManager.GetFileStream("Items.yaml"));
+                    var itemData = deserializer.Deserialize<Dictionary<string, Dictionary<string, Dictionary<string, List<int>>>>>(reader);
+
+                    foreach (var storylineData in itemData)
                     {
-                        foreach (var itemIds in mapData.Value)
+                        foreach (var mapData in storylineData.Value)
                         {
-                            logger.Debug(itemIds.Key);
-                            itemIdsByName.Add(itemIds.Key, itemIds.Value);
+                            foreach (var itemIds in mapData.Value)
+                            {
+                                logger.Debug(itemIds.Key);
+                                itemIdsByName.Add(itemIds.Key, itemIds.Value);
+                            }
                         }
                     }
                 }
+                
+                Dictionary<string, PointOfInterest> PoisByName = new Dictionary<string, PointOfInterest>();
+                {
+                    var reader = new StreamReader(ContentsManager.GetFileStream("pois.yaml"));
+                    var poiData = deserializer.Deserialize<Dictionary<string, Dictionary<string, Dictionary<string, PointOfInterest>>>>(reader);
+
+                    foreach (var storylineData in poiData)
+                    {
+                        foreach (var mapData in storylineData.Value)
+                        {
+                            foreach (var poi in mapData.Value)
+                            {
+                                logger.Debug(poi.Key);
+                                PoisByName.Add(poi.Key.Trim(), poi.Value);
+                            }
+                        }
+                    }
+                }
+
+                logger.Debug("Pois: {}", PoisByName.Keys);
 
                 foreach (long location_id in apSession.Locations.AllMissingLocations)
                 {
@@ -177,6 +200,12 @@ namespace Gw2Archipelago
                     {
                         success = true;
                         locationChecker.AddItemLocation(false, locationName, itemIdsByName[locationName.Substring(6)]);
+                    }
+                    else if (splitName[0].Equals("POI:"))
+                    {
+                        success = true;
+                        logger.Debug(locationName.Substring(5).Trim());
+                        locationChecker.AddPoiLocation(false, locationName, PoisByName[locationName.Substring(5).Trim()]);
                     }
                 }
                 filePrefix = apSession.RoomState.Seed + "_" + slotName.Value + "_";
@@ -234,14 +263,6 @@ namespace Gw2Archipelago
                         var file = SystemFile.OpenRead(fileName);
                         var status = await JsonSerializer.DeserializeAsync<QuestStatus>(file);
                         locationChecker.SetQuestStatus(status);
-                        //foreach (var location in status.QuestLocations)
-                        //{
-                        //    logger.Debug("Loaded Location - Location Name: {}, Complete: {}", location.LocationName, location.LocationComplete);
-                        //    if (!location.LocationComplete)
-                        //    {
-                        //        locationChecker.AddQuestLocation(location);
-                        //    }
-                        //}
 
                     }
                 }
@@ -775,8 +796,12 @@ namespace Gw2Archipelago
                 var incompleteQuests = locationChecker.GetQuestLocations().Count;
                 var completeQuests = locationChecker.GetCompleteQuestCount();
                 mainWindow.CreateQuestButton(storyline, incompleteQuests, completeQuests);
+                
                 var itemLocations = locationChecker.GetItemLocations();
                 mainWindow.CreateItemLocationButtons(itemLocations);
+
+                var poiLocations = locationChecker.GetPoiLocations();
+                mainWindow.CreatePoiButtons(poiLocations);
             }
 
             var achievementLocations = locationChecker.GetAchievementLocations();
@@ -817,7 +842,7 @@ namespace Gw2Archipelago
             serialize();
         }
 
-        private void SendItemCompletion(ItemLocation location)
+        private void SendLocationCompletion(Location location)
         {
             logger.Debug("Sending location for {}", location.LocationName);
             apSession.Locations.CompleteLocationChecks(new long[] { apSession.Locations.GetLocationIdFromName("Guild Wars 2", location.LocationName) });

@@ -19,25 +19,31 @@ namespace Gw2Archipelago
 {
     class LocationChecker
     {
+        public const int POI_DISCOVERY_DISTANCE = 25;
+        public const int POI_DISCOVERY_DISTANCE_SQ = POI_DISCOVERY_DISTANCE * POI_DISCOVERY_DISTANCE;
 
         private Gw2ApiManager gw2ApiManager;
         private SettingEntry<string> characterName;
 
-        private Timer updateTimer;
+        private Timer apiUpdateTimer;
+        private Timer mumbleUpdateTimer;
         private static readonly Logger logger = Logger.GetLogger<LocationChecker>();
 
         private Dictionary<int, AchievementLocation> achievementLocations = new Dictionary<int, AchievementLocation>();
         private QuestStatus questStatus = new QuestStatus();
         private Dictionary<int, ItemLocation> itemLocations = new Dictionary<int, ItemLocation>();
+        public Dictionary<int, List<PoiLocation>> pointsOfInterest = new Dictionary<int, List<PoiLocation>>(); // mapId -> pois
 
         public delegate void AchievementEvent(AchievementLocation achievementLocation);
         public delegate void QuestEvent(Location questLocation, int questId);
         public delegate void ItemEvent(ItemLocation itemLocation);
+        public delegate void PoiEvent(PoiLocation poiLocation);
 
         public event AchievementEvent AchievementProgressed;
         public event AchievementEvent AchievementCompleted;
         public event QuestEvent QuestCompleted;
         public event ItemEvent ItemAcquired;
+        public event PoiEvent PoiDiscovered;
 
         public LocationChecker(Gw2ApiManager gw2ApiManager, SettingEntry<string> characterName)
         {
@@ -47,7 +53,8 @@ namespace Gw2Archipelago
 
         public void StartTimer()
         {
-            updateTimer = new Timer(Update, null, 5000, 60000);
+            apiUpdateTimer = new Timer(Update, null, 5000, 60000);
+            mumbleUpdateTimer = new Timer(MumbleUpdate, null, 1000, 1000);
         }
 
         public IReadOnlyCollection<AchievementLocation> GetAchievementLocations()
@@ -95,7 +102,7 @@ namespace Gw2Archipelago
 
         public void AddItemLocation(bool complete, string name, List<int> itemIds)
         {
-            ItemLocation location = new ItemLocation();
+            var location = new ItemLocation();
             location.LocationName = name;
             location.LocationComplete = complete;
 
@@ -104,6 +111,18 @@ namespace Gw2Archipelago
                 location.targetQuantities[id] = -1;
                 itemLocations[id] = location;
             }
+        }
+
+        public void AddPoiLocation(bool complete, string name, PointOfInterest poi)
+        {
+            var location = new PoiLocation(poi);
+            location.LocationName = name;
+            location.LocationComplete = complete;
+            if (!pointsOfInterest.ContainsKey(poi.mapId))
+            {
+                pointsOfInterest[poi.mapId] = new List<PoiLocation>();
+            }
+            pointsOfInterest[poi.mapId].Add(location);
         }
 
         public void AddQuestLocation(Location location)
@@ -149,6 +168,32 @@ namespace Gw2Archipelago
             var tasks = new List<Task> { achievements, quests, training, worldBosses };
             await Task.WhenAll(tasks);
             logger.Debug("API Update complete");
+        }
+
+        private void MumbleUpdate(Object stateInfo)
+        {
+            logger.Debug("Updating locations from MumbleAPI");
+            var mapId = GameService.Gw2Mumble.CurrentMap.Id;
+            var currentCharacter = GameService.Gw2Mumble.PlayerCharacter;
+            if (pointsOfInterest.ContainsKey(mapId) && currentCharacter.Name.Equals(characterName.Value))
+            {
+                var pos = currentCharacter.Position;
+                foreach (var poi in pointsOfInterest[mapId])
+                {
+                    if (poi.LocationComplete)
+                    {
+                        continue;
+                    }
+                    logger.Debug("Current Position: {} POI Position: {}", pos, poi.Position);
+                    var distanceSq = (pos - poi.Position).LengthSquared();
+                    logger.Debug("Distance to {} = {}", poi.LocationName, distanceSq);
+                    if (distanceSq <= POI_DISCOVERY_DISTANCE_SQ)
+                    {
+                        PoiDiscovered.Invoke(poi);
+                    }
+                }
+            }
+            logger.Debug("Mumble Update Complete");
             
         }
 
@@ -316,6 +361,17 @@ namespace Gw2Archipelago
         public IEnumerable<ItemLocation> GetItemLocations()
         {
             return itemLocations.Values.Distinct();
+        }
+
+        public List<PoiLocation> GetPoiLocations()
+        {
+            var result = new List<PoiLocation>();
+            foreach (var poiEntry in pointsOfInterest)
+            {
+                result.AddRange(poiEntry.Value);
+            }
+
+            return result;
         }
 
 
