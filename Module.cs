@@ -685,7 +685,13 @@ namespace Gw2Archipelago
                 logger.Debug("Generating Location: {}, type: {}, region: {}", locationName, locationType, regionName);
                 bool success = false;
 
-                Region region = RegionExtensions.FromName(regionName).Value;
+                var region = RegionExtensions.FromName(regionName);
+
+                if (region == null)
+                {
+                    continue;
+                }
+
                 if (!regionToGroups.ContainsKey(regionName))
                 {
                     regionToGroups[regionName] = new List<Guid>(achievementData.groups.Keys);
@@ -694,7 +700,7 @@ namespace Gw2Archipelago
                 }
                 if (locationType.Equals("ACHIEVEMENT"))
                 {
-                    success = await randomAchievement(regionToGroups[regionName], achievementProgress, region, storyline, locationName, visitedCategories[regionName], visitedAchievements[regionName]);
+                    success = await randomAchievement(regionToGroups[regionName], achievementProgress, region.Value, storyline, locationName, visitedCategories[regionName], visitedAchievements[regionName]);
                 }
                 else if (locationType.Equals("QUEST"))
                 {
@@ -752,6 +758,12 @@ namespace Gw2Archipelago
             }
 
             await serialize();
+
+            var itemLocations = locationChecker.GetItemLocations();
+            mainWindow.CreateItemLocationButtons(itemLocations);
+
+            var poiLocations = locationChecker.GetPoiLocations();
+            mainWindow.CreatePoiButtons(poiLocations);
 
             locationChecker.StartTimer();
         }

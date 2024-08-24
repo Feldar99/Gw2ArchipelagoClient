@@ -118,6 +118,12 @@ namespace Gw2Archipelago
                 locationPanel.RemoveChild(questButton);
                 questButton = null;
             }
+            foreach (var button in genericLocationButtons)
+            {
+                locationPanel.RemoveChild(button.Value);
+            }
+
+            genericLocationButtons.Clear();
 
             locationPanelY = 0;
         }

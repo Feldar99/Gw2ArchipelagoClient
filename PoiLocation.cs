@@ -20,7 +20,7 @@ namespace Gw2Archipelago
         {
             get
             {
-                return new Vector3(poi.xPos, poi.zPos, poi.yPos);
+                return new Vector3(poi.xPos, poi.zPos, poi.yPos); //swap y and z because they are swapped in the mumble api results
             }
         }
     }
