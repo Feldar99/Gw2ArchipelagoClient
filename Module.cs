@@ -151,7 +151,7 @@ namespace Gw2Archipelago
 
                 var deserializer = new DeserializerBuilder()
                     .WithNamingConvention(LowerCaseNamingConvention.Instance)
-                    .WithAttemptingUnquotedStringTypeDeserialization()
+                    //.WithAttemptingUnquotedStringTypeDeserialization()
                     .Build();
 
                 Dictionary<string, List<int>> itemIdsByName = new Dictionary<string, List<int>>();
