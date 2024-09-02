@@ -15,6 +15,7 @@ namespace Gw2Archipelago
         ICEBROOD_SAGA,
         END_OF_DRAGONS,
         SECRETS_OF_THE_OBSCURE,
+        JANTHIR_WILDS,
     }
 
     public static class StorylineExtensions
@@ -35,6 +36,7 @@ namespace Gw2Archipelago
                 case Storyline.ICEBROOD_SAGA:           return "IcebroodSaga";
                 case Storyline.END_OF_DRAGONS:          return "EndOfDragons";
                 case Storyline.SECRETS_OF_THE_OBSCURE:  return "SecretsOfTheObscure";
+                case Storyline.JANTHIR_WILDS:           return "JanthirWilds";
                 default:
                     throw new System.ArgumentException("Invalid Storyline");
             }
@@ -53,6 +55,8 @@ namespace Gw2Archipelago
                 case Storyline.ICEBROOD_SAGA:           return new Guid("EDCAE800-302A-4D9B-8331-3CC769ADA0B3");
                 case Storyline.END_OF_DRAGONS:          return new Guid("D1B709AB-92B6-4EE9-8B40-2B7C628E5022");
                 case Storyline.SECRETS_OF_THE_OBSCURE:  return new Guid("AEE99452-D323-4ABB-8F49-D7C0A752CBD1");
+                case Storyline.JANTHIR_WILDS:           return new Guid("5EFFBB71-7C6D-4594-A87D-88B8CF38FDA3");
+
                 default:
                     throw new System.ArgumentException("Invalid Storyline");
             }
@@ -71,6 +75,7 @@ namespace Gw2Archipelago
             if (lowerName.Equals("icebroodsaga") || lowerName.Equals("icebrood_saga") || lowerName.Equals("icebrood saga") || lowerName.Equals("ibs")) return Storyline.ICEBROOD_SAGA;
             if (lowerName.Equals("endofdragons") || lowerName.Equals("end_of_dragons") || lowerName.Equals("end of dragons") || lowerName.Equals("eod")) return Storyline.END_OF_DRAGONS;
             if (lowerName.Equals("secretsoftheobscure") || lowerName.Equals("secrets_of_the_obscure") || lowerName.Equals("secrets of the obscure") || lowerName.Equals("soto")) return Storyline.SECRETS_OF_THE_OBSCURE;
+            if (lowerName.Equals("janthirwilds") || lowerName.Equals("janthir_wilds") || lowerName.Equals("janthir wilds") || lowerName.Equals("jw")) return Storyline.JANTHIR_WILDS;
             return null;
         }
     }
