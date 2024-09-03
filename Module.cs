@@ -75,6 +75,7 @@ namespace Gw2Archipelago
 
         protected override void DefineSettings(SettingCollection settings)
         {
+            logger.Debug("Define Settings");
             apServerUrl = settings.DefineSetting("apServerUrl", "archipelago.gg:<port>", () => "Archipelago Server URL");
             slotName    = settings.DefineSetting("apSlotName", "", () => "Slot Name");
             characterName = settings.DefineSetting("characterName", "", () => "Character Name", () => "The name of the character you will be using for this Archipelago slot");
@@ -82,6 +83,7 @@ namespace Gw2Archipelago
 
         protected override void Initialize()
         {
+            logger.Debug("Initialize");
             locationChecker = new LocationChecker(Gw2ApiManager, characterName);
             locationChecker.AchievementProgressed += UpdateAchievementProgress;
             locationChecker.AchievementCompleted += SendLocationCompletion;
@@ -92,6 +94,7 @@ namespace Gw2Archipelago
 
         protected override async Task LoadAsync()
         {
+            logger.Debug("Load");
             await ConnectToArchipelago();
         }
 
@@ -791,6 +794,7 @@ namespace Gw2Archipelago
 
         protected override void OnModuleLoaded(EventArgs e)
         {
+            logger.Debug("Load Complete");
 
             // Base handler must be called
             base.OnModuleLoaded(e);

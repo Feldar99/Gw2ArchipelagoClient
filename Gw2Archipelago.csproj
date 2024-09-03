@@ -187,6 +187,7 @@
     <Compile Include="Location.cs" />
     <Compile Include="AchievementLocation.cs" />
     <Compile Include="LocationChecker.cs" />
+    <Compile Include="LocationView.cs" />
     <Compile Include="Module.cs" />
     <Compile Include="PoiLocation.cs" />
     <Compile Include="PointOfInterest.cs" />
