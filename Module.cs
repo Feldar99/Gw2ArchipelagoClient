@@ -29,6 +29,7 @@ using Archipelago.MultiClient.Net.Helpers;
 using Archipelago.MultiClient.Net.Packets;
 using Archipelago.MultiClient.Net.Enums;
 using System.Threading;
+using Archipelago.MultiClient.Net.Models;
 
 namespace Gw2Archipelago
 {
@@ -194,6 +195,7 @@ namespace Gw2Archipelago
 
                 foreach (long location_id in apSession.Locations.AllMissingLocations)
                 {
+                    logger.Debug("location_id: {}", location_id);
                     string locationName = apSession.Locations.GetLocationNameFromId(location_id);
                     string[] splitName = locationName.Split(' ');
                     if (splitName[0].Equals("Item:"))
@@ -320,11 +322,11 @@ namespace Gw2Archipelago
 
         }
 
-        private void UnlockItem(Archipelago.MultiClient.Net.Models.NetworkItem networkItem)
+        private void UnlockItem(ItemInfo apItem)
         {
-            var itemId = networkItem.Item;
-            var itemName = apSession.Items.GetItemName(itemId);
-            logger.Debug("Unlock Item {}: {}, {}", networkItem, itemId, itemName);
+            var itemId = apItem.ItemId;
+            var itemName = apItem.ItemName;
+            logger.Debug("Unlock Item {}: {}, {}", apItem, itemId, itemName);
             if (itemName.Equals("Mist Fragment")) {
                 mistFragments++;
                 return;
