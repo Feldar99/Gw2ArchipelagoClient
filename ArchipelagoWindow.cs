@@ -13,6 +13,8 @@ using System.Threading.Tasks;
 
 using XnaColor = Microsoft.Xna.Framework.Color;
 using XnaRectangle = Microsoft.Xna.Framework.Rectangle;
+using SlotData = System.Collections.Generic.Dictionary<string, object>;
+using Archipelago.MultiClient.Net;
 
 namespace Gw2Archipelago
 {
@@ -20,82 +22,127 @@ namespace Gw2Archipelago
     {
         private ContentsManager contentsManager;
 
-        public LocationView locationView;
+        private static readonly Logger logger = Logger.GetLogger<ArchipelagoWindow>();
 
-        private static readonly Logger logger = Logger.GetLogger<Module>();
+        private LocationView locationView;
+        private ItemView itemView;
 
-        public event EventHandler<Blish_HUD.Input.MouseEventArgs> ConnectButtonClick
+        internal ArchipelagoWindow 
+        (
+            XnaRectangle windowRegion, 
+            XnaRectangle contentRegion, 
+            LocationChecker locationChecker, 
+            SlotData slotData, 
+            ArchipelagoSession apSession, 
+            Module module
+        ) : base(AsyncTexture2D.FromAssetId(155985), windowRegion, contentRegion)
         {
-            add { locationView.ConnectButtonClick += value; }
-            remove { locationView.ConnectButtonClick -= value; }
-        }
-
-        public event EventHandler<Blish_HUD.Input.MouseEventArgs> GenerateButtonClick
-        {
-            add { locationView.GenerateButtonClick += value; }
-            remove { locationView.GenerateButtonClick -= value; }
-        }
-
-        internal ArchipelagoWindow (XnaRectangle windowRegion, XnaRectangle contentRegion, ContentsManager contentsManager) : base(AsyncTexture2D.FromAssetId(155985), windowRegion, contentRegion)
-        {
+            contentsManager = module.ContentsManager;
             Parent = GameService.Graphics.SpriteScreen;
             Title = "Archipelago";
             Emblem = contentsManager.GetTexture("archipelago64.png");
             //Subtitle = "Example Subtitle",
             SavesPosition = true;
             Id = $"Archipelago 22694e1c-69df-43e7-a926-f8b1a5319a47";
-            this.contentsManager = contentsManager;
-            locationView = new LocationView(contentsManager, this);
-            this.Tabs.Add(new Tab(GameService.Content.GetTexture("155052"), () => locationView, "Locations"));
 
-            locationView.Initialize();
+            Tabs.Add(
+                new Tab(GameService.Content.GetTexture("155052"), () => {
+                    locationView = new LocationView(contentsManager, locationChecker, slotData);
+                    itemView = null;
+                    locationView.ConnectButtonClick += module.StartReconnectTimer;
+                    locationView.GenerateButtonClick += module.GenerateLocations;
+                    return locationView;
+                }, "Locations"));
+            Tabs.Add(new Tab(GameService.Content.GetTexture("155052"), () => {
+                locationView = null;
+                itemView = new ItemView(contentsManager, slotData, apSession, module.Gw2ApiManager);
+                return itemView;
+            }, "Item"));
 
+        }
 
+        internal void SetSlotData(SlotData slotData)
+        {
+            if (locationView != null)
+            {
+                locationView.Initialize(slotData);
+            }
+        }
+
+        internal void SetProfession(Profession profession)
+        {
+            //itemView.Initialize(profession);
         }
 
         internal void ClearLocations()
         {
-            locationView.ClearLocations();
+            if (locationView != null)
+            {
+                locationView.ClearLocations();
+            }
         }
 
         internal void ClearItems()
         {
-            locationView.ClearItems();
+            if (locationView != null)
+            {
+                locationView.ClearItems();
+            }
         }
 
-        internal void UpdateMistFragments(int mistFragments, long mistFragmentsRequired)
+        internal void UpdateMistFragments(int mistFragments)
         {
-
-            locationView.UpdateMistFragments(mistFragments, mistFragmentsRequired);
+            if (locationView != null)
+            {
+                itemView.UpdateMistFragments(mistFragments);
+            }
         }
-        internal void UpdateItemCount(string itemName, long itemId, int itemCount)
+        internal void UpdateItemCount(string itemName, int itemCount)
         {
-            locationView.UpdateItemCount(itemName, itemId, itemCount);
+            if (locationView != null)
+            {
+                itemView.UpdateItemCount(itemName, itemCount);
+            }
         }
 
         internal void CreateItemLocationButtons(IEnumerable<ItemLocation> itemLocations)
         {
-            locationView.CreateItemLocationButtons(itemLocations);
+            if (locationView != null)
+            {
+                locationView.CreateItemLocationButtons(itemLocations);
+            }
         }
 
         internal void CreatePoiButtons(IEnumerable<PoiLocation> poiLocations)
         {
-            locationView.CreatePoiButtons(poiLocations);
+            if (locationView != null)
+            {
+                locationView.CreatePoiButtons(poiLocations);
+            }
         }
 
         internal void CreateQuestButton(Storyline storyline, int incompleteQuestCount, int completeQuestCount)
         {
-            locationView.CreateQuestButton(storyline, incompleteQuestCount, completeQuestCount);
+            if (locationView != null)
+            {
+                locationView.CreateQuestButton(storyline, incompleteQuestCount, completeQuestCount);
+            }
         }
 
         internal void AddAchievementButton(AchievementLocation achievementLocation)
         {
-            locationView.AddAchievementButton(achievementLocation);
+            if (locationView != null)
+            {
+                locationView.AddAchievementButton(achievementLocation);
+            }
         }
 
         internal void UpdateAchievementProgress(Achievement achievement, AccountAchievement progress)
         {
-            locationView.UpdateAchievementProgress(achievement, progress);
+            if (locationView != null)
+            {
+                locationView.UpdateAchievementProgress(achievement, progress);
+            }
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Blish_HUD;
+﻿using Archipelago.MultiClient.Net;
+using Blish_HUD;
 using Blish_HUD.Controls;
 using Blish_HUD.Graphics.UI;
 using Blish_HUD.Modules.Managers;
@@ -13,13 +14,15 @@ using System.Threading.Tasks;
 
 using XnaColor = Microsoft.Xna.Framework.Color;
 using XnaRectangle = Microsoft.Xna.Framework.Rectangle;
+using SlotData = System.Collections.Generic.Dictionary<string, object>;
+using Blish_HUD.Input;
 
 namespace Gw2Archipelago
 {
     public class LocationView : View
     {
 
-        private static readonly Logger logger = Logger.GetLogger<Module>();
+        private static readonly Logger logger = Logger.GetLogger<LocationView>();
 
         private ContentsManager contentsManager;
         private Panel locationPanel;
@@ -34,29 +37,23 @@ namespace Gw2Archipelago
         private Scrollbar itemScrollbar;
         private Dictionary<long, Label> itemLabels = new Dictionary<long, Label>();
         private int itemPanelY = 0;
-        private Label mistFragmentLabel;
         private Container container;
+        private SlotData slotData;
+        private LocationChecker locationChecker;
 
 
-        public event EventHandler<Blish_HUD.Input.MouseEventArgs> ConnectButtonClick
-        {
-            add { connectButton.Click += value; }
-            remove { connectButton.Click -= value; }
-        }
+        public event EventHandler<Blish_HUD.Input.MouseEventArgs> ConnectButtonClick;
+        public event EventHandler<Blish_HUD.Input.MouseEventArgs> GenerateButtonClick;
 
-        public event EventHandler<Blish_HUD.Input.MouseEventArgs> GenerateButtonClick
-        {
-            add { generateButton.Click += value; }
-            remove { generateButton.Click -= value; }
-        }
-
-        public LocationView(ContentsManager contentsManager, Container container)
+        internal LocationView(ContentsManager contentsManager, LocationChecker locationChecker, SlotData slotData)
         {
             this.contentsManager = contentsManager;
-            this.container = container;
+            this.locationChecker = locationChecker;
+            this.slotData = slotData;
         }
 
-        public void Initialize() { 
+        protected override void Build(Container container) { 
+            this.container = container;
             locationPanel = new Panel()
             {
                 Location = new Point(20, 35),
@@ -93,6 +90,8 @@ namespace Gw2Archipelago
                 Location = new Point(0, 0),
                 Parent = container,
             };
+            connectButton.Click += connect;
+            logger.Debug("Connect Button: {}, Parent: {}", connectButton, container);
 
             generateButton = new StandardButton()
             {
@@ -101,6 +100,47 @@ namespace Gw2Archipelago
                 Location = new Point(150, 0),
                 Parent = container,
             };
+            generateButton.Click += generateLocations;
+
+
+            locationChecker.AchievementProgressed += UpdateAchievementProgress;
+            locationChecker.QuestCompleted += IncrementQuestCounter;
+            locationChecker.ItemAcquired += MarkGenericLocationComplete;
+            locationChecker.PoiDiscovered += MarkGenericLocationComplete;
+
+            if (slotData != null)
+            {
+                Initialize(slotData);
+            }
+        }
+
+        public void Initialize(SlotData slotData) {
+            this.slotData = slotData;
+
+            Refresh();
+        }
+
+        private void Refresh()
+        {
+            ClearLocations();
+            ClearItems();
+
+            var storyline = (Storyline)Enum.ToObject(typeof(Storyline), slotData["Storyline"]);
+            var incompleteQuests = locationChecker.GetQuestLocations().Count;
+            var completeQuests = locationChecker.GetCompleteQuestCount();
+            CreateQuestButton(storyline, incompleteQuests, completeQuests);
+
+            var itemLocations = locationChecker.GetItemLocations();
+            CreateItemLocationButtons(itemLocations);
+
+            var poiLocations = locationChecker.GetPoiLocations();
+            CreatePoiButtons(poiLocations);
+
+            var achievementLocations = locationChecker.GetAchievementLocations();
+            foreach (var achievementLocation in achievementLocations)
+            {
+                AddAchievementButton(achievementLocation);
+            }
         }
 
         internal void ClearLocations()
@@ -138,51 +178,6 @@ namespace Gw2Archipelago
             }
             itemPanelY = 0;
             itemLabels.Clear();
-            if (mistFragmentLabel != null)
-            {
-                mistFragmentLabel.Parent.RemoveChild(mistFragmentLabel);
-            }
-        }
-        internal void UpdateMistFragments(int mistFragments, long mistFragmentsRequired)
-        {
-
-            mistFragmentLabel = new Label()
-            {
-                Text = "Mist Fragments: " + mistFragments + " / " + mistFragmentsRequired,
-                Size = new Point(140, 30),
-                Location = new Point(300, 0),
-                Parent = container,
-            };
-        }
-
-
-        internal void UpdateItemCount(string itemName, long itemId, int itemCount)
-        {
-            Label label;
-            if (itemLabels.ContainsKey(itemId))
-            {
-                label = itemLabels[itemId];
-            }
-            else
-            {
-                label = new Label()
-                {
-                    Size = new Point(300, 30),
-                    Location = new Point(0, itemPanelY),
-                    Parent = itemPanel,
-                };
-                itemPanelY += label.Height + 5;
-                itemLabels.Add(itemId, label);
-            }
-
-            if (itemCount > 1)
-            {
-                label.Text = itemName + " x" + itemCount;
-            }
-            else
-            {
-                label.Text = itemName;
-            }
         }
 
         internal void CreateItemLocationButtons(IEnumerable<ItemLocation> itemLocations)
@@ -299,11 +294,40 @@ namespace Gw2Archipelago
             }
         }
 
+        internal void UpdateAchievementProgress(AchievementLocation location)
+        {
+            UpdateAchievementProgress(location.Achievement, location.Progress);
+        }
+
         internal void UpdateAchievementProgress(Achievement achievement, AccountAchievement progress)
         {
             var button = achievementButtons[achievement.Id];
             logger.Debug("Updating Progress Button: {}/{}", progress.Current, progress.Max);
             button.CurrentFill = progress.Current;
+        }
+
+        internal void MarkGenericLocationComplete(Location location)
+        {
+            DetailsButton button;
+            if (genericLocationButtons.TryGetValue(location.LocationName, out button))
+            {
+                button.CurrentFill = button.MaxFill;
+            }
+        }
+
+        internal void IncrementQuestCounter(Location location, int questId)
+        {
+            questButton.CurrentFill++;
+        }
+
+        private void connect(object sender, MouseEventArgs e)
+        {
+            ConnectButtonClick.Invoke(sender, e);
+        }
+
+        private void generateLocations(object sender, MouseEventArgs e)
+        {
+            GenerateButtonClick.Invoke(sender, e);
         }
     }
 }

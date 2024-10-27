@@ -218,7 +218,7 @@ namespace Gw2Archipelago
             }
             catch (Exception ex)
             {
-                logger.Warn(ex, "Failed to load {name}", name);
+                logger.Warn(ex, "Failed to update {name}", name);
             }
         }
 
