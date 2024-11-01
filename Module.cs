@@ -288,10 +288,6 @@ namespace Gw2Archipelago
                 return;
             }
             logger.Debug("Refreshing Items list");
-            if (mainWindow != null)
-            {
-                mainWindow.ClearItems();
-            }
             itemCounts.Clear();
             mistFragments = 0;
             foreach (var item in apSession.Items.AllItemsReceived)
@@ -320,11 +316,11 @@ namespace Gw2Archipelago
 
         }
 
-        private void UnlockItem(Archipelago.MultiClient.Net.Models.NetworkItem networkItem)
+        private void UnlockItem(Archipelago.MultiClient.Net.Models.ItemInfo itemInfo)
         {
-            var itemId = networkItem.Item;
-            var itemName = apSession.Items.GetItemName(itemId);
-            logger.Debug("Unlock Item {}: {}, {}", networkItem, itemId, itemName);
+            var itemName = itemInfo.ItemName;
+            var itemId = itemInfo.ItemId;
+            logger.Debug("Unlock Item {}", itemName);
             if (itemName.Equals("Mist Fragment")) {
                 mistFragments++;
                 return;
@@ -588,14 +584,22 @@ namespace Gw2Archipelago
 
         internal async void GenerateLocations(object sender, MouseEventArgs e)
         {
-            locationChecker.ClearLocations();
-            mainWindow.ClearLocations();
 
             if (apSession == null)
             {
                 logger.Debug("Cannot generate locations without a connection to the AP Server");
                 return;
             }
+
+            logger.Debug("Map Type: {}", GameService.Gw2Mumble.CurrentMap.Type);
+            if (GameService.Gw2Mumble.CurrentMap.Type == Gw2Sharp.Models.MapType.CharacterCreate || GameService.Gw2Mumble.CurrentMap.Type == Gw2Sharp.Models.MapType.Redirect)
+            {
+                logger.Debug("Cannot generate locations from the character select screen.");
+                return;
+            }
+
+            locationChecker.ClearLocations();
+            mainWindow.ClearLocations();
 
             logger.Debug("Generating Locations");
 

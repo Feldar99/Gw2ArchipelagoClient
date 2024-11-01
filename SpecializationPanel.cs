@@ -30,39 +30,22 @@ namespace Gw2Archipelago
             get { return traits[i].Trait; }
             set
             {
-                bool locked;
-                if (traits[i] == null)
-                {
-                    locked = IsTraitLocked(i);
-                }
-                else
-                {
-                    locked = traits[i].Locked;
-                }
                 traits[i] = new ItemIcon(contentsManager, value);
-                traits[i].Locked = locked;
+                traits[i].Locked = true;
                 traits[i].Size = new Point(32, 32);
             }
         }
 
-        private bool IsTraitLocked(int i)
+        public void Unlock(string itemName)
         {
-            int unlockedSets = UnlockedCount / 3;
-            int set = i % 3;
-
-            if (unlockedSets > set)
+            foreach (var trait in traits)
             {
-                return false;
+                if (itemName.StartsWith(trait.Trait.Name))
+                {
+                    trait.Locked = false;
+                    break;
+                }
             }
-            else if (unlockedSets < set)
-            {
-                return true;
-            }
-
-            int unlockedRank = UnlockedCount % 3;
-            int rank = i / 3;
-
-            return unlockedRank <= rank;
         }
 
         public SpecializationPanel(ContentsManager contentsManager, Specialization specialization)

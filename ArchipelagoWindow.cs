@@ -82,24 +82,16 @@ namespace Gw2Archipelago
             }
         }
 
-        internal void ClearItems()
-        {
-            if (locationView != null)
-            {
-                locationView.ClearItems();
-            }
-        }
-
         internal void UpdateMistFragments(int mistFragments)
         {
-            if (locationView != null)
+            if (itemView != null)
             {
                 itemView.UpdateMistFragments(mistFragments);
             }
         }
         internal void UpdateItemCount(string itemName, int itemCount)
         {
-            if (locationView != null)
+            if (itemView != null)
             {
                 itemView.UpdateItemCount(itemName, itemCount);
             }

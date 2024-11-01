@@ -123,7 +123,6 @@ namespace Gw2Archipelago
         private void Refresh()
         {
             ClearLocations();
-            ClearItems();
 
             var storyline = (Storyline)Enum.ToObject(typeof(Storyline), slotData["Storyline"]);
             var incompleteQuests = locationChecker.GetQuestLocations().Count;
@@ -166,20 +165,6 @@ namespace Gw2Archipelago
             locationPanelY = 0;
         }
 
-        internal void ClearItems()
-        {
-
-            foreach (var label in itemLabels)
-            {
-                if (itemPanel != null)
-                {
-                    itemPanel.RemoveChild(label.Value);
-                }
-            }
-            itemPanelY = 0;
-            itemLabels.Clear();
-        }
-
         internal void CreateItemLocationButtons(IEnumerable<ItemLocation> itemLocations)
         {
 
@@ -199,7 +184,7 @@ namespace Gw2Archipelago
                 button.Parent = locationPanel;
                 button.Location = new Point(0, locationPanelY);
                 locationPanelY += questButton.Height + 5;
-                button.CurrentFill = 0;
+                button.CurrentFill = location.LocationComplete ? 1 : 0;
                 genericLocationButtons.Add(location.LocationName, button);
             }
 
@@ -224,7 +209,7 @@ namespace Gw2Archipelago
                 button.Parent = locationPanel;
                 button.Location = new Point(0, locationPanelY);
                 locationPanelY += questButton.Height + 5;
-                button.CurrentFill = 0;
+                button.CurrentFill = location.LocationComplete ? 1 : 0;
                 genericLocationButtons.Add(location.LocationName, button);
             }
         }

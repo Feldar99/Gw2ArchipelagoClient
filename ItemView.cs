@@ -57,9 +57,30 @@ namespace Gw2Archipelago
             this.gw2ApiManager = gw2ApiManager;
 
         }
+
+
+        private void addSkillIdsForEntry(string entry, Dictionary<string, Dictionary<string, Dictionary<string, Dictionary<string, int>>>> skillData, Dictionary<string, int> skillIds)
+        {
+            foreach (var skillsBySpec in skillData[entry])
+            {
+                //logger.Debug("{}", skillsBySpec.Key);
+                foreach (var skillsByType in skillsBySpec.Value)
+                {
+                    //logger.Debug("  {}", skillsByType.Key);
+                    foreach (var iconsByName in skillsByType.Value)
+                    {
+                        //logger.Debug("    {}: {}", iconsByName.Key, iconsByName.Value);
+                        skillIds[iconsByName.Key] = iconsByName.Value;
+                    }
+                }
+            }
+
+        }
+
         protected override async Task<bool> Load(IProgress<string> progress)
         {
             Profession characterProfession = (Profession)Enum.ToObject(typeof(Profession), slotData["CharacterProfession"]);
+            Race       characterRace       = (Race)Enum.ToObject(typeof(Race), slotData["CharacterRace"]);
 
             var deserializer = new DeserializerBuilder()
             .WithNamingConvention(LowerCaseNamingConvention.Instance)
@@ -72,19 +93,9 @@ namespace Gw2Archipelago
                 var reader = new StreamReader(contentsManager.GetFileStream("Skills.yaml"));
                 var skillData = deserializer.Deserialize<Dictionary<string, Dictionary<string, Dictionary<string, Dictionary<string, int>>>>>(reader);
 
-                foreach (var skillsBySpec in skillData[characterProfession.GetName()])
-                {
-                    //logger.Debug("{}", skillsBySpec.Key);
-                    foreach (var skillsByType in skillsBySpec.Value)
-                    {
-                        //logger.Debug("  {}", skillsByType.Key);
-                        foreach (var iconsByName in skillsByType.Value)
-                        {
-                            //logger.Debug("    {}: {}", iconsByName.Key, iconsByName.Value);
-                            skillIds[iconsByName.Key] = iconsByName.Value;
-                        }
-                    }
-                }
+                addSkillIdsForEntry(characterProfession.GetName(), skillData, skillIds);
+                addSkillIdsForEntry(characterRace.GetName(), skillData, skillIds);
+
             }
 
             progress.Report("Reading Specializations from File");
@@ -111,7 +122,7 @@ namespace Gw2Archipelago
             receivedItemCounts = new Dictionary<string, int>();
             foreach (var receivedItem in apSession.Items.AllItemsReceived)
             {
-                var itemName = apSession.Items.GetItemName(receivedItem.Item);
+                var itemName = receivedItem.ItemName;
                 if (receivedItemCounts.ContainsKey(itemName))
                 {
                     receivedItemCounts[itemName] += 1;
@@ -122,7 +133,8 @@ namespace Gw2Archipelago
                 }
             }
             var traitIds = new List<int>();
-            var specializationPanels = new Dictionary<int, SpecializationPanel>();
+            var specNames = new Dictionary<int, string>();
+            specializationPanels = new Dictionary<string, SpecializationPanel>();
             foreach (var specialization in specializations)
             {
                 var panel = new SpecializationPanel(contentsManager, specialization);
@@ -130,8 +142,8 @@ namespace Gw2Archipelago
                 int unlockedCount;
                 receivedItemCounts.TryGetValue("Progressive " + specialization.Name + " Trait", out unlockedCount);
                 panel.UnlockedCount = unlockedCount;
-                specializationPanels[specialization.Id] = panel;
-                this.specializationPanels[specialization.Name] = panel;
+                specNames[specialization.Id] = specialization.Name;
+                specializationPanels[specialization.Name] = panel;
 
                 traitIds.AddRange(specialization.MajorTraits);
             }
@@ -151,10 +163,10 @@ namespace Gw2Archipelago
 
                 foreach (var weapon in data)
                 {
-                    logger.Debug(weapon.Key);
+                    //logger.Debug(weapon.Key);
                     foreach (var weaponSlot in weapon.Value)
                     {
-                        logger.Debug(weaponSlot.Key);
+                        //logger.Debug(weaponSlot.Key);
                         foreach (var professionData in weaponSlot.Value)
                         {
                             string professionName = "";
@@ -172,12 +184,12 @@ namespace Gw2Archipelago
                             }
                             else
                             {
-                                logger.Debug("{}", professionData.GetType());
+                                //logger.Debug("{}", professionData.GetType());
                                 throw new InvalidDataException("Weapons.yaml profession entries must either be strings, or dictionaries of professions to requirements, represented as strings");
                             }
-                            logger.Debug(professionName);
+                            //logger.Debug(professionName);
                             var profession = ProfessionExtensions.FromName(professionName);
-                            logger.Debug(profession.GetName());
+                            //logger.Debug(profession.GetName());
 
                             if (profession == characterProfession)
                             {
@@ -218,7 +230,7 @@ namespace Gw2Archipelago
                 equipSlot.Value.Size = new Point(48, 48);
             }
 
-            mistFragmentCount = receivedItemCounts["Mist Fragment"];
+            receivedItemCounts.TryGetValue("Mist Fragment", out mistFragmentCount);
 
             progress.Report("Loading Skill Icons");
             logger.Debug("Loading Skill Icons");
@@ -226,10 +238,12 @@ namespace Gw2Archipelago
             skillIcons = new Dictionary<string, ItemIcon>();
             foreach (var skill in skills)
             {
-                //logger.Debug("Making icon for {}", skill.Name);
+                logger.Debug("Making icon for {}", skill.Name);
                 var icon = new ItemIcon(contentsManager, skill);
-                icon.Locked = !receivedItemCounts.ContainsKey(skill.Name);
-                skillIcons.Add(skill.Name, icon);
+                var apName = getApSkillName(skill.Name, skill.Type);
+                icon.Locked = !receivedItemCounts.ContainsKey(apName);
+                logger.Debug("skill: {}, locked: {}", apName, icon.Locked);
+                skillIcons.Add(apName, icon);
             }
 
             progress.Report("Loading Trait Icons");
@@ -237,13 +251,37 @@ namespace Gw2Archipelago
             var traits = await traitTask;
             foreach (var trait in traits)
             {
-                var panel = specializationPanels[trait.Specialization];
+                var specName = specNames[trait.Specialization];
+                var panel = specializationPanels[specName];
                 var index = trait.Order + (trait.Tier - 1) * 3;
                 logger.Debug("trait {}: {}", index, trait.Name);
+                var apTraitName = getApTraitName(trait.Name, specName);
                 panel[index] = trait;
+                if (receivedItemCounts.ContainsKey(apTraitName))
+                {
+                    panel.Unlock(apTraitName);
+                }
             }
 
             return true;
+        }
+
+        private string getApSkillName(string skillName, string skillType)
+        {
+            if (skillType.Equals("Heal"))
+            {
+                skillType = "Healing";
+            }
+            else if (skillType.Equals("Profession"))
+            {
+                skillType = "Legend";
+            }
+            return skillName + " " + skillType + " Skill";
+        }
+
+        private string getApTraitName(string traitName, string specName)
+        {
+            return traitName + " " + specName + " Trait";
         }
 
         protected override void Build(Container container)
@@ -361,7 +399,7 @@ namespace Gw2Archipelago
                 }
             }
 
-            if (skillIcons.ContainsKey(itemName))
+            if (itemName.EndsWith("Skill"))
             {
                 skillIcons[itemName].Locked = false;
             }
@@ -371,8 +409,13 @@ namespace Gw2Archipelago
             }
             else if (itemName.EndsWith("Trait"))
             {
-                var specName = itemName.Split(' ')[1];
-                specializationPanels[specName].UnlockedCount = itemCount;
+                var nameSubstr = itemName.Substring(0, itemName.Length - " Trait".Length);
+                foreach (var spec in specializationPanels)
+                {
+                    if (nameSubstr.EndsWith(spec.Key)) {
+                        spec.Value.Unlock(itemName);
+                    }
+                }
             }
             else
             {

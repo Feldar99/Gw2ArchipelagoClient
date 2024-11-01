@@ -25,7 +25,7 @@ namespace Gw2Archipelago
 
         public bool Locked { get; set; }
         public Skill Skill { get { return skill; } }
-        public Trait Trait { get { return Trait; } }
+        public Trait Trait { get { return trait; } }
         public Point Size { get; set; }
         public string TooltipText { get; private set; }
 
