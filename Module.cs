@@ -158,6 +158,7 @@ namespace Gw2Archipelago
                     .WithNamingConvention(LowerCaseNamingConvention.Instance)
                     .Build();
 
+                logger.Debug("Reading Items");
                 Dictionary<string, List<int>> itemIdsByName = new Dictionary<string, List<int>>();
                 {
                     var reader = new StreamReader(ContentsManager.GetFileStream("Items.yaml"));
@@ -175,7 +176,8 @@ namespace Gw2Archipelago
                         }
                     }
                 }
-                
+
+                logger.Debug("Reading POIs");
                 Dictionary<string, PointOfInterest> PoisByName = new Dictionary<string, PointOfInterest>();
                 {
                     var reader = new StreamReader(ContentsManager.GetFileStream("pois.yaml"));
@@ -222,7 +224,17 @@ namespace Gw2Archipelago
                         savedData = new SavedData();
                         savedData.CharacterName = (string)slotData["Character"];
                     }
-                    characterName.Value = savedData.CharacterName;
+                    if (savedData.CharacterName.Equals("New Character"))
+                    {
+                        Profession characterProfession = (Profession)Enum.ToObject(typeof(Profession), slotData["CharacterProfession"]);
+                        Race characterRace = (Race)Enum.ToObject(typeof(Race), slotData["CharacterRace"]);
+
+                        characterName.Value = characterRace.GetName() + " " + characterProfession.GetName();
+                    }
+                    else
+                    {
+                        characterName.Value = savedData.CharacterName;
+                    }
                 }
 
                 var checkedLocations = new HashSet<long>(apSession.Locations.AllLocationsChecked);

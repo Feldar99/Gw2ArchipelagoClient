@@ -175,6 +175,7 @@ namespace Gw2Archipelago
             logger.Debug("Updating locations from MumbleAPI");
             var mapId = GameService.Gw2Mumble.CurrentMap.Id;
             var currentCharacter = GameService.Gw2Mumble.PlayerCharacter;
+            logger.Debug("Mumble Character: {}, AP Character: {}", currentCharacter.Name, characterName.Value);
             if (pointsOfInterest.ContainsKey(mapId) && currentCharacter.Name.Equals(characterName.Value))
             {
                 var pos = currentCharacter.Position;
@@ -230,6 +231,10 @@ namespace Gw2Archipelago
             var itemQuantities = new Dictionary<int, int>(); //id -> quantity
             foreach (var bag in inventory.Bags)
             {
+                if (bag == null)
+                {
+                    continue;
+                }
                 foreach (var item in bag.Inventory)
                 {
                     if (item == null || !itemLocations.ContainsKey(item.Id))
