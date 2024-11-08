@@ -33,10 +33,6 @@ namespace Gw2Archipelago
         private Dictionary<int, DetailsButton> achievementButtons = new Dictionary<int, DetailsButton>();
         private DetailsButton questButton;
         private Dictionary<string, DetailsButton> genericLocationButtons = new Dictionary<string, DetailsButton>();
-        private Panel itemPanel;
-        private Scrollbar itemScrollbar;
-        private Dictionary<long, Label> itemLabels = new Dictionary<long, Label>();
-        private int itemPanelY = 0;
         private Container container;
         private SlotData slotData;
         private LocationChecker locationChecker;
@@ -64,20 +60,6 @@ namespace Gw2Archipelago
             locationScrollbar = new Scrollbar(locationPanel)
             {
                 Location = new Point(10, 35),
-                Size = new Point(10, 570),
-                Parent = container,
-            };
-
-            itemPanel = new Panel()
-            {
-                Location = new Point(380, 35),
-                Size = new Point(300, 520),
-                Parent = container,
-            };
-
-            itemScrollbar = new Scrollbar(itemPanel)
-            {
-                Location = new Point(370, 35),
                 Size = new Point(10, 570),
                 Parent = container,
             };
