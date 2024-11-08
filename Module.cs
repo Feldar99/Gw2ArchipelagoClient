@@ -31,6 +31,8 @@ using Archipelago.MultiClient.Net.Enums;
 using System.Threading;
 using Archipelago.MultiClient.Net.Models;
 
+using SlotData = System.Collections.Generic.Dictionary<string, object>;
+
 namespace Gw2Archipelago
 {
     [Export(typeof(Blish_HUD.Modules.Module))]
@@ -51,7 +53,7 @@ namespace Gw2Archipelago
         private SettingEntry<string> characterName;
 
         private ArchipelagoSession         apSession;
-        private Dictionary<string, object> slotData;
+        private SlotData                   slotData;
         private string                     filePrefix;
 
         private LocationChecker locationChecker;
@@ -76,6 +78,7 @@ namespace Gw2Archipelago
 
         protected override void DefineSettings(SettingCollection settings)
         {
+            logger.Debug("Define Settings");
             apServerUrl = settings.DefineSetting("apServerUrl", "archipelago.gg:<port>", () => "Archipelago Server URL");
             slotName    = settings.DefineSetting("apSlotName", "", () => "Slot Name");
             characterName = settings.DefineSetting("characterName", "", () => "Character Name", () => "The name of the character you will be using for this Archipelago slot");
@@ -83,6 +86,7 @@ namespace Gw2Archipelago
 
         protected override void Initialize()
         {
+            logger.Debug("Initialize");
             locationChecker = new LocationChecker(Gw2ApiManager, characterName);
             locationChecker.AchievementProgressed += UpdateAchievementProgress;
             locationChecker.AchievementCompleted += SendLocationCompletion;
@@ -93,10 +97,11 @@ namespace Gw2Archipelago
 
         protected override async Task LoadAsync()
         {
+            logger.Debug("Load");
             await ConnectToArchipelago();
         }
 
-        private async void StartReconnectTimer(object sender, MouseEventArgs e)
+        internal void StartReconnectTimer(object sender, MouseEventArgs e)
         {
             if (reconnectTimer == null)
             {
@@ -152,9 +157,9 @@ namespace Gw2Archipelago
 
                 var deserializer = new DeserializerBuilder()
                     .WithNamingConvention(LowerCaseNamingConvention.Instance)
-                    //.WithAttemptingUnquotedStringTypeDeserialization()
                     .Build();
 
+                logger.Debug("Reading Items");
                 Dictionary<string, List<int>> itemIdsByName = new Dictionary<string, List<int>>();
                 {
                     var reader = new StreamReader(ContentsManager.GetFileStream("Items.yaml"));
@@ -172,7 +177,8 @@ namespace Gw2Archipelago
                         }
                     }
                 }
-                
+
+                logger.Debug("Reading POIs");
                 Dictionary<string, PointOfInterest> PoisByName = new Dictionary<string, PointOfInterest>();
                 {
                     var reader = new StreamReader(ContentsManager.GetFileStream("pois.yaml"));
@@ -184,14 +190,11 @@ namespace Gw2Archipelago
                         {
                             foreach (var poi in mapData.Value)
                             {
-                                logger.Debug(poi.Key);
                                 PoisByName.Add(poi.Key.Trim(), poi.Value);
                             }
                         }
                     }
                 }
-
-                logger.Debug("Pois: {}", PoisByName.Keys);
 
                 foreach (long location_id in apSession.Locations.AllMissingLocations)
                 {
@@ -206,7 +209,6 @@ namespace Gw2Archipelago
                     else if (splitName[0].Equals("POI:"))
                     {
                         success = true;
-                        logger.Debug(locationName.Substring(5).Trim());
                         locationChecker.AddPoiLocation(false, locationName, PoisByName[locationName.Substring(5).Trim()]);
                     }
                 }
@@ -224,7 +226,17 @@ namespace Gw2Archipelago
                         savedData = new SavedData();
                         savedData.CharacterName = (string)slotData["Character"];
                     }
-                    characterName.Value = savedData.CharacterName;
+                    if (savedData.CharacterName.Equals("New Character"))
+                    {
+                        Profession characterProfession = (Profession)Enum.ToObject(typeof(Profession), slotData["CharacterProfession"]);
+                        Race characterRace = (Race)Enum.ToObject(typeof(Race), slotData["CharacterRace"]);
+
+                        characterName.Value = characterRace.GetName() + " " + characterProfession.GetName();
+                    }
+                    else
+                    {
+                        characterName.Value = savedData.CharacterName;
+                    }
                 }
 
                 var checkedLocations = new HashSet<long>(apSession.Locations.AllLocationsChecked);
@@ -290,10 +302,6 @@ namespace Gw2Archipelago
                 return;
             }
             logger.Debug("Refreshing Items list");
-            if (mainWindow != null)
-            {
-                mainWindow.ClearItems();
-            }
             itemCounts.Clear();
             mistFragments = 0;
             foreach (var item in apSession.Items.AllItemsReceived)
@@ -305,7 +313,7 @@ namespace Gw2Archipelago
             var mistFragmentsRequired = (Int64)slotData["MistFragmentsRequired"];
             if (mainWindow != null)
             {
-                mainWindow.UpdateMistFragments(mistFragments, mistFragmentsRequired);
+                mainWindow.UpdateMistFragments(mistFragments);
             }
 
             foreach (var data in slotData)
@@ -327,6 +335,7 @@ namespace Gw2Archipelago
             var itemId = apItem.ItemId;
             var itemName = apItem.ItemName;
             logger.Debug("Unlock Item {}: {}, {}", apItem, itemId, itemName);
+            
             if (itemName.Equals("Mist Fragment")) {
                 mistFragments++;
                 return;
@@ -342,7 +351,7 @@ namespace Gw2Archipelago
 
             if (mainWindow != null)
             {
-                mainWindow.UpdateItemCount(itemName, itemId, itemCounts[itemId]);
+                mainWindow.UpdateItemCount(itemName, itemCounts[itemId]);
             }
 
         }
@@ -588,16 +597,24 @@ namespace Gw2Archipelago
             return false;
         }
 
-        private async void GenerateLocations(object sender, MouseEventArgs e)
+        internal async void GenerateLocations(object sender, MouseEventArgs e)
         {
-            locationChecker.ClearLocations();
-            mainWindow.ClearLocations();
 
             if (apSession == null)
             {
                 logger.Debug("Cannot generate locations without a connection to the AP Server");
                 return;
             }
+
+            logger.Debug("Map Type: {}", GameService.Gw2Mumble.CurrentMap.Type);
+            if (GameService.Gw2Mumble.CurrentMap.Type == Gw2Sharp.Models.MapType.CharacterCreate || GameService.Gw2Mumble.CurrentMap.Type == Gw2Sharp.Models.MapType.Redirect)
+            {
+                logger.Debug("Cannot generate locations from the character select screen.");
+                return;
+            }
+
+            locationChecker.ClearLocations();
+            mainWindow.ClearLocations();
 
             logger.Debug("Generating Locations");
 
@@ -759,13 +776,13 @@ namespace Gw2Archipelago
                 mainWindow.AddAchievementButton(location);
             }
 
-            await serialize();
-
             var itemLocations = locationChecker.GetItemLocations();
             mainWindow.CreateItemLocationButtons(itemLocations);
 
             var poiLocations = locationChecker.GetPoiLocations();
             mainWindow.CreatePoiButtons(poiLocations);
+
+            await serialize();
 
             locationChecker.StartTimer();
         }
@@ -793,36 +810,16 @@ namespace Gw2Archipelago
 
         protected override void OnModuleLoaded(EventArgs e)
         {
+            logger.Debug("Load Complete");
 
             // Base handler must be called
             base.OnModuleLoaded(e);
 
 
-            mainWindow = new ArchipelagoWindow(new XnaRectangle(40, 26, 913, 691), new XnaRectangle(70, 71, 839, 605), ContentsManager);
-
-            mainWindow.ConnectButtonClick += StartReconnectTimer;
-            mainWindow.GenerateButtonClick += GenerateLocations;
+            mainWindow = new ArchipelagoWindow(new XnaRectangle(40, 26, 913, 691), new XnaRectangle(70, 71, 839, 605), locationChecker, slotData, apSession, this);
 
 
-            if (apSession != null)
-            {
-                var storyline = (Storyline)Enum.ToObject(typeof(Storyline), slotData["Storyline"]);
-                var incompleteQuests = locationChecker.GetQuestLocations().Count;
-                var completeQuests = locationChecker.GetCompleteQuestCount();
-                mainWindow.CreateQuestButton(storyline, incompleteQuests, completeQuests);
-                
-                var itemLocations = locationChecker.GetItemLocations();
-                mainWindow.CreateItemLocationButtons(itemLocations);
-
-                var poiLocations = locationChecker.GetPoiLocations();
-                mainWindow.CreatePoiButtons(poiLocations);
-            }
-
-            var achievementLocations = locationChecker.GetAchievementLocations();
-            foreach (var achievementLocation in achievementLocations)
-            {
-                mainWindow.AddAchievementButton(achievementLocation);
-            }
+            
 
             logger.Debug("Loading icon");
             cornerIcon = new CornerIcon
@@ -839,7 +836,6 @@ namespace Gw2Archipelago
         private void UpdateAchievementProgress (AchievementLocation location)
         {
             logger.Debug("Updating UI for {name}", location.Achievement.Name);
-            mainWindow.UpdateAchievementProgress(location.Achievement, location.Progress);
         }
 
         private void SendLocationCompletion (AchievementLocation location)

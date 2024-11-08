@@ -1,0 +1,223 @@
+Axe:
+  Mainhand:
+    - Warrior
+    - Ranger
+    - Guardian:
+        Firebrand
+    - Thief:
+        SecretsOfTheObscure
+    - Necromancer
+    - Mesmer:
+        Mirage
+  Offhand:
+    - Warrior
+    - Ranger
+    - Revenant
+Dagger:
+  Mainhand:
+    - Warrior:
+        Spellbreaker
+    - Ranger:
+        Soulbeast
+    - Thief
+    - Elementalist
+    - Necromancer
+    - Mesmer:
+        Virtuoso
+  Offhand:
+    - Warrior:
+        Spellbreaker
+    - Thief
+    - Elementalist
+    - Necromancer
+    - Ranger
+Mace:
+  Mainhand:
+    - Warrior
+    - Ranger:
+        SecretsOfTheObscure
+    - Guardian
+    - Revenant
+    - Engineer:
+        Mechanist
+  Offhand:
+    - Warrior
+    - Ranger:
+        SecretsOfTheObscure
+Pistol:
+  Mainhand:
+    - Guardian:
+        SecretsOfTheObscure
+    - Engineer
+    - Thief
+    - Necromancer:
+        Harbinger
+    - Elementalist:
+        SecretsOfTheObscure
+  Offhand:
+    - Guardian:
+        SecretsOfTheObscure
+    - Engineer
+    - Thief
+    - Warrior:
+        Bladesworn
+    - Mesmer
+Sword:
+  Mainhand:
+    - Revenant
+    - Warrior
+    - Mesmer
+    - Necromancer:
+        SecretsOfTheObscure
+    - Guardian
+    - Engineer:
+        Holosmith
+    - Ranger
+    - Thief
+    - Elementalist: Weaver
+  Offhand:
+    - Guardian:
+        Willbender
+    - Revenant
+    - Warrior
+    - Mesmer
+    - Necromancer:
+        SecretsOfTheObscure
+Scepter:
+  Mainhand:
+    - Guardian
+    - Revenant:
+        SecretsOfTheObscure
+    - Thief:
+        Specter
+    - Elementalist
+    - Mesmer
+    - Necromancer
+Focus:
+  Offhand:
+    - Guardian
+    - Elementalist
+    - Mesmer
+    - Necromancer
+Shield:
+  Offhand:
+    - Guardian
+    - Revenant:
+        Herald
+    - Warrior
+    - Engineer
+    - Mesmer:
+        Chronomancer
+Torch:
+  Offhand:
+    - Guardian
+    - Warrior:
+        Berserker
+    - Ranger
+    - Mesmer
+    - Necromancer:
+        Scourge
+Warhorn:
+  Offhand:
+    - Warrior
+    - Ranger
+    - Elementalist:
+        Tempest
+    - Necromancer
+Greatsword:
+  TwoHanded:
+    - Guardian
+    - Revenant:
+        Vindicator
+    - Warrior
+    - Ranger
+    - Mesmer
+    - Necromancer:
+        Reaper
+Hammer:
+  TwoHanded:
+    - Guardian
+    - Revenant
+    - Warrior
+    - Engineer:
+        Scrapper
+    - Ranger:
+        Untamed
+    - Elementalist:
+        Catalyst
+Longbow:
+  TwoHanded:
+    - Guardian:
+        Dragonhunter
+    - Warrior
+    - Ranger
+Rifle:
+  TwoHanded:
+    - Warrior
+    - Engineer
+    - Thief:
+        Deadeye
+    - Mesmer:
+        SecretsOfTheObscure
+ShortBow:
+  TwoHanded:
+    - Revenant:
+        Renegade
+    - Ranger
+    - Thief
+    - Engineer:
+        SecretsOfTheObscure
+Staff:
+  TwoHanded:
+    - Guardian
+    - Warrior:
+        SecretsOfTheObscure
+    - Revenant
+    - Ranger:
+        Druid
+    - Thief:
+        Daredevil
+    - Elementalist
+    - Mesmer
+    - Necromancer
+HarpoonGun:
+  Aquatic:
+    - Warrior
+    - Engineer
+    - Ranger
+    - Thief
+Spear:
+  TwoHanded:
+    - Guardian:
+        JanthirWilds
+    - Warrior:
+        JanthirWilds
+    - Revenant:
+        JanthirWilds
+    - Ranger:
+        JanthirWilds
+    - Thief:
+        JanthirWilds
+    - Engineer:
+        JanthirWilds
+    - Elementalist:
+        JanthirWilds
+    - Mesmer:
+        JanthirWilds
+    - Necromancer:
+        JanthirWilds
+  Aquatic:
+    - Guardian
+    - Revenant
+    - Warrior
+    - Ranger
+    - Thief
+    - Mesmer
+    - Necromancer
+Trident:
+  Aquatic:
+    - Guardian
+    - Revenant
+    - Elementalist
+    - Mesmer
+    - Necromancer

@@ -13,295 +13,128 @@ using System.Threading.Tasks;
 
 using XnaColor = Microsoft.Xna.Framework.Color;
 using XnaRectangle = Microsoft.Xna.Framework.Rectangle;
+using SlotData = System.Collections.Generic.Dictionary<string, object>;
+using Archipelago.MultiClient.Net;
 
 namespace Gw2Archipelago
 {
-    class ArchipelagoWindow : StandardWindow
+    class ArchipelagoWindow : TabbedWindow2
     {
-
-        private static readonly Logger logger = Logger.GetLogger<Module>();
-
         private ContentsManager contentsManager;
-        private Panel locationPanel;
-        private Scrollbar locationScrollbar;
-        private int locationPanelY = 0;
-        private StandardButton connectButton;
-        private StandardButton generateButton;
-        private Dictionary<int, DetailsButton> achievementButtons = new Dictionary<int, DetailsButton>();
-        private DetailsButton questButton;
-        private Dictionary<string, DetailsButton> genericLocationButtons = new Dictionary<string, DetailsButton>();
-        private Panel itemPanel;
-        private Scrollbar itemScrollbar;
-        private Dictionary<long, Label> itemLabels = new Dictionary<long, Label>();
-        private int itemPanelY = 0;
-        private Label mistFragmentLabel;
 
-        public event EventHandler<Blish_HUD.Input.MouseEventArgs> ConnectButtonClick
-        {
-            add { connectButton.Click += value; }
-            remove { connectButton.Click -= value; }
-        }
+        private static readonly Logger logger = Logger.GetLogger<ArchipelagoWindow>();
 
-        public event EventHandler<Blish_HUD.Input.MouseEventArgs> GenerateButtonClick
-        {
-            add { generateButton.Click += value; }
-            remove { generateButton.Click -= value; }
-        }
+        private LocationView locationView;
+        private ItemView itemView;
 
-        internal ArchipelagoWindow (XnaRectangle windowRegion, XnaRectangle contentRegion, ContentsManager contentsManager) : base(AsyncTexture2D.FromAssetId(155985), windowRegion, contentRegion)
+        internal ArchipelagoWindow 
+        (
+            XnaRectangle windowRegion, 
+            XnaRectangle contentRegion, 
+            LocationChecker locationChecker, 
+            SlotData slotData, 
+            ArchipelagoSession apSession, 
+            Module module
+        ) : base(AsyncTexture2D.FromAssetId(155985), windowRegion, contentRegion)
         {
+            contentsManager = module.ContentsManager;
             Parent = GameService.Graphics.SpriteScreen;
             Title = "Archipelago";
             Emblem = contentsManager.GetTexture("archipelago64.png");
             //Subtitle = "Example Subtitle",
             SavesPosition = true;
             Id = $"Archipelago 22694e1c-69df-43e7-a926-f8b1a5319a47";
-            this.contentsManager = contentsManager;
 
+            Tabs.Add(
+                new Tab(GameService.Content.GetTexture("155052"), () => {
+                    locationView = new LocationView(contentsManager, locationChecker, slotData);
+                    itemView = null;
+                    locationView.ConnectButtonClick += module.StartReconnectTimer;
+                    locationView.GenerateButtonClick += module.GenerateLocations;
+                    return locationView;
+                }, "Locations"));
+            Tabs.Add(new Tab(GameService.Content.GetTexture("155052"), () => {
+                locationView = null;
+                itemView = new ItemView(contentsManager, slotData, apSession, module.Gw2ApiManager);
+                return itemView;
+            }, "Item"));
 
-            locationPanel = new Panel()
+        }
+
+        internal void SetSlotData(SlotData slotData)
+        {
+            if (locationView != null)
             {
-                Location = new Point(10, 35),
-                Size = new Point(350, 520),
-                Parent = this,
-            };
+                locationView.Initialize(slotData);
+            }
+        }
 
-            locationScrollbar = new Scrollbar(locationPanel)
-            {
-                Location = new Point(0, 35),
-                Size = new Point(10, 570),
-                Parent = this,
-            };
-
-            itemPanel = new Panel()
-            {
-                Location = new Point(370, 35),
-                Size = new Point(300, 520),
-                Parent = this,
-            };
-
-            itemScrollbar = new Scrollbar(itemPanel)
-            {
-                Location = new Point(360, 35),
-                Size = new Point(10, 570),
-                Parent = this,
-            };
-
-
-            connectButton = new StandardButton()
-            {
-                Text = "Connect",
-                Size = new Point(140, 30),
-                Location = new Point(0, 0),
-                Parent = this,
-            };
-
-            generateButton = new StandardButton()
-            {
-                Text = "Generate Locations",
-                Size = new Point(140, 30),
-                Location = new Point(150, 0),
-                Parent = this,
-            };
+        internal void SetProfession(Profession profession)
+        {
+            //itemView.Initialize(profession);
         }
 
         internal void ClearLocations()
         {
-            foreach (var button in achievementButtons)
+            if (locationView != null)
             {
-                locationPanel.RemoveChild(button.Value);
-            }
-            achievementButtons.Clear();
-
-            if (questButton != null)
-            {
-                locationPanel.RemoveChild(questButton);
-                questButton = null;
-            }
-            foreach (var button in genericLocationButtons)
-            {
-                locationPanel.RemoveChild(button.Value);
-            }
-
-            genericLocationButtons.Clear();
-
-            locationPanelY = 0;
-        }
-
-        internal void ClearItems()
-        {
-
-            foreach (var label in itemLabels)
-            {
-                if (itemPanel != null)
-                {
-                    itemPanel.RemoveChild(label.Value);
-                }
-            }
-            itemPanelY = 0;
-            itemLabels.Clear();
-            if (mistFragmentLabel != null)
-            {
-                RemoveChild(mistFragmentLabel);
+                locationView.ClearLocations();
             }
         }
 
-        internal void UpdateMistFragments(int mistFragments, long mistFragmentsRequired)
+        internal void UpdateMistFragments(int mistFragments)
         {
-
-            mistFragmentLabel = new Label()
+            if (itemView != null)
             {
-                Text = "Mist Fragments: " + mistFragments + " / " + mistFragmentsRequired,
-                Size = new Point(140, 30),
-                Location = new Point(300, 0),
-                Parent = this,
-            };
+                itemView.UpdateMistFragments(mistFragments);
+            }
         }
-
-        internal void UpdateItemCount(string itemName, long itemId, int itemCount)
+        internal void UpdateItemCount(string itemName, int itemCount)
         {
-            Label label;
-            if (itemLabels.ContainsKey(itemId)) {
-                label = itemLabels[itemId];
-            }
-            else
+            if (itemView != null)
             {
-                label = new Label()
-                {
-                    Size = new Point(300, 30),
-                    Location = new Point(0, itemPanelY),
-                    Parent = itemPanel,
-                };
-                itemPanelY += label.Height + 5;
-                itemLabels.Add(itemId, label);
-            }
-
-            if (itemCount > 1)
-            {
-                label.Text = itemName + " x" + itemCount;
-            }
-            else
-            {
-                label.Text = itemName;
+                itemView.UpdateItemCount(itemName, itemCount);
             }
         }
 
         internal void CreateItemLocationButtons(IEnumerable<ItemLocation> itemLocations)
         {
-
-            Texture2D icon = contentsManager.GetTexture("archipelago64.png");
-
-            foreach (var location in itemLocations) {
-
-                var button = new DetailsButton()
-                {
-                    Text = location.LocationName,
-                    Icon = icon,
-                    MaxFill = 1,
-                    ShowFillFraction = true,
-                    FillColor = XnaColor.White
-                };
-                button.Parent = locationPanel;
-                button.Location = new Point(0, locationPanelY);
-                locationPanelY += questButton.Height + 5;
-                button.CurrentFill = 0;
-                genericLocationButtons.Add(location.LocationName, button);
+            if (locationView != null)
+            {
+                locationView.CreateItemLocationButtons(itemLocations);
             }
-
         }
 
         internal void CreatePoiButtons(IEnumerable<PoiLocation> poiLocations)
         {
-
-            Texture2D icon = contentsManager.GetTexture("archipelago64.png");
-
-            foreach (var location in poiLocations)
+            if (locationView != null)
             {
-
-                var button = new DetailsButton()
-                {
-                    Text = location.LocationName,
-                    Icon = icon,
-                    MaxFill = 1,
-                    ShowFillFraction = true,
-                    FillColor = XnaColor.White
-                };
-                button.Parent = locationPanel;
-                button.Location = new Point(0, locationPanelY);
-                locationPanelY += questButton.Height + 5;
-                button.CurrentFill = 0;
-                genericLocationButtons.Add(location.LocationName, button);
+                locationView.CreatePoiButtons(poiLocations);
             }
         }
 
         internal void CreateQuestButton(Storyline storyline, int incompleteQuestCount, int completeQuestCount)
         {
-
-            Texture2D icon = contentsManager.GetTexture("archipelago64.png");
-
-            questButton = new DetailsButton()
+            if (locationView != null)
             {
-                Text = storyline.GetName() + " Quests",
-                Icon = icon,
-                MaxFill = completeQuestCount + incompleteQuestCount,
-                ShowFillFraction = true,
-                FillColor = XnaColor.White
-            };
-            questButton.Parent = locationPanel;
-            questButton.Location = new Point(0, locationPanelY);
-            locationPanelY += questButton.Height + 5;
-            questButton.CurrentFill = completeQuestCount;
+                locationView.CreateQuestButton(storyline, incompleteQuestCount, completeQuestCount);
+            }
         }
 
         internal void AddAchievementButton(AchievementLocation achievementLocation)
         {
-
-            var achievement = achievementLocation.Achievement;
-            var category = achievementLocation.Category;
-            var progress = achievementLocation.Progress;
-
-
-            var button = new DetailsButton()
+            if (locationView != null)
             {
-                Text = achievement.Name + " (" + achievementLocation.LocationName + ")",
-                MaxFill = achievement.Tiers[achievementLocation.Tier].Count,
-                ShowFillFraction = true,
-                FillColor = XnaColor.White
-            };
-            button.Parent = locationPanel;
-            button.Location = new Point(0, locationPanelY);
-            locationPanelY += button.Height + 5;
-
-            var iconPath = achievement.Icon.Url;
-            if (iconPath == null && category != null)
-            {
-                iconPath = category.Icon.Url;
-            }
-
-            if (iconPath != null)
-            {
-                var relativePath = iconPath.LocalPath.Split(new char[] { '/' }, 3)[2].Split('.')[0];
-                logger.Debug("iconPath: {}, relativePath: {}", iconPath, relativePath);
-                button.Icon = GameService.Content.GetRenderServiceTexture(relativePath);
-            }
-            else
-            {
-                button.Icon = contentsManager.GetTexture("archipelago64.png");
-            }
-
-            achievementButtons.Add(achievement.Id, button);
-
-            if (progress != null)
-            {
-                UpdateAchievementProgress(achievement, progress);
+                locationView.AddAchievementButton(achievementLocation);
             }
         }
 
         internal void UpdateAchievementProgress(Achievement achievement, AccountAchievement progress)
         {
-            var button = achievementButtons[achievement.Id];
-            logger.Debug("Updating Progress Button: {}/{}", progress.Current, progress.Max);
-            button.CurrentFill = progress.Current;
+            if (locationView != null)
+            {
+                locationView.UpdateAchievementProgress(achievement, progress);
+            }
         }
     }
 }

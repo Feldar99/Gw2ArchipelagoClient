@@ -172,9 +172,10 @@ namespace Gw2Archipelago
 
         private void MumbleUpdate(Object stateInfo)
         {
-            logger.Debug("Updating locations from MumbleAPI");
+            //logger.Debug("Updating locations from MumbleAPI");
             var mapId = GameService.Gw2Mumble.CurrentMap.Id;
             var currentCharacter = GameService.Gw2Mumble.PlayerCharacter;
+            //logger.Debug("Mumble Character: {}, AP Character: {}", currentCharacter.Name, characterName.Value);
             if (pointsOfInterest.ContainsKey(mapId) && currentCharacter.Name.Equals(characterName.Value))
             {
                 var pos = currentCharacter.Position;
@@ -184,16 +185,16 @@ namespace Gw2Archipelago
                     {
                         continue;
                     }
-                    logger.Debug("Current Position: {} POI Position: {}", pos, poi.Position);
+                    //logger.Debug("Current Position: {} POI Position: {}", pos, poi.Position);
                     var distanceSq = (pos - poi.Position).LengthSquared();
-                    logger.Debug("Distance to {} = {}", poi.LocationName, distanceSq);
+                    //logger.Debug("Distance to {} = {}", poi.LocationName, distanceSq);
                     if (distanceSq <= POI_DISCOVERY_DISTANCE_SQ)
                     {
                         PoiDiscovered.Invoke(poi);
                     }
                 }
             }
-            logger.Debug("Mumble Update Complete");
+            //logger.Debug("Mumble Update Complete");
             
         }
 
@@ -218,7 +219,7 @@ namespace Gw2Archipelago
             }
             catch (Exception ex)
             {
-                logger.Warn(ex, "Failed to load {name}", name);
+                logger.Warn(ex, "Failed to update {name}", name);
             }
         }
 
@@ -230,6 +231,10 @@ namespace Gw2Archipelago
             var itemQuantities = new Dictionary<int, int>(); //id -> quantity
             foreach (var bag in inventory.Bags)
             {
+                if (bag == null)
+                {
+                    continue;
+                }
                 foreach (var item in bag.Inventory)
                 {
                     if (item == null || !itemLocations.ContainsKey(item.Id))
