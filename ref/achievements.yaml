@@ -1,5 +1,5 @@
 groups:
-    18DB115A-8637-4290-A636-821362A3C4A8: Any
+    18DB115A-8637-4290-A636-821362A3C4A8: None
     1CAFA333-0C2B-4782-BC4C-7DA30E9CE289: RAID
     345BA893-F022-40B8-A881-DB7422D95AE5: Secrets of the Obscure
     3A185655-09A5-4F6C-8B21-F1FCF62587B1: Any
@@ -267,7 +267,7 @@ categories:
   361: SecretsOfTheObscure
   362: SecretsOfTheObscure
   364: SecretsOfTheObscure
-  365: SecretsOfTheObscure
+  365: None #Weekly Rift Hunting
   366: SecretsOfTheObscure
   367: SecretsOfTheObscure
   368: SecretsOfTheObscure
@@ -288,8 +288,13 @@ categories:
   417: SecretsOfTheObscure
   424: Janthir Wilds
   427: Janthir Wilds
+  438: Janthir Wilds
+  441: Janthir Wilds
+  442: Janthir Wilds
   
 achievments:
+  571: None
+  668: None
   3598: PathOfFire
   3700: PathOfFire
   3716: PathOfFire
@@ -446,7 +451,7 @@ achievments:
   1736: Core
   1744: Core
   1748: Core
-  1749: Season1
+  1749: Season2
   1752: Season1
   1753: DUNGEON
   1782: Season2
@@ -502,7 +507,7 @@ achievments:
   5659: IcebroodSaga
   5666: IcebroodSaga
   6488: EndOfDragons
-  6541: Season1
+  6541: None
   6976: SecretsOfTheObscure
   7030: SecretsOfTheObscure
   7139: SecretsOfTheObscure
@@ -761,6 +766,7 @@ achievments:
   1196: Season1
   1197: Season1
   1198: Season1
+  1709: None
   2156: Core
   2158: Core
   2206: Season1
@@ -863,7 +869,9 @@ achievments:
   6956: None
   7650: None
   7745: None
+  7788: None # Legendary Sigil Collector
   8118: None
+  8191: None # Janthiri Treasure Hunter
   8166: Janthir Wilds
   8285: Janthir Wilds
   8331: Janthir Wilds
@@ -898,577 +906,600 @@ achievments:
   7056: None
   7101: None
   7161: None
+  8283: Janthir Wilds
+  8284: None # Cozy Creator
+  8446: Janthir Wilds
+  8450: Janthir Wilds
+  8466: Janthir Wilds
+  8475: Janthir Wilds
+  8507: Janthir Wilds
+  8501: Janthir 
+  8278: None
+  
+  4968: IcebroodSaga #Icebrood Saga Reward Track (PvP)
+  4984: IcebroodSaga #Icebrood Saga Reward Track (WvW)
   
   
-  
-  4109: STORY
-  4107: STORY
-  4114: STORY
-  4126: STORY
-  4097: STORY
-  4145: STORY
-  4130: STORY
-  4131: STORY
-  4137: STORY
-  4092: STORY
-  4091: STORY
-  4146: STORY
-  4090: STORY
-  4115: STORY
-  4140: STORY
-  4120: STORY
-  4129: STORY
-  5503: STORY
-  5535: STORY
-  5522: STORY
-  5546: STORY
-  5524: STORY
-  5539: STORY
-  5512: STORY
-  5518: STORY
-  5544: STORY
-  5505: STORY
-  7249: STORY
-  7277: STORY
-  7452: STORY
-  7243: STORY
-  7317: STORY
-  7576: STORY
-  2056: STORY
-  2315: STORY
-  2062: STORY
-  2060: STORY
-  2057: STORY
-  2061: STORY
-  2361: STORY
-  2616: STORY
-  2287: STORY
-  2254: STORY
-  2639: STORY
-  2058: STORY
-  2178: STORY
-  2174: STORY
-  2219: STORY
-  2440: STORY
-  2466: STORY
-  2469: STORY
-  2632: STORY
-  2185: STORY
-  2587: STORY
-  2264: STORY
-  2196: STORY
-  2201: STORY
-  2301: STORY
-  2055: STORY
-  2053: STORY
-  2059: STORY
-  4342: STORY
-  6493: STORY
-  6139: STORY
-  6357: STORY
-  6199: STORY
-  6442: STORY
-  6200: STORY
-  6134: STORY
-  6126: STORY
-  6113: STORY
-  4513: STORY
-  4586: STORY
-  4510: STORY
-  4506: STORY
-  4498: STORY
-  4567: STORY
-  4545: STORY
-  4594: STORY
-  4588: STORY
-  4557: STORY
-  4576: STORY
-  6323: STORY
-  6259: STORY
-  3507: STORY
-  3497: STORY
-  3515: STORY
-  3517: STORY
-  3503: STORY
-  3493: STORY
-  3510: STORY
-  3524: STORY
-  3548: STORY
-  3511: STORY
-  3537: STORY
-  3533: STORY
-  3519: STORY
-  4914: STORY
-  4929: STORY
-  4899: STORY
-  4917: STORY
-  4925: STORY
-  4923: STORY
-  4901: STORY
-  3406: STORY
-  3485: STORY
-  3422: STORY
-  3408: STORY
-  3396: STORY
-  3441: STORY
-  3446: STORY
-  3470: STORY
-  3456: STORY
-  3430: STORY
-  3433: STORY
-  3484: STORY
-  3435: STORY
-  3472: STORY
-  3462: STORY
-  3467: STORY
-  3401: STORY
-  3400: STORY
-  3480: STORY
-  3454: STORY
-  6500: STORY
-  6156: STORY
-  7805: STORY
-  7656: STORY
-  7733: STORY
-  7850: STORY
-  7670: STORY
-  7786: STORY
-  7840: STORY
-  7825: STORY
-  7698: STORY
-  7702: STORY
-  7772: STORY
-  7841: STORY
-  7826: STORY
-  7815: STORY
-  7710: STORY
-  7728: STORY
-  7773: STORY
-  7680: STORY
-  7785: STORY
-  7781: STORY
-  7657: STORY
-  6146: STORY
-  6268: STORY
-  6252: STORY
-  6419: STORY
-  816: STORY
-  817: STORY
-  6685: STORY
-  6687: STORY
-  818: STORY
-  6691: STORY
-  6695: STORY
-  6693: STORY
-  3374: STORY
-  3308: STORY
-  3354: STORY
-  3330: STORY
-  3301: STORY
-  3372: STORY
-  3317: STORY
-  3329: STORY
-  3285: STORY
-  3340: STORY
-  3381: STORY
-  3294: STORY
-  3380: STORY
-  3309: STORY
-  3338: STORY
-  1702: STORY
-  1657: STORY
-  1650: STORY
-  1643: STORY
-  1666: STORY
-  1699: STORY
-  1660: STORY
-  1677: STORY
-  6794: STORY
-  1646: STORY
-  1667: STORY
-  1701: STORY
-  1705: STORY
-  1663: STORY
-  1640: STORY
-  1644: STORY
-  1659: STORY
-  1704: STORY
-  1641: STORY
-  1664: STORY
-  1642: STORY
-  1700: STORY
-  1703: STORY
-  1672: STORY
-  1691: STORY
-  1706: STORY
-  1674: STORY
-  1678: STORY
-  1662: STORY
-  1648: STORY
-  1668: STORY
-  1665: STORY
-  1661: STORY
-  1649: STORY
-  1673: STORY
-  1698: STORY
-  1671: STORY
-  1647: STORY
-  7032: STORY
-  7137: STORY
-  7172: STORY
-  7313: STORY
-  7211: STORY
-  7221: STORY
-  7015: STORY
-  7550: STORY
-  7396: STORY
-  4744: STORY
-  4673: STORY
-  4747: STORY
-  4700: STORY
-  4753: STORY
-  4731: STORY
-  4721: STORY
-  4669: STORY
-  4617: STORY
-  4618: STORY
-  5113: STORY
-  5102: STORY
-  5130: STORY
-  5124: STORY
-  5109: STORY
-  6172: STORY
-  6080: STORY
-  6326: STORY
-  2403: STORY
-  2521: STORY
-  2176: STORY
-  2197: STORY
-  2472: STORY
-  2562: STORY
-  2357: STORY
-  2271: STORY
-  2577: STORY
-  6586: STORY
-  2419: STORY
-  5275: STORY
-  5248: STORY
-  5329: STORY
-  5245: STORY
-  5268: STORY
-  5353: STORY
-  5262: STORY
-  5359: STORY
-  5366: STORY
-  5362: STORY
-  5306: STORY
-  5318: STORY
-  5285: STORY
-  5316: STORY
-  5313: STORY
-  1392: STORY
-  1522: STORY
-  1508: STORY
-  1385: STORY
-  1509: STORY
-  1507: STORY
-  6792: STORY
-  6789: STORY
-  1510: STORY
-  3797: STORY
-  3602: STORY
-  3581: STORY
-  3890: STORY
-  3820: STORY
-  3903: STORY
-  3585: STORY
-  3608: STORY
-  3733: STORY
-  3622: STORY
-  3908: STORY
-  3672: STORY
-  3835: STORY
-  3854: STORY
-  3588: STORY
-  3664: STORY
-  3564: STORY
-  3565: STORY
-  3568: STORY
-  3698: STORY
-  3909: STORY
-  3777: STORY
-  3816: STORY
-  3675: STORY
-  3657: STORY
-  3778: STORY
-  3631: STORY
-  3861: STORY
-  3726: STORY
-  3811: STORY
-  3641: STORY
-  3808: STORY
-  3668: STORY
-  3725: STORY
-  3853: STORY
-  3673: STORY
-  3648: STORY
-  3576: STORY
-  3839: STORY
-  3566: STORY
-  3748: STORY
-  3586: STORY
-  3780: STORY
-  3679: STORY
-  3606: STORY
-  3580: STORY
-  3751: STORY
-  3869: STORY
-  3730: STORY
-  3870: STORY
-  3813: STORY
-  3757: STORY
-  3879: STORY
-  7089: STORY
-  7178: STORY
-  6997: STORY
-  6985: STORY
-  7010: STORY
-  7091: STORY
-  7988: STORY
-  7984: STORY
-  7971: STORY
-  8021: STORY
-  8012: STORY
-  8043: STORY
-  8047: STORY
-  7966: STORY
-  7965: STORY
-  8076: STORY
-  8061: STORY
-  7955: STORY
-  7945: STORY
-  8088: STORY
-  8024: STORY
-  8062: STORY
-  8097: STORY
-  8010: STORY
-  6567: STORY
-  6563: STORY
-  6556: STORY
-  4983: STORY
-  5011: STORY
-  4957: STORY
-  4974: STORY
-  5014: STORY
-  5062: STORY
-  5050: STORY
-  4992: STORY
-  5053: STORY
-  4988: STORY
-  5063: STORY
-  5031: STORY
-  2392: STORY
-  2443: STORY
-  2444: STORY
-  2320: STORY
-  2195: STORY
-  2205: STORY
-  2600: STORY
-  2348: STORY
-  2525: STORY
-  2513: STORY
-  2527: STORY
-  2497: STORY
-  2504: STORY
-  2531: STORY
-  2537: STORY
-  2581: STORY
-  2551: STORY
-  2488: STORY
-  2589: STORY
-  2627: STORY
-  2619: STORY
-  2225: STORY
-  2501: STORY
-  2421: STORY
-  2635: STORY
-  4365: STORY
-  4346: STORY
-  4424: STORY
-  4372: STORY
-  4497: STORY
-  4378: STORY
-  4392: STORY
-  4347: STORY
-  4353: STORY
-  4428: STORY
-  4358: STORY
-  4493: STORY
-  4370: STORY
-  6071: STORY
-  7227: STORY
-  6911: STORY
-  6899: STORY
-  6116: STORY
-  7215: STORY
-  6921: STORY
-  7162: STORY
-  7412: STORY
-  7122: STORY
-  7052: STORY
-  7175: STORY
-  6931: STORY
-  7057: STORY
-  6949: STORY
-  6864: STORY
-  7274: STORY
-  7236: STORY
-  4271: STORY
-  4209: STORY
-  4247: STORY
-  4269: STORY
-  4217: STORY
-  4227: STORY
-  4220: STORY
-  4259: STORY
-  4253: STORY
-  4246: STORY
-  4230: STORY
-  4188: STORY
-  4243: STORY
-  4223: STORY
-  4238: STORY
-  4236: STORY
-  4214: STORY
-  4201: STORY
-  5386: STORY
-  5379: STORY
-  5380: STORY
-  5417: STORY
-  4040: STORY
-  3996: STORY
-  3965: STORY
-  3975: STORY
-  3982: STORY
-  3955: STORY
-  3994: STORY
-  3997: STORY
-  3984: STORY
-  3976: STORY
-  3986: STORY
-  4009: STORY
-  4002: STORY
-  4039: STORY
-  3972: STORY
-  3962: STORY
-  4003: STORY
-  4032: STORY
-  3961: STORY
-  3182: STORY
-  3130: STORY
-  3227: STORY
-  3043: STORY
-  3231: STORY
-  3056: STORY
-  3210: STORY
-  3054: STORY
-  3193: STORY
-  3107: STORY
-  3122: STORY
-  3112: STORY
-  3207: STORY
-  3105: STORY
-  3082: STORY
-  3065: STORY
-  3074: STORY
-  3224: STORY
-  3077: STORY
-  3134: STORY
-  3059: STORY
-  3188: STORY
-  3138: STORY
-  3195: STORY
-  3216: STORY
-  3179: STORY
-  3142: STORY
-  3084: STORY
-  3109: STORY
-  3042: STORY
-  3136: STORY
-  3145: STORY
-  3064: STORY
-  3115: STORY
-  3186: STORY
-  6747: STORY
-  6748: STORY
-  6761: STORY
-  1832: STORY
-  1788: STORY
-  1783: STORY
-  1826: STORY
-  1817: STORY
-  1819: STORY
-  1786: STORY
-  1822: STORY
-  1793: STORY
-  1820: STORY
-  1831: STORY
-  1791: STORY
-  1792: STORY
-  1787: STORY
-  1789: STORY
-  1833: STORY
-  1821: STORY
-  1829: STORY
-  1830: STORY
-  1818: STORY
-  1828: STORY
-  1815: STORY
-  6391: STORY
-  8160: STORY
-  8171: STORY
-  8174: STORY
-  8182: STORY
-  8189: STORY
-  8190: STORY
-  8208: STORY
-  8209: STORY
-  8239: STORY
-  8247: STORY
-  8258: STORY
-  8267: STORY
-  8268: STORY
-  8269: STORY
-  8272: STORY
-  8276: STORY
-  8279: STORY
-  8287: STORY
-  8298: STORY
-  8305: STORY
-  8310: STORY
-  8317: STORY
-  8324: STORY
-  8339: STORY
-  8345: STORY
-  8366: STORY
-  8163: STORY
-  8178: STORY
-  8204: STORY
-  8214: STORY
-  8216: STORY
-  8217: STORY
-  8221: STORY
-  8226: STORY
-  8231: STORY
-  8240: STORY
-  8255: STORY
-  8261: STORY
-  8290: STORY
-  8312: STORY
-  8329: STORY
-  8349: STORY
-  8351: STORY
-  8353: STORY
-  8355: STORY
-  8364: STORY
-  8368: STORY
+  816: STORY #Soft Lander
+  817: STORY #Playhouse Perfectionist
+  818: STORY #Raced to the Rescue
+  1385: STORY #All Bets Are Off
+  1392: STORY #Please Follow Me to the Exit
+  1507: STORY #No More Tricks, Scarlet
+  1508: STORY #In a Cage Made of Steel and Lunacy
+  1509: STORY #In Tune
+  1510: STORY #One Step Closer...
+  1522: STORY #Nowhere to Hide
+  1640: STORY #Zephyr's Ascent
+  1641: STORY #Gates of Maguuma
+  1642: STORY #Zephyr's Leap
+  1643: STORY #No Rock Unturned
+  1644: STORY #Explosive Avoidance
+  1646: STORY #No Shocks Here
+  1647: STORY #Opportune Moment
+  1648: STORY #Dashed Advantage
+  1649: STORY #A Shocking Development
+  1650: STORY #No Seraph Left Behind
+  1657: STORY #Fire for Effect
+  1659: STORY #Entanglement
+  1660: STORY #No Tricks
+  1661: STORY #On Swift Wings
+  1662: STORY #Mess with the Bull...
+  1663: STORY #Butterflies and Viscera
+  1664: STORY #Sheltered from the Rain
+  1665: STORY #Timely Arrival
+  1666: STORY #Dropping like Flies
+  1667: STORY #Time Waits for No One
+  1668: STORY #Not So Buff Now
+  1671: STORY #Nary a Pitfall
+  1672: STORY #Leave No Survivors
+  1673: STORY #Crate Scrapper
+  1674: STORY #The Dragon's Reach, Part 1
+  1677: STORY #Strike's Over
+  1678: STORY #Don't Knock Yourself Out
+  1691: STORY #Untouched by Maw and Claw
+  1698: STORY #Can't Knock Me Down
+  1699: STORY #Mote Master
+  1700: STORY #The Dragon's Reach, Part 2
+  1701: STORY #Power Squelcher
+  1702: STORY #Mischief Maker
+  1703: STORY #Defender of the Tiny
+  1704: STORY #Sneaky Sleuth
+  1705: STORY #Super Sleuth
+  1706: STORY #Shoddy Sleuth
+  1783: STORY #Echoes of the Past
+  1786: STORY #Strength Without Sacrifice
+  1787: STORY #Not Under My Command
+  1788: STORY #Exposed Weaknesses: Redux
+  1789: STORY #Recon Demolitionist
+  1791: STORY #No Thanks to Canach
+  1792: STORY #Better Red Than Dead
+  1793: STORY #Exposed Weaknesses
+  1815: STORY #Master of the Maze
+  1817: STORY #Labyrinth Runner
+  1818: STORY #Connect the Dots
+  1819: STORY #Dancer in the Dark
+  1820: STORY #Light 'Em Up
+  1821: STORY #No Teragriff Pack Snack
+  1822: STORY #Tangled Paths
+  1826: STORY #Seeds of Truth
+  1828: STORY #Dodgy Crowd
+  1829: STORY #Wicked Rodeo
+  1830: STORY #Don't Tread On Me
+  1831: STORY #Aggressive Infiltration
+  1832: STORY #Invisible Infiltration
+  1833: STORY #Unforgiving Infiltration
+  2053: STORY #No Culinary Application
+  2055: STORY #It's All About Timing
+  2056: STORY #Distorted Reflection
+  2057: STORY #Lobber Dodger
+  2058: STORY #Weed Killer
+  2059: STORY #Smotherer Smiter
+  2060: STORY #Point of No Return
+  2061: STORY #Rock Dodger
+  2062: STORY #Shrubsplosives
+  2174: STORY #Totems of the Itzel
+  2176: STORY #An Ignoble End
+  2178: STORY #In Their Footsteps
+  2185: STORY #Rally to Maguuma
+  2195: STORY #Deathless Escape
+  2196: STORY #Sylvari Solidarity
+  2197: STORY #Flights of Fancy
+  2201: STORY #Prisoners of the Dragon
+  2205: STORY #Mushroom Conservationist
+  2219: STORY #Artful Dodger
+  2225: STORY #No More Time
+  2254: STORY #Weed Whacker
+  2264: STORY #Torn from the Sky
+  2271: STORY #The Troll Road
+  2287: STORY #Is A Good Offense
+  2301: STORY #Peer Review
+  2315: STORY #The Jungle Provides
+  2320: STORY #Prized Possessions
+  2348: STORY #Wild Dragon Chase
+  2357: STORY #Dream Warrior
+  2361: STORY #Search and Rescue
+  2392: STORY #Sign Cutting
+  2403: STORY #Untethered
+  2419: STORY #Migraine
+  2421: STORY #Never Say Die
+  2440: STORY #Establishing a Foothold
+  2443: STORY #Buried Insight
+  2444: STORY #Chak Killer—Master
+  2466: STORY #Stick the Landing
+  2469: STORY #Dug In
+  2472: STORY #Hearts and Minds
+  2488: STORY #Leave It to Me
+  2497: STORY #Chak Killer—Expert
+  2501: STORY #Strange Observations
+  2504: STORY #Flawless Escape
+  2513: STORY #Chak Killer—Beginner
+  2521: STORY #Air Superiority
+  2525: STORY #Predatory Prey
+  2527: STORY #The Predator's Path
+  2531: STORY #Roots of Terror
+  2537: STORY #Avoid Traps
+  2551: STORY #Cleaning House
+  2562: STORY #Line of Fire
+  2577: STORY #Bitter Harvest
+  2581: STORY #The Way In
+  2587: STORY #Conservation of Resources
+  2589: STORY #New Horizons
+  2600: STORY #Mordremoth Usurper
+  2616: STORY #The Best Defense
+  2619: STORY #The Dark Path
+  2627: STORY #City of Hope
+  2632: STORY #Now That's a Fungus
+  2635: STORY #The Pit of Despair
+  2639: STORY #My Friends, the Smiths
+  3042: STORY #Eir's Memorial in Hoelbrak
+  3043: STORY #Bloodstone Magic, Not Even Once
+  3054: STORY #Research in Rata Novus
+  3056: STORY #Blood and Stone
+  3059: STORY #Reaper of Magic
+  3064: STORY #Ain't Got Time for This
+  3065: STORY #Confessor's Stronghold
+  3074: STORY #A Shadow's Deeds
+  3077: STORY #Was It Blue or Red?
+  3082: STORY #The Sky Is Falling
+  3084: STORY #Take It Down a Notch
+  3105: STORY #Destroying Destroyers
+  3107: STORY #Old Foes, Old Ghosts
+  3109: STORY #Simulation Top Ten
+  3112: STORY #Maintain Aurene's Shield
+  3115: STORY #The Machine in the Flame
+  3122: STORY #Dragon Duty
+  3130: STORY #Trip to the Circus
+  3134: STORY #I'm Rubber; You're Destroyer
+  3136: STORY #Dragon Vigil
+  3138: STORY #Igneous Breach
+  3142: STORY #No Bombs Allowed
+  3145: STORY #Taimi's Game
+  3179: STORY #Larva Conservationist
+  3182: STORY #Elixir Recipe
+  3186: STORY #Vigilant
+  3188: STORY #Stay Unfrosty
+  3193: STORY #Frozen in Ice
+  3195: STORY #Beasts Slain Quick
+  3207: STORY #Elixir Cookin'
+  3210: STORY #The Bitter Cold
+  3216: STORY #Precocious Aurene
+  3224: STORY #Frozen Out
+  3227: STORY #Journey to Bitterfrost Frontier
+  3231: STORY #New in Box
+  3285: STORY #Eyes on Lake Doric
+  3294: STORY #A Meeting of Ministers
+  3301: STORY #Sabotage Fort Evennia
+  3308: STORY #The Vigil Way
+  3309: STORY #Master of Puppets
+  3317: STORY #Regrouping with the Queen
+  3329: STORY #Upper City Security Chief
+  3330: STORY #Sacrificial Lambs
+  3338: STORY #Shadow in the Shadows
+  3340: STORY #Confessor's End
+  3354: STORY #Illuminating
+  3372: STORY #Breaking the Siege
+  3374: STORY #The Whispers Way
+  3380: STORY #Courtly Discourtesy
+  3381: STORY #Riddle Me This
+  3396: STORY #Elder Druid Protection
+  3400: STORY #Go Nuts with the Scanning
+  3401: STORY #Arrival and Survival
+  3406: STORY #Born for Battle
+  3408: STORY #Excess Energy
+  3422: STORY #Heart of the Volcano
+  3430: STORY #Fancy Flying
+  3433: STORY #Ring of Fire
+  3435: STORY #Taimi's Pet Project
+  3441: STORY #Fire Fighter
+  3446: STORY #In Pursuit of a God
+  3454: STORY #Lightfoot
+  3456: STORY #A Quick Death
+  3462: STORY #Precision Blade
+  3467: STORY #Hold the Line
+  3470: STORY #The Last Chance
+  3472: STORY #The Flow of Magic
+  3480: STORY #King Crab
+  3484: STORY #Fearless
+  3485: STORY #Shining Blade Secrets
+  3493: STORY #Graffiti Artist
+  3497: STORY #Cleaning Up the Mess
+  3503: STORY #Not on My Watch
+  3507: STORY #"Where's Balthazar?"
+  3510: STORY #Fearful
+  3511: STORY #On Orrian Shores
+  3515: STORY #With Friends Like These...
+  3517: STORY #Two Sides, Same Coin
+  3519: STORY #Student of Bartholos
+  3524: STORY #Dodger Danger
+  3533: STORY #Block the Shock
+  3537: STORY #Art Critic
+  3548: STORY #Into the Mind of Madness
+  3564: STORY #Hidden and Dishonored
+  3565: STORY #Guided Remembrance
+  3566: STORY #Crystalline Memories
+  3568: STORY #Damage Control
+  3576: STORY #The Whole Story
+  3580: STORY #Hallowed Ground
+  3581: STORY #Beast of War
+  3585: STORY #Speed Bumps
+  3586: STORY #Hammer and Tongs
+  3588: STORY #The Departing
+  3602: STORY #Mummy Legion
+  3606: STORY #Undead Bouncer
+  3608: STORY #Dynastic End
+  3622: STORY #The Sacrifice
+  3631: STORY #Small Victory (Epilogue)
+  3641: STORY #Destroy Additional Pylons
+  3648: STORY #No Deductible
+  3657: STORY #Social Butterfly
+  3664: STORY #The Way Forward
+  3668: STORY #All the Essences
+  3672: STORY #To Kill a God
+  3673: STORY #Enemy of My Enemy
+  3675: STORY #Down in Flames
+  3679: STORY #Won't Get Killed Again
+  3698: STORY #Clogged Drain
+  3725: STORY #Leap of Knowledge
+  3726: STORY #Shields On
+  3730: STORY #Night of Fires
+  3733: STORY #Facing the Truth
+  3748: STORY #Puzzle in Time
+  3751: STORY #Fireproof Heart
+  3757: STORY #Dragon's Lair
+  3777: STORY #Primeval Historian
+  3778: STORY #Vlast from the Past
+  3780: STORY #Beastcatcher
+  3797: STORY #Master of Mummies
+  3808: STORY #Blazing a Trail
+  3811: STORY #Elite Elimination
+  3813: STORY #Shield of Kormir
+  3816: STORY #Sparking the Flame
+  3820: STORY #Who Needs a Magic Sword?
+  3835: STORY #Tag!
+  3839: STORY #Keen Eye
+  3853: STORY #Leave None Alive
+  3854: STORY #Explosives Expert
+  3861: STORY #Goddess of Secrets
+  3869: STORY #Walk a Fine Line
+  3870: STORY #Perfect Match
+  3879: STORY #Lurking among the Flames
+  3890: STORY #Iberu, We Hardly Knew You
+  3903: STORY #Saturday Night Fever
+  3908: STORY #Seeker of Truth and Knowledge
+  3909: STORY #Fast Asleep
+  3955: STORY #Under the Stars
+  3961: STORY #From Downtown!
+  3962: STORY #Eye of the Brandstorm
+  3965: STORY #Timing Is Everything
+  3972: STORY #Thereby Hangs a Tale
+  3975: STORY #You Left This
+  3976: STORY #Amnoon Evacuation
+  3982: STORY #Tipple Toes
+  3984: STORY #Qais Closed
+  3986: STORY #Gone Swimming
+  3994: STORY #The Hero of Istan
+  3996: STORY #The First City
+  3997: STORY #Not So Shocking
+  4002: STORY #Electric City
+  4003: STORY #Stop Right There
+  4009: STORY #Convincing the Corsair
+  4032: STORY #That Belongs in a Museum
+  4039: STORY #Stand Your Ground
+  4040: STORY #Champion's Dawn
+  4090: STORY #Saving Skritt
+  4091: STORY #The Charge
+  4092: STORY #A Kindness Repaid
+  4097: STORY #Inquest Redundancies
+  4107: STORY #Inquest-Specimen Liberator
+  4109: STORY #Drones Disabled
+  4114: STORY #The Road to Rata Primus
+  4115: STORY #The Test Subject
+  4120: STORY #X-T3R-M1N-8
+  4126: STORY #I Make This Golem Look Good
+  4129: STORY #Inquest.Info
+  4130: STORY #Talk to the Fist
+  4131: STORY #Awake End
+  4137: STORY #Gate-Crasher
+  4140: STORY #Cabbage Shredder
+  4145: STORY #Impressionable Youth
+  4146: STORY #Tracking the Scientist
+  4188: STORY #Glory Hog
+  4201: STORY #Guns, Germs, and Steal
+  4209: STORY #Decimation
+  4214: STORY #Forearmed Is Forewarned
+  4217: STORY #Captive Audience
+  4220: STORY #Silent but Deadly
+  4223: STORY #Whistling in the Dark
+  4227: STORY #Squish, Squish
+  4230: STORY #Shipwrecked
+  4236: STORY #Seized
+  4238: STORY #I'm Brave, You Know
+  4243: STORY #Dexterous and Flexible
+  4246: STORY #Loquacious Orator
+  4247: STORY #A New Ally
+  4253: STORY #Trip the Quantum Fantastic
+  4259: STORY #Be My Guest
+  4269: STORY #Stay Asleep, Sheep
+  4271: STORY #High Roller
+  4342: STORY #A Shattered Nation
+  4346: STORY #Chaos Theory
+  4347: STORY #Splat!
+  4353: STORY #Right On Track
+  4358: STORY #Storm Tracking
+  4365: STORY #Sniper, No Sniping!
+  4370: STORY #Faster than a Speeding Bullet
+  4372: STORY #From the Ashes
+  4378: STORY #In Tatters; Not Shattered
+  4392: STORY #Legacy
+  4424: STORY #Claws to the Wall
+  4428: STORY #Raptor Out
+  4493: STORY #Scion & Champion
+  4497: STORY #The Crystal Blooms
+  4498: STORY #Bunker Buster
+  4506: STORY #Branded-on-a-Stick
+  4510: STORY #Electrophobia
+  4513: STORY #Dragonsblood
+  4545: STORY #Crystal Circuit Racer
+  4557: STORY #Appropriately Hyped
+  4567: STORY #Stubborn
+  4576: STORY #Conquer Your Fears
+  4586: STORY #Lord of the Ley Dance
+  4588: STORY #Resonance
+  4594: STORY #Power Player
+  4617: STORY #Trial by Fire
+  4618: STORY #The Crystal Dragon
+  4669: STORY #Salt on the Wound
+  4673: STORY #The End
+  4700: STORY #Bleed
+  4721: STORY #Scissors of Fate
+  4731: STORY #Dexterous Dodger
+  4744: STORY #Glory of Dragons
+  4747: STORY #Heart to Heart
+  4753: STORY #Landfall
+  4899: STORY #Revels & Rivals
+  4901: STORY #Too Slippery
+  4914: STORY #Coming Home
+  4917: STORY #Swift Justice
+  4923: STORY #Hasty Harpooning
+  4925: STORY #Untouchable
+  4929: STORY #Model Diplomat
+  4957: STORY #Bad Blood
+  4974: STORY #Deeper and Deeper
+  4983: STORY #Flash Freeze
+  4988: STORY #A Race to Arms
+  4992: STORY #Talk of the Town
+  5011: STORY #Ice-Bound
+  5014: STORY #Raven Lens Scholar
+  5031: STORY #The Invitation
+  5050: STORY #What's Left Behind
+  5053: STORY #Silence
+  5062: STORY #Ice Try
+  5063: STORY #The Wind and Nothing More
+  5102: STORY #Lost Spirits Found
+  5109: STORY #Still Waters Speaking
+  5113: STORY #Voice in the Deep
+  5124: STORY #The Hunt Begins
+  5130: STORY #Chasing Ghosts
+  5245: STORY #Master Diplomat
+  5248: STORY #Intel Acquired
+  5262: STORY #Scorched
+  5268: STORY #Snapping Steel
+  5275: STORY #Fast Purrsuit
+  5285: STORY #Purrfect Escape
+  5306: STORY #You Saw Nothing
+  5313: STORY #Shoulder to Shoulder
+  5316: STORY #Distract, Destroy, Distrust
+  5318: STORY #Pointed Parley
+  5329: STORY #Turnabout
+  5353: STORY #A Wrench in the Works
+  5359: STORY #Beach Cleanup
+  5362: STORY #Genuine Imposter
+  5366: STORY #One Charr, One Dragon, One Champion
+  5379: STORY #A Simple Negotiation
+  5380: STORY #Behind Enemy Lines
+  5386: STORY #The Ghost
+  5417: STORY #Pantheon of the Wild
+  5503: STORY #Flame vs. Frost
+  5505: STORY #Primordus Rising
+  5512: STORY #Champion's End
+  5518: STORY #Jormag's Madness
+  5522: STORY #Defending Tyria
+  5524: STORY #Jormag's World
+  5535: STORY #Roaring Flames
+  5539: STORY #Dragonstorm
+  5544: STORY #Wildfire
+  5546: STORY #Frozen Tide
+  6071: STORY #On the Case
+  6080: STORY #Extraction Point
+  6113: STORY #This Isn't Cannon
+  6116: STORY #A Raw Deal
+  6126: STORY #Outreach
+  6134: STORY #Your Kind of People
+  6139: STORY #Can't Trust a Pirate
+  6146: STORY #Fallout
+  6156: STORY #In the Name of the Law
+  6172: STORY #The Only One
+  6199: STORY #Old Friends
+  6200: STORY #For Lion's Arch
+  6252: STORY #To Catch a Spider
+  6259: STORY #The Future in Jade
+  6268: STORY #Empty
+  6323: STORY #The Scenic Route
+  6326: STORY #The Cycle, Reborn
+  6357: STORY #Dear Diary
+  6419: STORY #Deepest Secrets
+  6442: STORY #Think Before You Leap
+  6493: STORY #The Great Escape
+  6500: STORY #Weight of the World
+  6556: STORY #Ceremony Survivor
+  6563: STORY #Check, First Mate
+  6567: STORY #Tassi Master
+  6586: STORY #Unblighted
+  6685: STORY #Investigative Record 1
+  6687: STORY #Spoils of Chaos
+  6691: STORY #Deft Defusing
+  6693: STORY #The Higher Road
+  6695: STORY #Kryta's Finest
+  6747: STORY #Kraitmare Averted, Again
+  6748: STORY #Fight at the Finish
+  6761: STORY #Kraitmare Averted
+  6789: STORY #I've Lived Things
+  6792: STORY #All Bets Are Still Off
+  6794: STORY #Please Follow Me to the Exit Again
+  6864: STORY #Deep Trouble
+  6899: STORY #Full Circle
+  6911: STORY #Bottle Your Emotions
+  6921: STORY #Emotional Release
+  6931: STORY #Entrapment
+  6949: STORY #Forward
+  6985: STORY #Assist Mabon
+  6997: STORY #The Missing Facet
+  7010: STORY #Tower of Secrets
+  7015: STORY #Securing the Bastions
+  7032: STORY #A Chapter Closed
+  7052: STORY #Beta Tester
+  7057: STORY #Reader of Notes
+  7089: STORY #Mabon's Fate
+  7091: STORY #Voices beyond the Veil
+  7122: STORY #First Contact
+  7137: STORY #Tracking with Gladium
+  7162: STORY #Mother of Stars
+  7172: STORY #Treachery
+  7175: STORY #Hell Breaks Loose
+  7178: STORY #Fractal Push
+  7211: STORY #Into the Obscure
+  7215: STORY #We're Friends Now
+  7221: STORY #The World Spire
+  7227: STORY #Uncertain Times
+  7236: STORY #Commander Without a Cause
+  7243: STORY #Gatherer of Essence
+  7249: STORY #Assist Lyhr
+  7274: STORY #Written Ward
+  7277: STORY #Compassion for a Friend
+  7313: STORY #Manifestation Mayhem
+  7317: STORY #Tower Snoop
+  7396: STORY #Going the Extra Mile
+  7412: STORY #A Shadow in the Night
+  7452: STORY #Astral Gofer
+  7550: STORY #Emotional Fortitude
+  7576: STORY #Asthenes Acrobatics
+  7656: STORY #The Survivors
+  7657: STORY #Through the Grapevine
+  7670: STORY #Well-Versed
+  7680: STORY #In It Together
+  7698: STORY #Heavy Air
+  7702: STORY #At All Costs
+  7710: STORY #Duress
+  7728: STORY #Heitor's Gate
+  7733: STORY #Don't Bring Me Down
+  7772: STORY #Kryptis Souvenirs
+  7773: STORY #Misplaced Anger
+  7781: STORY #Astral Ward Arsenal
+  7785: STORY #All Ears
+  7786: STORY #Double-Time
+  7805: STORY #Salute the Troops
+  7815: STORY #Eventide's March
+  7825: STORY #The War Council
+  7826: STORY #Forced Hand
+  7840: STORY #Clear Skies
+  7841: STORY #Your Majesty
+  7850: STORY #Knowledge Is Power
+  7945: STORY #Eparch Evader
+  7955: STORY #Midnight Rest
+  7965: STORY #Tour of the Tower
+  7966: STORY #Astral Salute
+  7971: STORY #Swift Assassination
+  7984: STORY #The Eleventh Hour
+  7988: STORY #Essential Experiences
+  8010: STORY #Talk of the Tower
+  8012: STORY #Your Midnight King Says...
+  8021: STORY #Desperate Measures
+  8024: STORY #Sovereign of Nayos
+  8043: STORY #Well-Informed
+  8047: STORY #Voracious Reader
+  8061: STORY #The Staff of the Obscure
+  8062: STORY #Tower Bibliophile
+  8076: STORY #Eparch's Early End
+  8088: STORY #Peitha Protector
+  8097: STORY #A Sign of Respect
+  8148: STORY #True Ending: The Eleventh Hour
+  8160: STORY #Missing in Action
+  8163: STORY #Sorrow in These Halls
+  8171: STORY #Councilbear Courtesy
+  8174: STORY #Penned by Poky
+  8178: STORY #Foster Parent
+  8182: STORY #Harvesting Information
+  8189: STORY #Scouting for Scouts
+  8190: STORY #Warclaw Wrangling
+  8204: STORY #The Dead Do Tell Tales
+  8209: STORY #Ash Legion Diplomacy
+  8214: STORY #Friendly Reflection
+  8216: STORY #Forgiveness
+  8221: STORY #Mental Preparations
+  8226: STORY #Twice Stricken
+  8231: STORY #Teaching Trust
+  8239: STORY #It's Going to Be a Long Day
+  8240: STORY #Storm Clouds over Janthir
+  8247: STORY #Home Sweet Home
+  8255: STORY #Animal Analysis
+  8258: STORY #Meeting Notes
+  8261: STORY #Where Do We Go from Here?
+  8267: STORY #Behind the Ear Is the Good Spot
+  8268: STORY #Returning Kindness
+  8269: STORY #Seed Savvy
+  8272: STORY #Unknown Territory
+  8276: STORY #No Stranger to Success
+  8279: STORY #Everyone Loves Democracy
+  8287: STORY #Global Goings On
+  8290: STORY #Against the Wall
+  8298: STORY #Moonlit Reading
+  8305: STORY #Strange Feelings
+  8310: STORY #We Vote On It
+  8312: STORY #Wildlife Research
+  8317: STORY #Loremaster's Library
+  8324: STORY #The Tyrian Alliance
+  8329: STORY #All Tangled Up
+  8339: STORY #Strangers among Lands
+  8345: STORY #Rubbing Shoulders
+  8349: STORY #Electrical Interference
+  8351: STORY #Reflective Reading
+  8353: STORY #Lightning Defense
+  8355: STORY #Chatted by Fire
+  8364: STORY #All Stone, No Blood
+  8366: STORY #Diplomacy and Discovery
+  8368: STORY #Finding Balance
+  8443: STORY #Timely Takedown
+  8451: STORY #Battle's Eve
+  8453: STORY #Study Break
+  8459: STORY #A Moment of Quiet
+  8467: STORY #Prying in the Priory
+  8468: STORY #Any Information Is Good Information
+  8470: STORY #Trial and Error
+  8478: STORY #Standing Tall: Greer
+  8483: STORY #Standing Tall: Decima
+  8490: STORY #Balrior Peak
+  8491: STORY #Life of the Party
+  8492: STORY #The Queen of Battle
+  8494: STORY #Sweet Moves, You Have
+  8509: STORY #Standing Tall: Ura
