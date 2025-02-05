@@ -394,7 +394,7 @@ namespace Gw2Archipelago
                     logger.Debug("Ignoring Group: {}, {}", groupGuid, groupReq);
                     continue;
                 }
-
+                
                 var group = await Gw2ApiManager.Gw2ApiClient.V2.Achievements.Groups.GetAsync(groupGuid);
                 var categoryList = new List<int>(group.Categories);
 

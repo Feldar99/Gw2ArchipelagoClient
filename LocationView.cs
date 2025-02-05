@@ -224,11 +224,20 @@ namespace Gw2Archipelago
 
             logger.Debug("Create button for Achievement: {}", achievement.Name);
 
+            var maxFill = 0;
+            if (achievementLocation.Done) {
+                maxFill = achievement.Tiers[achievement.Tiers.Count - 1].Count;
+            }
+            else
+            {
+                maxFill = achievement.Tiers[achievementLocation.Tier].Count;
+            }
+
 
             var button = new DetailsButton()
             {
                 Text = achievement.Name + " (" + achievementLocation.LocationName + ")",
-                MaxFill = achievement.Tiers[achievementLocation.Tier].Count,
+                MaxFill = maxFill,
                 ShowFillFraction = true,
                 FillColor = XnaColor.White
             };
@@ -270,7 +279,14 @@ namespace Gw2Archipelago
         {
             var button = achievementButtons[achievement.Id];
             logger.Debug("Updating Progress Button: {}/{}", progress.Current, progress.Max);
-            button.CurrentFill = progress.Current;
+            if (progress.Done)
+            {
+                button.CurrentFill = button.MaxFill;
+            }
+            else
+            {
+                button.CurrentFill = progress.Current;
+            }
         }
 
         internal void MarkGenericLocationComplete(Location location)

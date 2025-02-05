@@ -349,6 +349,7 @@ namespace Gw2Archipelago
             logger.Debug("Updating Quests");
             foreach (var questId in quests)
             {
+                logger.Debug("questLocations: {}", questStatus.QuestLocations);
                 if (questStatus.QuestIds.Contains(questId) && questStatus.QuestLocations.Count > 0)
                 {
                     var location = questStatus.QuestLocations.Dequeue();
