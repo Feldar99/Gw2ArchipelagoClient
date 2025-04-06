@@ -25,6 +25,8 @@ namespace Gw2Archipelago
         private static readonly Logger logger = Logger.GetLogger<LocationView>();
 
         private ContentsManager contentsManager;
+        private Panel regionPanel;
+        private Scrollbar regionScrollbar;
         private Panel locationPanel;
         private Scrollbar locationScrollbar;
         private int locationPanelY = 0;
@@ -36,6 +38,7 @@ namespace Gw2Archipelago
         private Container container;
         private SlotData slotData;
         private LocationChecker locationChecker;
+        private string selectedRegion;
 
 
         public event EventHandler<Blish_HUD.Input.MouseEventArgs> ConnectButtonClick;
@@ -50,16 +53,31 @@ namespace Gw2Archipelago
 
         protected override void Build(Container container) { 
             this.container = container;
+
+            regionPanel = new Panel()
+            {
+                Location = new Point(10, 35),
+                Size = new Point(350, 520),
+                Parent = container,
+            };
+
+            regionScrollbar = new Scrollbar(regionPanel)
+            {
+                Location = new Point(0, 35),
+                Size = new Point(10, 570),
+                Parent = container,
+            };
+
             locationPanel = new Panel()
             {
-                Location = new Point(20, 35),
+                Location = new Point(370, 35),
                 Size = new Point(350, 520),
                 Parent = container,
             };
 
             locationScrollbar = new Scrollbar(locationPanel)
             {
-                Location = new Point(10, 35),
+                Location = new Point(360, 35),
                 Size = new Point(10, 570),
                 Parent = container,
             };
@@ -104,12 +122,19 @@ namespace Gw2Archipelago
 
         private void Refresh()
         {
+            RefreshRegions();
             ClearLocations();
 
             var storyline = (Storyline)Enum.ToObject(typeof(Storyline), slotData["Storyline"]);
             var incompleteQuests = locationChecker.GetQuestLocations().Count;
             var completeQuests = locationChecker.GetCompleteQuestCount();
-            CreateQuestButton(storyline, incompleteQuests, completeQuests);
+
+
+            if (selectedRegion == null || selectedRegion.Equals("Story"))
+            {
+                CreateQuestButton(storyline, incompleteQuests, completeQuests);
+            }
+            
 
             var itemLocations = locationChecker.GetItemLocations();
             CreateItemLocationButtons(itemLocations);
@@ -120,7 +145,10 @@ namespace Gw2Archipelago
             var achievementLocations = locationChecker.GetAchievementLocations();
             foreach (var achievementLocation in achievementLocations)
             {
-                AddAchievementButton(achievementLocation);
+                if (selectedRegion == null || selectedRegion.Equals(achievementLocation.Region))
+                {
+                    AddAchievementButton(achievementLocation);
+                }
             }
         }
 
@@ -147,6 +175,40 @@ namespace Gw2Archipelago
             locationPanelY = 0;
         }
 
+        internal void RefreshRegions()
+        {
+            regionPanel.ClearChildren();
+
+            Texture2D icon = contentsManager.GetTexture("archipelago64.png");
+
+            int y = 0;
+
+            foreach (var region in locationChecker.Regions)
+            {
+                var button = new DetailsButton()
+                {
+                    Text = region,
+                    Icon = icon,
+                    ShowFillFraction = false,
+                    Parent = regionPanel,
+                    Location = new Point(0, y),
+                };
+                y += button.Height + 5;
+                button.Click += (sender, e) =>
+                {
+                    if (selectedRegion != null && selectedRegion.Equals(region))
+                    {
+                        selectedRegion = null;
+                    }
+                    else
+                    {
+                        selectedRegion = region;
+                    }
+                    Refresh();
+                };
+            }
+        }
+
         internal void CreateItemLocationButtons(IEnumerable<ItemLocation> itemLocations)
         {
 
@@ -154,6 +216,10 @@ namespace Gw2Archipelago
 
             foreach (var location in itemLocations)
             {
+                if (selectedRegion != null && !location.Region.Equals(selectedRegion))
+                {
+                    continue;
+                }
 
                 var button = new DetailsButton()
                 {
@@ -165,7 +231,7 @@ namespace Gw2Archipelago
                 };
                 button.Parent = locationPanel;
                 button.Location = new Point(0, locationPanelY);
-                locationPanelY += questButton.Height + 5;
+                locationPanelY += button.Height + 5;
                 button.CurrentFill = location.LocationComplete ? 1 : 0;
                 genericLocationButtons.Add(location.LocationName, button);
             }
@@ -179,6 +245,10 @@ namespace Gw2Archipelago
 
             foreach (var location in poiLocations)
             {
+                if (selectedRegion != null && !location.Region.Equals(selectedRegion))
+                {
+                    continue;
+                }
 
                 var button = new DetailsButton()
                 {
@@ -190,7 +260,7 @@ namespace Gw2Archipelago
                 };
                 button.Parent = locationPanel;
                 button.Location = new Point(0, locationPanelY);
-                locationPanelY += questButton.Height + 5;
+                locationPanelY += button.Height + 5;
                 button.CurrentFill = location.LocationComplete ? 1 : 0;
                 genericLocationButtons.Add(location.LocationName, button);
             }
@@ -199,7 +269,8 @@ namespace Gw2Archipelago
         internal void CreateQuestButton(Storyline storyline, int incompleteQuestCount, int completeQuestCount)
         {
 
-            Texture2D icon = contentsManager.GetTexture("archipelago64.png");
+            Texture2D icon = contentsManager.GetTexture("archipelago64.png")
+                ;
 
             questButton = new DetailsButton()
             {

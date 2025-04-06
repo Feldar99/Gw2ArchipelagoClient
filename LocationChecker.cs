@@ -32,7 +32,11 @@ namespace Gw2Archipelago
         private Dictionary<int, AchievementLocation> achievementLocations = new Dictionary<int, AchievementLocation>();
         private QuestStatus questStatus = new QuestStatus();
         private Dictionary<int, ItemLocation> itemLocations = new Dictionary<int, ItemLocation>();
-        public Dictionary<int, List<PoiLocation>> pointsOfInterest = new Dictionary<int, List<PoiLocation>>(); // mapId -> pois
+        private Dictionary<int, List<PoiLocation>> pointsOfInterest = new Dictionary<int, List<PoiLocation>>(); // mapId -> pois
+        public HashSet<string> Regions = new HashSet<string>();
+
+
+        private Mutex poiMutex = new Mutex();
 
         public delegate void AchievementEvent(AchievementLocation achievementLocation);
         public delegate void QuestEvent(Location questLocation, int questId);
@@ -67,7 +71,7 @@ namespace Gw2Archipelago
             return questStatus.QuestLocations;
         }
 
-        public async Task AddAchievmentLocation(int achievementId, Achievement achievement, AchievementCategory category, AccountAchievement progress, string name)
+        public async Task AddAchievmentLocation(int achievementId, Achievement achievement, AchievementCategory category, AccountAchievement progress, string name, string region)
         {
             if (achievement == null)
             {
@@ -78,6 +82,8 @@ namespace Gw2Archipelago
             location.Achievement = achievement;
             location.Category = category;
             location.LocationName = name;
+            location.Region = region;
+            Regions.Add(region);
             // Don't override serialized data on load
             location.Progress = progress;
             location.Id = achievementId;
@@ -92,19 +98,23 @@ namespace Gw2Archipelago
             achievementLocations.Add(id, location);
         }
 
-        public void AddQuestLocation(bool complete, string name)
+        public void AddQuestLocation(bool complete, string name, string region)
         {
             Location location = new Location();
             location.LocationName = name;
             location.LocationComplete = complete;
+            location.Region = region;
+            Regions.Add(region);
             questStatus.QuestLocations.Enqueue(location);
         }
 
-        public void AddItemLocation(bool complete, string name, List<int> itemIds)
+        public void AddItemLocation(bool complete, string name, List<int> itemIds, string region)
         {
             var location = new ItemLocation();
             location.LocationName = name;
             location.LocationComplete = complete;
+            location.Region = region;
+            Regions.Add(region);
 
             foreach (var id in itemIds)
             {
@@ -113,16 +123,22 @@ namespace Gw2Archipelago
             }
         }
 
-        public void AddPoiLocation(bool complete, string name, PointOfInterest poi)
+        public async Task AddPoiLocation(bool complete, string name, PointOfInterest poi)
         {
+            var map = await gw2ApiManager.Gw2ApiClient.V2.Maps.GetAsync(poi.mapId);
+
             var location = new PoiLocation(poi);
             location.LocationName = name;
             location.LocationComplete = complete;
+            location.Region = map.Name;
+            Regions.Add(location.Region);
+            poiMutex.WaitOne(10_000);
             if (!pointsOfInterest.ContainsKey(poi.mapId))
             {
                 pointsOfInterest[poi.mapId] = new List<PoiLocation>();
             }
             pointsOfInterest[poi.mapId].Add(location);
+            poiMutex.ReleaseMutex();
         }
 
         public void AddQuestLocation(Location location)

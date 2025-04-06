@@ -123,6 +123,13 @@ namespace Gw2Archipelago
 
         }
 
+        private struct ItemData
+        {
+            public string Name;
+            public List<int> ItemIds;
+            public string Region;
+        }
+
         private async Task ConnectToArchipelago()
         {
             if (apSession != null)
@@ -160,7 +167,7 @@ namespace Gw2Archipelago
                     .Build();
 
                 logger.Debug("Reading Items");
-                Dictionary<string, List<int>> itemIdsByName = new Dictionary<string, List<int>>();
+                Dictionary<string, ItemData> itemDataByName = new Dictionary<string, ItemData>();
                 {
                     var reader = new StreamReader(ContentsManager.GetFileStream("Items.yaml"));
                     var itemData = deserializer.Deserialize<Dictionary<string, Dictionary<string, Dictionary<string, List<int>>>>>(reader);
@@ -172,7 +179,7 @@ namespace Gw2Archipelago
                             foreach (var itemIds in mapData.Value)
                             {
                                 logger.Debug(itemIds.Key);
-                                itemIdsByName.Add(itemIds.Key, itemIds.Value);
+                                itemDataByName.Add(itemIds.Key, new ItemData { ItemIds = itemIds.Value, Name = itemIds.Key, Region = mapData.Key });
                             }
                         }
                     }
@@ -196,6 +203,7 @@ namespace Gw2Archipelago
                     }
                 }
 
+                var tasks = new List<Task>();
                 foreach (long location_id in apSession.Locations.AllMissingLocations)
                 {
                     logger.Debug("location_id: {}", location_id);
@@ -204,16 +212,18 @@ namespace Gw2Archipelago
                     if (splitName[0].Equals("Item:"))
                     {
                         success = true;
-                        locationChecker.AddItemLocation(false, locationName, itemIdsByName[locationName.Substring(6)]);
+                        ItemData itemData = itemDataByName[locationName.Substring(6)];
+                        locationChecker.AddItemLocation(false, locationName, itemData.ItemIds, itemData.Region);
                     }
                     else if (splitName[0].Equals("POI:"))
                     {
                         success = true;
-                        locationChecker.AddPoiLocation(false, locationName, PoisByName[locationName.Substring(5).Trim()]);
+                        tasks.Add(locationChecker.AddPoiLocation(false, locationName, PoisByName[locationName.Substring(5).Trim()]));
                     }
                 }
-                filePrefix = apSession.RoomState.Seed + "_" + slotName.Value + "_";
+                await Task.WhenAll(tasks);
 
+                filePrefix = apSession.RoomState.Seed + "_" + slotName.Value + "_";
                 {
                     string fileName = "ArchipelagoData\\" + filePrefix + "savedData.json";
                     if (SystemFile.Exists(fileName))
@@ -241,7 +251,7 @@ namespace Gw2Archipelago
 
                 var checkedLocations = new HashSet<long>(apSession.Locations.AllLocationsChecked);
 
-                var tasks = new List<Task>();
+                tasks.Clear();
                 {
                     string fileName = "ArchipelagoData\\" + filePrefix + "AchievementLocations.json";
                     if (SystemFile.Exists(fileName))
@@ -574,7 +584,7 @@ namespace Gw2Archipelago
 
                         }
                         
-                        await locationChecker.AddAchievmentLocation(achievementId, achievement, category, progress, locationName);
+                        await locationChecker.AddAchievmentLocation(achievementId, achievement, category, progress, locationName, region.GetName());
                         return true;
 
                     }
@@ -724,7 +734,7 @@ namespace Gw2Archipelago
                 else if (locationType.Equals("QUEST"))
                 {
                     success = true;
-                    locationChecker.AddQuestLocation(false, locationName);
+                    locationChecker.AddQuestLocation(false, locationName, "Story");
                     incompleteQuestLocations++;
                 }
 
@@ -838,25 +848,25 @@ namespace Gw2Archipelago
             logger.Debug("Updating UI for {name}", location.Achievement.Name);
         }
 
-        private void SendLocationCompletion (AchievementLocation location)
+        private async void SendLocationCompletion (AchievementLocation location)
         {
             logger.Debug("Sending location {} for achievement {}", location.LocationName, location.Achievement.Name);
             apSession.Locations.CompleteLocationChecks(new long[] { apSession.Locations.GetLocationIdFromName("Guild Wars 2", location.LocationName) });
-            serialize();
+            await serialize();
         }
 
-        private void SendLocationCompletion(Location location, int questId)
+        private async void SendLocationCompletion(Location location, int questId)
         {
             logger.Debug("Sending location {} for quest {}", location.LocationName, questId);
             apSession.Locations.CompleteLocationChecks(new long[] { apSession.Locations.GetLocationIdFromName("Guild Wars 2", location.LocationName) });
-            serialize();
+            await serialize();
         }
 
-        private void SendLocationCompletion(Location location)
+        private async void SendLocationCompletion(Location location)
         {
             logger.Debug("Sending location for {}", location.LocationName);
             apSession.Locations.CompleteLocationChecks(new long[] { apSession.Locations.GetLocationIdFromName("Guild Wars 2", location.LocationName) });
-            serialize();
+            await serialize();
         }
 
 

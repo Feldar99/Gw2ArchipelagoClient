@@ -254,7 +254,7 @@ categories:
   336: None #Adventure Guide
   338: None
   342: None
-  346: WVW
+  346: None #Weekly World vs. World
   347: EndOfDragons
   351: None #SuperAdventureBox
   353: EndOfDragons
@@ -291,6 +291,10 @@ categories:
   438: Janthir Wilds
   441: Janthir Wilds
   442: Janthir Wilds
+  445: Janthir Wilds
+  446: Janthir Wilds
+  447: None #Cozy Cafe, April Fools
+  448: None #Daily Fooling
   
 achievments:
   571: None
@@ -589,7 +593,7 @@ achievments:
   3560: PathOfFire
   3579: PathOfFire
   3635: PathOfFire
-  3842: PathOfFire
+  3842: None
   3846: PathOfFire
   3895: PathOfFire
   3951: PathOfFire
@@ -783,6 +787,7 @@ achievments:
   3967: Season4
   3971: Season4
   4024: Season4
+  4181: None
   4184: Season4
   4197: Season4
   4221: Season4
@@ -852,6 +857,7 @@ achievments:
   5609: None
   5660: None
   5713: None
+  5827: None
   5831: None
   5856: None
   6043: None
@@ -909,12 +915,19 @@ achievments:
   8283: Janthir Wilds
   8284: None # Cozy Creator
   8446: Janthir Wilds
+  8447: None
   8450: Janthir Wilds
   8466: Janthir Wilds
   8475: Janthir Wilds
   8507: Janthir Wilds
-  8501: Janthir 
+  8501: Janthir Wilds
   8278: None
+  8567: Janthir Wilds
+  8568: Janthir Wilds
+  8599: Janthir Wilds
+  8616: Janthir Wilds
+  8635: Janthir Wilds
+  8644: Janthir Wilds
   
   4968: IcebroodSaga #Icebrood Saga Reward Track (PvP)
   4984: IcebroodSaga #Icebrood Saga Reward Track (WvW)

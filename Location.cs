@@ -14,5 +14,7 @@ namespace Gw2Archipelago
         public string LocationName;
         [JsonInclude]
         public bool LocationComplete = false;
+        [JsonInclude]
+        public string Region;
     }
 }
