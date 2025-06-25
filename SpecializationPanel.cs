@@ -73,7 +73,7 @@ namespace Gw2Archipelago
             }
         }
 
-        public void Build(Container container, Point pos)
+        public void Build(Container container, Point pos, ItemTracker itemTracker)
         {
             var panel = new Panel()
             {
@@ -104,6 +104,7 @@ namespace Gw2Archipelago
                 var x = i / 3;
                 var y = i % 3;
                 var traitPos = new Point(100 + x * 50, 10 + y * 50);
+                traitIcon.Locked = itemTracker.GetUnlockedItemCount(traitIcon.Trait.Name + " " + specialization.Name + " Trait") == 0;
                 traitIcon.Build(panel, traitPos);
             }
 

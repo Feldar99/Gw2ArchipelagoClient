@@ -1,5 +1,10 @@
 ﻿
+using Blish_HUD;
+using Gw2Archipelago;
 using System;
+using YamlDotNet.Core;
+using YamlDotNet.Core.Events;
+using YamlDotNet.Serialization;
 
 namespace Gw2Archipelago
 {
@@ -77,6 +82,45 @@ namespace Gw2Archipelago
             if (lowerName.Equals("secretsoftheobscure") || lowerName.Equals("secrets_of_the_obscure") || lowerName.Equals("secrets of the obscure") || lowerName.Equals("soto")) return Storyline.SECRETS_OF_THE_OBSCURE;
             if (lowerName.Equals("janthirwilds") || lowerName.Equals("janthir_wilds") || lowerName.Equals("janthir wilds") || lowerName.Equals("jw")) return Storyline.JANTHIR_WILDS;
             return null;
+        }
+
+        public static Storyline? GetFallback(this Storyline storyline)
+        {
+            switch (storyline)
+            {
+                case Storyline.CORE:
+                    return null;
+                case Storyline.SEASON_3:
+                    return Storyline.HEART_OF_THORNS;
+                case Storyline.SEASON_4:
+                case Storyline.ICEBROOD_SAGA:
+                    return Storyline.HEART_OF_THORNS;
+                default:
+                    return Storyline.CORE;
+            }
+        }
+    }
+
+    internal class YamlStorylineConverter : IYamlTypeConverter
+    {
+        private static readonly Logger logger = Logger.GetLogger<YamlStorylineConverter>();
+        public bool Accepts(Type type)
+        {
+            //logger.Debug(type.FullName);
+            return type == typeof(Storyline);
+        }
+
+        public object ReadYaml(IParser parser, Type type)
+        {
+            Scalar value = parser.Consume<Scalar>();
+            //logger.Debug(value.Value);
+            return StorylineExtensions.FromName(value.Value);
+        }
+
+        public void WriteYaml(IEmitter emitter, object value, Type type)
+        {
+            Storyline storyline = (Storyline)value;
+            emitter.Emit(new Scalar(storyline.GetName()));
         }
     }
 }

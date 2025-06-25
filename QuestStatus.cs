@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Gw2Sharp.WebApi.V2.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,7 +13,7 @@ namespace Gw2Archipelago
         [JsonInclude]
         public Queue<Location> QuestLocations = new Queue<Location>();
         [JsonInclude]
-        public HashSet<int> QuestIds = new HashSet<int>();
+        public Dictionary<int, Quest> Quests = new Dictionary<int, Quest>();
         [JsonInclude]
         public int CompleteQuestCount = 0;
     }

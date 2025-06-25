@@ -16,6 +16,7 @@ using XnaColor = Microsoft.Xna.Framework.Color;
 using XnaRectangle = Microsoft.Xna.Framework.Rectangle;
 using SlotData = System.Collections.Generic.Dictionary<string, object>;
 using Blish_HUD.Input;
+using System.Runtime.Remoting.Channels;
 
 namespace Gw2Archipelago
 {
@@ -24,7 +25,6 @@ namespace Gw2Archipelago
 
         private static readonly Logger logger = Logger.GetLogger<LocationView>();
 
-        private ContentsManager contentsManager;
         private Panel regionPanel;
         private Scrollbar regionScrollbar;
         private Panel locationPanel;
@@ -33,22 +33,24 @@ namespace Gw2Archipelago
         private StandardButton connectButton;
         private StandardButton generateButton;
         private Dictionary<int, DetailsButton> achievementButtons = new Dictionary<int, DetailsButton>();
-        private DetailsButton questButton;
         private Dictionary<string, DetailsButton> genericLocationButtons = new Dictionary<string, DetailsButton>();
         private Container container;
-        private SlotData slotData;
-        private LocationChecker locationChecker;
         private string selectedRegion;
+        private Module module;
 
 
         public event EventHandler<Blish_HUD.Input.MouseEventArgs> ConnectButtonClick;
         public event EventHandler<Blish_HUD.Input.MouseEventArgs> GenerateButtonClick;
 
-        internal LocationView(ContentsManager contentsManager, LocationChecker locationChecker, SlotData slotData)
+        internal LocationView(Module module)
         {
-            this.contentsManager = contentsManager;
-            this.locationChecker = locationChecker;
-            this.slotData = slotData;
+            this.module = module;
+            module.MapAccessTracker.MapAccessChanged += OnMapAccessChange;
+        }
+
+        private void OnMapAccessChange(string mapName, MapAccessTracker.MapAccessState state)
+        {
+            RefreshRegions();
         }
 
         protected override void Build(Container container) { 
@@ -56,28 +58,28 @@ namespace Gw2Archipelago
 
             regionPanel = new Panel()
             {
-                Location = new Point(10, 35),
+                Location = new Point(40, 35),
                 Size = new Point(350, 520),
                 Parent = container,
             };
 
             regionScrollbar = new Scrollbar(regionPanel)
             {
-                Location = new Point(0, 35),
+                Location = new Point(30, 35),
                 Size = new Point(10, 570),
                 Parent = container,
             };
 
             locationPanel = new Panel()
             {
-                Location = new Point(370, 35),
+                Location = new Point(410, 35),
                 Size = new Point(350, 520),
                 Parent = container,
             };
 
             locationScrollbar = new Scrollbar(locationPanel)
             {
-                Location = new Point(360, 35),
+                Location = new Point(400, 35),
                 Size = new Point(10, 570),
                 Parent = container,
             };
@@ -103,46 +105,32 @@ namespace Gw2Archipelago
             generateButton.Click += generateLocations;
 
 
-            locationChecker.AchievementProgressed += UpdateAchievementProgress;
-            locationChecker.QuestCompleted += IncrementQuestCounter;
-            locationChecker.ItemAcquired += MarkGenericLocationComplete;
-            locationChecker.PoiDiscovered += MarkGenericLocationComplete;
-
-            if (slotData != null)
-            {
-                Initialize(slotData);
-            }
-        }
-
-        public void Initialize(SlotData slotData) {
-            this.slotData = slotData;
+            module.LocationChecker.AchievementProgressed += UpdateAchievementProgress;
+            module.LocationChecker.QuestCompleted += OnQuestComplete;
+            module.LocationChecker.ItemAcquired += MarkGenericLocationComplete;
+            module.LocationChecker.PoiDiscovered += MarkGenericLocationComplete;
 
             Refresh();
         }
 
-        private void Refresh()
+        internal void Refresh()
         {
-            RefreshRegions();
-            ClearLocations();
-
-            var storyline = (Storyline)Enum.ToObject(typeof(Storyline), slotData["Storyline"]);
-            var incompleteQuests = locationChecker.GetQuestLocations().Count;
-            var completeQuests = locationChecker.GetCompleteQuestCount();
-
-
-            if (selectedRegion == null || selectedRegion.Equals("Story"))
+            if (module.ApSession == null)
             {
-                CreateQuestButton(storyline, incompleteQuests, completeQuests);
+                return;
             }
             
+            RefreshRegions();
+            ClearLocations();
+            
 
-            var itemLocations = locationChecker.GetItemLocations();
+            var itemLocations = module.LocationChecker.GetItemLocations();
             CreateItemLocationButtons(itemLocations);
 
-            var poiLocations = locationChecker.GetPoiLocations();
+            var poiLocations = module.LocationChecker.GetPoiLocations();
             CreatePoiButtons(poiLocations);
 
-            var achievementLocations = locationChecker.GetAchievementLocations();
+            var achievementLocations = module.LocationChecker.GetAchievementLocations();
             foreach (var achievementLocation in achievementLocations)
             {
                 if (selectedRegion == null || selectedRegion.Equals(achievementLocation.Region))
@@ -150,6 +138,38 @@ namespace Gw2Archipelago
                     AddAchievementButton(achievementLocation);
                 }
             }
+
+            if ("Quests".Equals(selectedRegion))
+            {
+                Texture2D icon = module.ContentsManager.GetTexture("archipelago64.png");
+
+                var questStatus = module.LocationChecker.GetQuestStatus();
+                var quests = new List<Quest>(questStatus.Quests.Values);
+                quests.Sort(CompareQuestsById);
+                foreach (var quest in  questStatus.Quests.Values)
+                {
+
+                    var button = new DetailsButton()
+                    {
+                        Text = quest.Name,
+                        Icon = icon,
+                        MaxFill = 1,
+                        ShowFillFraction = true,
+                        FillColor = XnaColor.White
+                    };
+                    button.Parent = locationPanel;
+                    button.Location = new Point(0, locationPanelY);
+                    locationPanelY += button.Height + 5;
+                    button.CurrentFill = 0;
+                    genericLocationButtons.Add(quest.Name, button);
+
+                }
+            }
+        }
+
+        private static int CompareQuestsById(Quest questA, Quest questB)
+        {
+            return questA.Id - questB.Id;
         }
 
         internal void ClearLocations()
@@ -159,12 +179,6 @@ namespace Gw2Archipelago
                 locationPanel.RemoveChild(button.Value);
             }
             achievementButtons.Clear();
-
-            if (questButton != null)
-            {
-                locationPanel.RemoveChild(questButton);
-                questButton = null;
-            }
             foreach (var button in genericLocationButtons)
             {
                 locationPanel.RemoveChild(button.Value);
@@ -179,20 +193,48 @@ namespace Gw2Archipelago
         {
             regionPanel.ClearChildren();
 
-            Texture2D icon = contentsManager.GetTexture("archipelago64.png");
+            Texture2D icon = module.ContentsManager.GetTexture("archipelago64.png");
 
             int y = 0;
 
-            foreach (var region in locationChecker.Regions)
+            var storyline = (Storyline)Enum.ToObject(typeof(Storyline), module.SlotData["Storyline"]);
+            var incompleteQuestCount = module.LocationChecker.GetQuestLocations().Count;
+            var completeQuestCount = module.LocationChecker.GetCompleteQuestCount();
+
+            CreateRegionButton(icon, ref y, storyline.GetName() + " Quests", "Quests", completeQuestCount, completeQuestCount + incompleteQuestCount);
+
+            foreach (var region in module.LocationChecker.Regions)
             {
+                var locations = module.LocationChecker.GetLocationsInRegion(region);
+                var completeCount = locations.Count(loc => loc.LocationComplete);
+                CreateRegionButton(icon, ref y, region, region, completeCount, locations.Count);
+            }
+        }
+
+        private void CreateRegionButton(Texture2D icon, ref int y, string text, string region, int currentFill, int maxFill)
+            {
+            if (module.MapAccessTracker.IsLocked(region))
+            {
+                text += " (Locked)";
+            }
+            else if (!module.MapAccessTracker.HasAccess(region))
+            {
+                text += " (Out of Logic)";
+            }
                 var button = new DetailsButton()
                 {
-                    Text = region,
+                Text = text,
                     Icon = icon,
-                    ShowFillFraction = false,
+                ShowFillFraction = (maxFill > 0),
                     Parent = regionPanel,
                     Location = new Point(0, y),
+                FillColor = XnaColor.White
                 };
+            if (maxFill > 0)
+            {
+                button.MaxFill = maxFill;
+                button.CurrentFill = currentFill;
+            }
                 y += button.Height + 5;
                 button.Click += (sender, e) =>
                 {
@@ -206,13 +248,12 @@ namespace Gw2Archipelago
                     }
                     Refresh();
                 };
-            }
         }
 
         internal void CreateItemLocationButtons(IEnumerable<ItemLocation> itemLocations)
         {
 
-            Texture2D icon = contentsManager.GetTexture("archipelago64.png");
+            Texture2D icon = module.ContentsManager.GetTexture("archipelago64.png");
 
             foreach (var location in itemLocations)
             {
@@ -241,7 +282,7 @@ namespace Gw2Archipelago
         internal void CreatePoiButtons(IEnumerable<PoiLocation> poiLocations)
         {
 
-            Texture2D icon = contentsManager.GetTexture("archipelago64.png");
+            Texture2D icon = module.ContentsManager.GetTexture("archipelago64.png");
 
             foreach (var location in poiLocations)
             {
@@ -264,26 +305,6 @@ namespace Gw2Archipelago
                 button.CurrentFill = location.LocationComplete ? 1 : 0;
                 genericLocationButtons.Add(location.LocationName, button);
             }
-        }
-
-        internal void CreateQuestButton(Storyline storyline, int incompleteQuestCount, int completeQuestCount)
-        {
-
-            Texture2D icon = contentsManager.GetTexture("archipelago64.png")
-                ;
-
-            questButton = new DetailsButton()
-            {
-                Text = storyline.GetName() + " Quests",
-                Icon = icon,
-                MaxFill = completeQuestCount + incompleteQuestCount,
-                ShowFillFraction = true,
-                FillColor = XnaColor.White
-            };
-            questButton.Parent = locationPanel;
-            questButton.Location = new Point(0, locationPanelY);
-            locationPanelY += questButton.Height + 5;
-            questButton.CurrentFill = completeQuestCount;
         }
 
         internal void AddAchievementButton(AchievementLocation achievementLocation)
@@ -330,27 +351,24 @@ namespace Gw2Archipelago
             }
             else
             {
-                button.Icon = contentsManager.GetTexture("archipelago64.png");
+                button.Icon = module.ContentsManager.GetTexture("archipelago64.png");
             }
 
             achievementButtons.Add(achievement.Id, button);
 
             if (progress != null)
             {
-                UpdateAchievementProgress(achievement, progress);
+                UpdateAchievementProgress(achievementLocation);
             }
         }
 
         internal void UpdateAchievementProgress(AchievementLocation location)
         {
-            UpdateAchievementProgress(location.Achievement, location.Progress);
-        }
+            var achievement = location.Achievement;
+            var progress    = location.Progress;
 
-        internal void UpdateAchievementProgress(Achievement achievement, AccountAchievement progress)
-        {
             var button = achievementButtons[achievement.Id];
-            logger.Debug("Updating Progress Button: {}/{}", progress.Current, progress.Max);
-            if (progress.Done)
+            if (location.LocationComplete)
             {
                 button.CurrentFill = button.MaxFill;
             }
@@ -358,30 +376,54 @@ namespace Gw2Archipelago
             {
                 button.CurrentFill = progress.Current;
             }
+            //UpdateAchievementProgress(achievement, location.Progress);
+        }
+
+        //internal void UpdateAchievementProgress(Achievement achievement, AccountAchievement progress)
+        //{
+        //    var button = achievementButtons[achievement.Id];
+        //    logger.Debug("Updating Progress Button: {}/{}", progress.Current, progress.Max);
+        //    if (progress.Done)
+        //    {
+        //        button.CurrentFill = button.MaxFill;
+        //    }
+        //    else
+        //    {
+        //        button.CurrentFill = progress.Current;
+        //    }
+        //}
+
+        internal void MarkGenericLocationComplete(string locationName)
+        {
+            DetailsButton button;
+            if (genericLocationButtons.TryGetValue(locationName, out button))
+            {
+                button.CurrentFill = button.MaxFill;
+            }
+            RefreshRegions();
         }
 
         internal void MarkGenericLocationComplete(Location location)
         {
-            DetailsButton button;
-            if (genericLocationButtons.TryGetValue(location.LocationName, out button))
-            {
-                button.CurrentFill = button.MaxFill;
-            }
+            MarkGenericLocationComplete(location.LocationName);
         }
 
-        internal void IncrementQuestCounter(Location location, int questId)
+        internal void OnQuestComplete(Location location, Quest quest)
         {
-            questButton.CurrentFill++;
+            MarkGenericLocationComplete(quest.Name);
+            RefreshRegions();
         }
 
         private void connect(object sender, MouseEventArgs e)
         {
             ConnectButtonClick.Invoke(sender, e);
+            Refresh();
         }
 
         private void generateLocations(object sender, MouseEventArgs e)
         {
             GenerateButtonClick.Invoke(sender, e);
+            Refresh();
         }
     }
 }

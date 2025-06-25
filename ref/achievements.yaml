@@ -264,7 +264,7 @@ categories:
   357: SecretsOfTheObscure
   358: SecretsOfTheObscure
   360: SecretsOfTheObscure
-  361: SecretsOfTheObscure
+  361: None #Rift Hunter
   362: SecretsOfTheObscure
   364: SecretsOfTheObscure
   365: None #Weekly Rift Hunting
@@ -295,6 +295,8 @@ categories:
   446: Janthir Wilds
   447: None #Cozy Cafe, April Fools
   448: None #Daily Fooling
+  456: Janthir Wilds
+  457: Janthir Wilds
   
 achievments:
   571: None
@@ -860,6 +862,7 @@ achievments:
   5827: None
   5831: None
   5856: None
+  6031: None
   6043: None
   6053: None
   6056: None
@@ -867,6 +870,7 @@ achievments:
   6552: None
   6619: None
   6674: None
+  6692: DUNGEON
   6837: None
   6839: None
   6890: None
@@ -912,6 +916,7 @@ achievments:
   7056: None
   7101: None
   7161: None
+  8243: Janthir Wilds
   8283: Janthir Wilds
   8284: None # Cozy Creator
   8446: Janthir Wilds
@@ -928,6 +933,13 @@ achievments:
   8616: Janthir Wilds
   8635: Janthir Wilds
   8644: Janthir Wilds
+  8544: Janthir Wilds
+  8715: Janthir Wilds
+  8725: Janthir Wilds
+  8732: Janthir Wilds
+  8741: Janthir Wilds
+  8745: Janthir Wilds
+  8780: None
   
   4968: IcebroodSaga #Icebrood Saga Reward Track (PvP)
   4984: IcebroodSaga #Icebrood Saga Reward Track (WvW)
@@ -936,8 +948,10 @@ achievments:
   816: STORY #Soft Lander
   817: STORY #Playhouse Perfectionist
   818: STORY #Raced to the Rescue
+  1209: STORY #Nightmare Terminator
   1385: STORY #All Bets Are Off
   1392: STORY #Please Follow Me to the Exit
+  1396: STORY #Memories in Your Hand
   1507: STORY #No More Tricks, Scarlet
   1508: STORY #In a Cage Made of Steel and Lunacy
   1509: STORY #In Tune
@@ -1376,6 +1390,7 @@ achievments:
   6695: STORY #Kryta's Finest
   6747: STORY #Kraitmare Averted, Again
   6748: STORY #Fight at the Finish
+  6756: STORY #Investigative Study 4
   6761: STORY #Kraitmare Averted
   6789: STORY #I've Lived Things
   6792: STORY #All Bets Are Still Off

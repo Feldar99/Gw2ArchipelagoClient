@@ -31,9 +31,6 @@ namespace Gw2Archipelago
         (
             XnaRectangle windowRegion, 
             XnaRectangle contentRegion, 
-            LocationChecker locationChecker, 
-            SlotData slotData, 
-            ArchipelagoSession apSession, 
             Module module
         ) : base(AsyncTexture2D.FromAssetId(155985), windowRegion, contentRegion)
         {
@@ -47,7 +44,7 @@ namespace Gw2Archipelago
 
             Tabs.Add(
                 new Tab(GameService.Content.GetTexture("155052"), () => {
-                    locationView = new LocationView(contentsManager, locationChecker, slotData);
+                    locationView = new LocationView(module);
                     itemView = null;
                     locationView.ConnectButtonClick += module.StartReconnectTimer;
                     locationView.GenerateButtonClick += module.GenerateLocations;
@@ -55,18 +52,10 @@ namespace Gw2Archipelago
                 }, "Locations"));
             Tabs.Add(new Tab(GameService.Content.GetTexture("155052"), () => {
                 locationView = null;
-                itemView = new ItemView(contentsManager, slotData, apSession, module.Gw2ApiManager);
+                itemView = new ItemView(module);
                 return itemView;
             }, "Item"));
 
-        }
-
-        internal void SetSlotData(SlotData slotData)
-        {
-            if (locationView != null)
-            {
-                locationView.Initialize(slotData);
-            }
         }
 
         internal void SetProfession(Profession profession)
@@ -74,67 +63,20 @@ namespace Gw2Archipelago
             //itemView.Initialize(profession);
         }
 
-        internal void ClearLocations()
+        internal void Refresh()
         {
             if (locationView != null)
             {
-                locationView.ClearLocations();
+                locationView.Refresh();
             }
         }
 
-        internal void UpdateMistFragments(int mistFragments)
-        {
-            if (itemView != null)
-            {
-                itemView.UpdateMistFragments(mistFragments);
-            }
-        }
-        internal void UpdateItemCount(string itemName, int itemCount)
-        {
-            if (itemView != null)
-            {
-                itemView.UpdateItemCount(itemName, itemCount);
-            }
-        }
-
-        internal void CreateItemLocationButtons(IEnumerable<ItemLocation> itemLocations)
-        {
-            if (locationView != null)
-            {
-                locationView.CreateItemLocationButtons(itemLocations);
-            }
-        }
-
-        internal void CreatePoiButtons(IEnumerable<PoiLocation> poiLocations)
-        {
-            if (locationView != null)
-            {
-                locationView.CreatePoiButtons(poiLocations);
-            }
-        }
-
-        internal void CreateQuestButton(Storyline storyline, int incompleteQuestCount, int completeQuestCount)
-        {
-            if (locationView != null)
-            {
-                locationView.CreateQuestButton(storyline, incompleteQuestCount, completeQuestCount);
-            }
-        }
-
-        internal void AddAchievementButton(AchievementLocation achievementLocation)
-        {
-            if (locationView != null)
-            {
-                locationView.AddAchievementButton(achievementLocation);
-            }
-        }
-
-        internal void UpdateAchievementProgress(Achievement achievement, AccountAchievement progress)
-        {
-            if (locationView != null)
-            {
-                locationView.UpdateAchievementProgress(achievement, progress);
-            }
-        }
+        //internal void UpdateAchievementProgress(Achievement achievement, AccountAchievement progress)
+        //{
+        //    if (locationView != null)
+        //    {
+        //        locationView.UpdateAchievementProgress(achievement, progress);
+        //    }
+        //}
     }
 }

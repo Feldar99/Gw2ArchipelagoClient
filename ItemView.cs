@@ -32,11 +32,7 @@ namespace Gw2Archipelago
 
         private static readonly Logger logger = Logger.GetLogger<ItemView>();
 
-        private ContentsManager contentsManager;
         private Container container;
-        private SlotData slotData;
-        private ArchipelagoSession apSession;
-        private Gw2ApiManager gw2ApiManager;
         private Panel contentPanel;
         private Scrollbar scrollbar;
 
@@ -46,16 +42,12 @@ namespace Gw2Archipelago
         private Dictionary<string, ItemIcon> equipSlotIcons;
         private Label mistFragmentsLabel;
 
-        private int mistFragmentCount = 0;
-        private Dictionary<string, int> receivedItemCounts;
+        private Module module;
 
-        public ItemView(ContentsManager contentsManager, SlotData slotData, ArchipelagoSession apSession, Gw2ApiManager gw2ApiManager)
+        public ItemView(Module module)
         {
-            this.contentsManager = contentsManager;
-            this.slotData = slotData;
-            this.apSession = apSession;
-            this.gw2ApiManager = gw2ApiManager;
-
+            this.module = module;
+            module.ItemTracker.ItemUnlocked += OnItemUnlocked;
         }
 
 
@@ -79,8 +71,8 @@ namespace Gw2Archipelago
 
         protected override async Task<bool> Load(IProgress<string> progress)
         {
-            Profession characterProfession = (Profession)Enum.ToObject(typeof(Profession), slotData["CharacterProfession"]);
-            Race       characterRace       = (Race)Enum.ToObject(typeof(Race), slotData["CharacterRace"]);
+            Profession characterProfession = (Profession)Enum.ToObject(typeof(Profession), module.SlotData["CharacterProfession"]);
+            Race       characterRace       = (Race)Enum.ToObject(typeof(Race), module.SlotData["CharacterRace"]);
 
             var deserializer = new DeserializerBuilder()
             .WithNamingConvention(LowerCaseNamingConvention.Instance)
@@ -90,7 +82,7 @@ namespace Gw2Archipelago
             logger.Debug("Reading Skill Ids");
             var skillIds = new Dictionary<string, int>();
             {
-                var reader = new StreamReader(contentsManager.GetFileStream("Skills.yaml"));
+                var reader = new StreamReader(module.ContentsManager.GetFileStream("Skills.yaml"));
                 var skillData = deserializer.Deserialize<Dictionary<string, Dictionary<string, Dictionary<string, Dictionary<string, int>>>>>(reader);
 
                 addSkillIdsForEntry(characterProfession.GetName(), skillData, skillIds);
@@ -103,7 +95,7 @@ namespace Gw2Archipelago
             Dictionary<string, SpecializationData> specData;
             var specialiationIds = new List<int>();
             {
-                var reader = new StreamReader(contentsManager.GetFileStream("Traits.yaml"));
+                var reader = new StreamReader(module.ContentsManager.GetFileStream("Traits.yaml"));
                 var data = deserializer.Deserialize<Dictionary<string, Dictionary<string, SpecializationData>>>(reader);
 
                 specData = data[characterProfession.GetName()];
@@ -113,41 +105,25 @@ namespace Gw2Archipelago
                 }
             }
 
-            var skillTask = gw2ApiManager.Gw2ApiClient.V2.Skills.ManyAsync(skillIds.Values);
-            var specializationTask = gw2ApiManager.Gw2ApiClient.V2.Specializations.ManyAsync(specialiationIds);
+            var skillTask = module.Gw2ApiManager.Gw2ApiClient.V2.Skills.ManyAsync(skillIds.Values);
+            var specializationTask = module.Gw2ApiManager.Gw2ApiClient.V2.Specializations.ManyAsync(specialiationIds);
 
             progress.Report("Loading Specializaiton Data");
             logger.Debug("Loading Specializaiton Data");
             var specializations = await specializationTask;
-            receivedItemCounts = new Dictionary<string, int>();
-            foreach (var receivedItem in apSession.Items.AllItemsReceived)
-            {
-                var itemName = receivedItem.ItemName;
-                if (receivedItemCounts.ContainsKey(itemName))
-                {
-                    receivedItemCounts[itemName] += 1;
-                }
-                else
-                {
-                    receivedItemCounts[itemName] = 1;
-                }
-            }
+
             var traitIds = new List<int>();
             var specNames = new Dictionary<int, string>();
             specializationPanels = new Dictionary<string, SpecializationPanel>();
             foreach (var specialization in specializations)
             {
-                var panel = new SpecializationPanel(contentsManager, specialization);
-                logger.Debug("Progressive " + specialization.Name + " Trait");
-                int unlockedCount;
-                receivedItemCounts.TryGetValue("Progressive " + specialization.Name + " Trait", out unlockedCount);
-                panel.UnlockedCount = unlockedCount;
+                var panel = new SpecializationPanel(module.ContentsManager, specialization);
                 specNames[specialization.Id] = specialization.Name;
                 specializationPanels[specialization.Name] = panel;
 
                 traitIds.AddRange(specialization.MajorTraits);
             }
-            var traitTask = gw2ApiManager.Gw2ApiClient.V2.Traits.ManyAsync(traitIds);
+            var traitTask = module.Gw2ApiManager.Gw2ApiClient.V2.Traits.ManyAsync(traitIds);
 
 
             progress.Report("Reading Weapons from File");
@@ -158,7 +134,7 @@ namespace Gw2Archipelago
             weaponIcons.Add("TwoHanded", new List<ItemIcon>());
             weaponIcons.Add("Aquatic", new List<ItemIcon>());
             {
-                var reader = new StreamReader(contentsManager.GetFileStream("Weapons.yaml"));
+                var reader = new StreamReader(module.ContentsManager.GetFileStream("Weapons.yaml"));
                 var data = deserializer.Deserialize<Dictionary<string, Dictionary<string, List<object>>>>(reader);
 
                 foreach (var weapon in data)
@@ -193,9 +169,9 @@ namespace Gw2Archipelago
 
                             if (profession == characterProfession)
                             {
-                                var icon = ItemIcon.FromWeapon(contentsManager, weaponSlot.Key, weapon.Key);
+                                var icon = ItemIcon.FromWeapon(module.ContentsManager, weaponSlot.Key, weapon.Key);
                                 var weaponName = weaponSlot.Key + " " + weapon.Key;
-                                if (!receivedItemCounts.ContainsKey(weaponName))
+                                if (module.ItemTracker.GetUnlockedItemCount(weaponName) == 0)
                                 {
                                     icon.Locked = true;
                                 }
@@ -209,28 +185,26 @@ namespace Gw2Archipelago
             logger.Debug("Creating EquipSlot Icons");
             equipSlotIcons = new Dictionary<string, ItemIcon>();
             {
-                equipSlotIcons.Add("Head",          new ItemIcon(contentsManager, 699210,  "Head"));
-                equipSlotIcons.Add("Shoulders",     new ItemIcon(contentsManager, 699208,  "Shoulders"));
-                equipSlotIcons.Add("Chest",         new ItemIcon(contentsManager, 699212,  "Chest"));
-                equipSlotIcons.Add("Gloves",        new ItemIcon(contentsManager, 699211,  "Gloves"));
-                equipSlotIcons.Add("Legs",          new ItemIcon(contentsManager, 699209,  "Legs"));
-                equipSlotIcons.Add("Boots",         new ItemIcon(contentsManager, 699213,  "Boots"));
-                equipSlotIcons.Add("Back",          new ItemIcon(contentsManager, 61004,   "Back"));
-                equipSlotIcons.Add("Amulet",        new ItemIcon(contentsManager, 455601,  "Amulet"));
-                equipSlotIcons.Add("Accessory 1",   new ItemIcon(contentsManager, 1203063, "Accessory 1"));
-                equipSlotIcons.Add("Accessory 2",   new ItemIcon(contentsManager, 711884,  "Accessory 2"));
-                equipSlotIcons.Add("Ring 1",        new ItemIcon(contentsManager, 455584,  "Ring 1"));
-                equipSlotIcons.Add("Ring 2",        new ItemIcon(contentsManager, 455590,  "Ring 2"));
-                equipSlotIcons.Add("Relic",         new ItemIcon(contentsManager, 961418,  "Relic"));
+                equipSlotIcons.Add("Head",          new ItemIcon(module.ContentsManager, 699210,  "Head"));
+                equipSlotIcons.Add("Shoulders",     new ItemIcon(module.ContentsManager, 699208,  "Shoulders"));
+                equipSlotIcons.Add("Chest",         new ItemIcon(module.ContentsManager, 699212,  "Chest"));
+                equipSlotIcons.Add("Gloves",        new ItemIcon(module.ContentsManager, 699211,  "Gloves"));
+                equipSlotIcons.Add("Legs",          new ItemIcon(module.ContentsManager, 699209,  "Legs"));
+                equipSlotIcons.Add("Boots",         new ItemIcon(module.ContentsManager, 699213,  "Boots"));
+                equipSlotIcons.Add("Back",          new ItemIcon(module.ContentsManager, 61004,   "Back"));
+                equipSlotIcons.Add("Amulet",        new ItemIcon(module.ContentsManager, 455601,  "Amulet"));
+                equipSlotIcons.Add("Accessory 1",   new ItemIcon(module.ContentsManager, 1203063, "Accessory 1"));
+                equipSlotIcons.Add("Accessory 2",   new ItemIcon(module.ContentsManager, 711884,  "Accessory 2"));
+                equipSlotIcons.Add("Ring 1",        new ItemIcon(module.ContentsManager, 455584,  "Ring 1"));
+                equipSlotIcons.Add("Ring 2",        new ItemIcon(module.ContentsManager, 455590,  "Ring 2"));
+                equipSlotIcons.Add("Relic",         new ItemIcon(module.ContentsManager, 961418,  "Relic"));
             }
 
             foreach (var equipSlot in equipSlotIcons)
             {
-                equipSlot.Value.Locked = !receivedItemCounts.ContainsKey(equipSlot.Value.TooltipText);
+                equipSlot.Value.Locked = module.ItemTracker.GetUnlockedItemCount(equipSlot.Value.TooltipText) == 0;
                 equipSlot.Value.Size = new Point(48, 48);
             }
-
-            receivedItemCounts.TryGetValue("Mist Fragment", out mistFragmentCount);
 
             progress.Report("Loading Skill Icons");
             logger.Debug("Loading Skill Icons");
@@ -239,9 +213,9 @@ namespace Gw2Archipelago
             foreach (var skill in skills)
             {
                 logger.Debug("Making icon for {}", skill.Name);
-                var icon = new ItemIcon(contentsManager, skill);
+                var icon = new ItemIcon(module.ContentsManager, skill);
                 var apName = getApSkillName(skill.Name, skill.Type);
-                icon.Locked = !receivedItemCounts.ContainsKey(apName);
+                icon.Locked = module.ItemTracker.GetUnlockedItemCount(apName) == 0;
                 logger.Debug("skill: {}, locked: {}", apName, icon.Locked);
                 skillIcons.Add(apName, icon);
             }
@@ -257,7 +231,7 @@ namespace Gw2Archipelago
                 logger.Debug("trait {}: {}", index, trait.Name);
                 var apTraitName = getApTraitName(trait.Name, specName);
                 panel[index] = trait;
-                if (receivedItemCounts.ContainsKey(apTraitName))
+                if (module.ItemTracker.GetUnlockedItemCount(apTraitName) > 0)
                 {
                     panel.Unlock(apTraitName);
                 }
@@ -289,9 +263,9 @@ namespace Gw2Archipelago
 
             mistFragmentsLabel = new Label()
             {
-                Text = "Mist Fragments: " + mistFragmentCount + " / " + slotData["MistFragmentsRequired"],
-                Size = new Point(140, 30),
-                Location = new Point(300, 0),
+                Text = "Mist Fragments: " + module.ItemTracker.GetUnlockedItemCount("Mist Fragment") + " / " + module.SlotData["MistFragmentsRequired"],
+                Location = new Point(50, 0),
+                Size = new Point(200, 30),
                 Parent = container,
             };
 
@@ -300,20 +274,21 @@ namespace Gw2Archipelago
 
             contentPanel = new Panel()
             {
-                Location = new Point(20, 10),
+                Location = new Point(40, 10),
                 Size = new Point(600, 520),
                 Parent = container,
             };
 
             scrollbar = new Scrollbar(contentPanel)
             {
-                Location = new Point(10, 10),
+                Location = new Point(30, 10),
                 Size = new Point(10, 570),
                 Parent = container,
             };
 
             foreach (var icon in equipSlotIcons)
             {
+                icon.Value.Locked = module.ItemTracker.GetUnlockedItemCount(icon.Key) == 0;
                 icon.Value.Build(contentPanel, new Point(xPos, yPos));
                 xPos += icon.Value.Size.X + 5;
                 if (xPos > 300)
@@ -329,6 +304,7 @@ namespace Gw2Archipelago
 
             foreach (var icon in skillIcons)
             {
+                icon.Value.Locked = module.ItemTracker.GetUnlockedItemCount(icon.Key) == 0;
                 icon.Value.Build(contentPanel, new Point(xPos, yPos));
                 xPos += icon.Value.Size.X + 5;
                 if (xPos > 500)
@@ -356,6 +332,7 @@ namespace Gw2Archipelago
                 xPos += label.Size.X;
                 foreach (var weaponIcon in weaponSlot.Value)
                 {
+                    weaponIcon.Locked = module.ItemTracker.GetUnlockedItemCount(weaponIcon.TooltipText) == 0;
                     weaponIcon.Build(contentPanel, new Point(xPos, yPos));
                     xPos += weaponIcon.Size.X + 5;
                 }
@@ -366,7 +343,7 @@ namespace Gw2Archipelago
 
             foreach (var panel in specializationPanels)
             {
-                panel.Value.Build(contentPanel, new Point(xPos, yPos));
+                panel.Value.Build(contentPanel, new Point(xPos, yPos), module.ItemTracker);
                 yPos += 200;
             }
         }
@@ -377,29 +354,21 @@ namespace Gw2Archipelago
             specializationPanels = null;
             weaponIcons = null;
             equipSlotIcons = null;
+            mistFragmentsLabel = null;
 
         }
 
-        internal void UpdateMistFragments(int mistFragments)
-        {
-            mistFragmentCount = mistFragments;
-            mistFragmentsLabel.Text = "Mist Fragments: " + mistFragments + " / " + slotData["MistFragmentsRequired"];
-        }
-        internal void UpdateItemCount(string itemName, int itemCount)
-        {
-            if (receivedItemCounts.ContainsKey(itemName))
+        internal void OnItemUnlocked(string itemName, int itemCount)
             {
-                if (receivedItemCounts[itemName] == itemCount)
+            if (mistFragmentsLabel == null)
                 {
                     return;
                 }
-                else
+            if (itemName.Equals("Mist Fragment"))
                 {
-                    receivedItemCounts[itemName] = itemCount;
-                }
+                mistFragmentsLabel.Text = "Mist Fragments: " + itemCount + " / " + module.SlotData["MistFragmentsRequired"];
             }
-
-            if (itemName.EndsWith("Skill"))
+            else if (itemName.EndsWith("Skill"))
             {
                 skillIcons[itemName].Locked = false;
             }
@@ -417,7 +386,7 @@ namespace Gw2Archipelago
                     }
                 }
             }
-            else
+            else if (!module.MapAccessTracker.IsMapName(itemName))
             {
                 var weaponSlot = itemName.Split(' ')[0];
                 foreach (var icon in weaponIcons[weaponSlot])

@@ -14,6 +14,7 @@ using Gw2Sharp.WebApi.V2.Models;
 using Gw2Archipelago;
 using YamlDotNet.Serialization;
 using System.IO;
+using ApiMap = Gw2Sharp.WebApi.V2.Models.Map;
 
 namespace Gw2Archipelago
 {
@@ -22,7 +23,7 @@ namespace Gw2Archipelago
         public const int POI_DISCOVERY_DISTANCE = 25;
         public const int POI_DISCOVERY_DISTANCE_SQ = POI_DISCOVERY_DISTANCE * POI_DISCOVERY_DISTANCE;
 
-        private Gw2ApiManager gw2ApiManager;
+        private Module module;
         private SettingEntry<string> characterName;
 
         private Timer apiUpdateTimer;
@@ -35,11 +36,12 @@ namespace Gw2Archipelago
         private Dictionary<int, List<PoiLocation>> pointsOfInterest = new Dictionary<int, List<PoiLocation>>(); // mapId -> pois
         public HashSet<string> Regions = new HashSet<string>();
 
+        private ApiMap currentMap;
 
         private Mutex poiMutex = new Mutex();
 
         public delegate void AchievementEvent(AchievementLocation achievementLocation);
-        public delegate void QuestEvent(Location questLocation, int questId);
+        public delegate void QuestEvent(Location questLocation, Quest quest);
         public delegate void ItemEvent(ItemLocation itemLocation);
         public delegate void PoiEvent(PoiLocation poiLocation);
 
@@ -49,9 +51,9 @@ namespace Gw2Archipelago
         public event ItemEvent ItemAcquired;
         public event PoiEvent PoiDiscovered;
 
-        public LocationChecker(Gw2ApiManager gw2ApiManager, SettingEntry<string> characterName)
+        public LocationChecker(Module module, SettingEntry<string> characterName)
         {
-            this.gw2ApiManager = gw2ApiManager;
+            this.module = module;
             this.characterName = characterName;
         }
 
@@ -59,6 +61,18 @@ namespace Gw2Archipelago
         {
             apiUpdateTimer = new Timer(Update, null, 5000, 60000);
             mumbleUpdateTimer = new Timer(MumbleUpdate, null, 1000, 1000);
+        }
+
+        public ICollection<Location> GetLocationsInRegion(string region)
+        {
+            List<Location> locations = new List<Location>();
+            locations = locations.Union(itemLocations.Values)
+                .Union(achievementLocations.Values)
+                .Union(pointsOfInterest.Values.SelectMany(poi => poi))
+                .Union(questStatus.QuestLocations)
+                .Where(loc => loc.Region.Equals(region))
+                .ToList();
+            return locations;
         }
 
         public IReadOnlyCollection<AchievementLocation> GetAchievementLocations()
@@ -75,7 +89,7 @@ namespace Gw2Archipelago
         {
             if (achievement == null)
             {
-                achievement = await gw2ApiManager.Gw2ApiClient.V2.Achievements.GetAsync(achievementId);
+                achievement = await module.Gw2ApiManager.Gw2ApiClient.V2.Achievements.GetAsync(achievementId);
             }
             logger.Debug("Added achievement: {} ({}) -> {}", achievement.Name, achievementId, name);
             AchievementLocation location = new AchievementLocation();
@@ -94,7 +108,8 @@ namespace Gw2Archipelago
         public async Task AddAchievmentLocation(AchievementLocation location)
         {
             var id = location.Id;
-            location.Achievement = await gw2ApiManager.Gw2ApiClient.V2.Achievements.GetAsync(id);
+            location.Achievement = await module.Gw2ApiManager.Gw2ApiClient.V2.Achievements.GetAsync(id);
+            Regions.Add(location.Region);
             achievementLocations.Add(id, location);
         }
 
@@ -125,7 +140,7 @@ namespace Gw2Archipelago
 
         public async Task AddPoiLocation(bool complete, string name, PointOfInterest poi)
         {
-            var map = await gw2ApiManager.Gw2ApiClient.V2.Maps.GetAsync(poi.mapId);
+            var map = await module.Gw2ApiManager.Gw2ApiClient.V2.Maps.GetAsync(poi.mapId);
 
             var location = new PoiLocation(poi);
             location.LocationName = name;
@@ -146,9 +161,12 @@ namespace Gw2Archipelago
             questStatus.QuestLocations.Enqueue(location);
         }
 
-        public void AddQuestIds(HashSet<int> questIds)
+        public void AddQuests(HashSet<Quest> quests)
         {
-            questStatus.QuestIds.UnionWith(questIds);
+            foreach (var quest in quests)
+        {
+                questStatus.Quests.Add(quest.Id, quest);
+            }
         }
 
         public QuestStatus GetQuestStatus()
@@ -174,26 +192,43 @@ namespace Gw2Archipelago
 
         private async void Update(Object stateInfo)
         {
+            var mapId = GameService.Gw2Mumble.CurrentMap.Id;
+
             logger.Debug("Character Name: {name}", characterName.Value);
-            var achievements = UpdateCategory(new[] { TokenPermission.Account, TokenPermission.Progression                             }, gw2ApiManager.Gw2ApiClient.V2.Account.Achievements.GetAsync(),                        "achievements", HandleAchievements);
-            var quests       = UpdateCategory(new[] { TokenPermission.Account, TokenPermission.Characters, TokenPermission.Progression }, gw2ApiManager.Gw2ApiClient.V2.Characters[characterName.Value].Quests.GetAsync(),      "quests",       HandleQuests);
-            var training     = UpdateCategory(new[] { TokenPermission.Account, TokenPermission.Characters, TokenPermission.Builds      }, gw2ApiManager.Gw2ApiClient.V2.Characters[characterName.Value].Training.GetAsync(),    "training",     HandleTraining);
-            var worldBosses  = UpdateCategory(new[] { TokenPermission.Account, TokenPermission.Progression                             }, gw2ApiManager.Gw2ApiClient.V2.Account.WorldBosses.GetAsync(),                         "world bosses", HandleWorldBosses);
-            var items        = UpdateCategory(new[] { TokenPermission.Account, TokenPermission.Characters, TokenPermission.Inventories }, gw2ApiManager.Gw2ApiClient.V2.Characters[characterName.Value].Inventory.GetAsync(),   "items",    HandleItems);
+            var achievements = UpdateCategory(new[] { TokenPermission.Account, TokenPermission.Progression                             }, module.Gw2ApiManager.Gw2ApiClient.V2.Account.Achievements.GetAsync(),                        "achievements", HandleAchievements);
+            var quests       = UpdateCategory(new[] { TokenPermission.Account, TokenPermission.Characters, TokenPermission.Progression }, module.Gw2ApiManager.Gw2ApiClient.V2.Characters[characterName.Value].Quests.GetAsync(),      "quests",       HandleQuests);
+            var training     = UpdateCategory(new[] { TokenPermission.Account, TokenPermission.Characters, TokenPermission.Builds      }, module.Gw2ApiManager.Gw2ApiClient.V2.Characters[characterName.Value].Training.GetAsync(),    "training",     HandleTraining);
+            var worldBosses  = UpdateCategory(new[] { TokenPermission.Account, TokenPermission.Progression                             }, module.Gw2ApiManager.Gw2ApiClient.V2.Account.WorldBosses.GetAsync(),                         "world bosses", HandleWorldBosses);
+            var items        = UpdateCategory(new[] { TokenPermission.Account, TokenPermission.Characters, TokenPermission.Inventories }, module.Gw2ApiManager.Gw2ApiClient.V2.Characters[characterName.Value].Inventory.GetAsync(),   "items",    HandleItems);
 
             var tasks = new List<Task> { achievements, quests, training, worldBosses };
             await Task.WhenAll(tasks);
             logger.Debug("API Update complete");
         }
 
-        private void MumbleUpdate(Object stateInfo)
+        private async void MumbleUpdate(Object stateInfo)
         {
             //logger.Debug("Updating locations from MumbleAPI");
             var mapId = GameService.Gw2Mumble.CurrentMap.Id;
+            if (mapId == 0)
+            {
+                return;
+            }
+
+            if (currentMap == null || mapId != currentMap.Id)
+            {
+                currentMap = await module.Gw2ApiManager.Gw2ApiClient.V2.Maps.GetAsync(mapId);
+            }
+
+            if (module.MapAccessTracker.IsLocked(currentMap.Name))
+            {
+                return;
+            }
             var currentCharacter = GameService.Gw2Mumble.PlayerCharacter;
             //logger.Debug("Mumble Character: {}, AP Character: {}", currentCharacter.Name, characterName.Value);
             if (pointsOfInterest.ContainsKey(mapId) && currentCharacter.Name.Equals(characterName.Value))
             {
+                
                 var pos = currentCharacter.Position;
                 foreach (var poi in pointsOfInterest[mapId])
                 {
@@ -218,7 +253,7 @@ namespace Gw2Archipelago
         {
             try
             {
-                if (gw2ApiManager.HasPermissions(permissions))
+                if (module.Gw2ApiManager.HasPermissions(permissions))
                 {
                     logger.Debug("Getting {name} from the API.", name);
 
@@ -237,6 +272,11 @@ namespace Gw2Archipelago
             {
                 logger.Warn(ex, "Failed to update {name}", name);
             }
+        }
+
+        private void HandleMap(ApiMap map)
+        {
+            currentMap = map;
         }
 
 
@@ -278,6 +318,7 @@ namespace Gw2Archipelago
                 logger.Debug("location: {}, quantity: {}, targetQuantity: {}", itemLocation.LocationName, quantity, targetQuantity);
                 if (quantity >= targetQuantity && targetQuantity != -1)
                 {
+
                     ItemAcquired.Invoke(itemLocation);
                 }
                 else
@@ -366,12 +407,13 @@ namespace Gw2Archipelago
             foreach (var questId in quests)
             {
                 logger.Debug("questLocations: {}", questStatus.QuestLocations);
-                if (questStatus.QuestIds.Contains(questId) && questStatus.QuestLocations.Count > 0)
+                if (questStatus.Quests.ContainsKey(questId) && questStatus.QuestLocations.Count > 0)
                 {
                     var location = questStatus.QuestLocations.Dequeue();
-                    QuestCompleted(location, questId);
-                    questStatus.QuestIds.Remove(questId);
+                    Quest quest = questStatus.Quests[questId];
+                    questStatus.Quests.Remove(questId);
                     questStatus.CompleteQuestCount++;
+                    QuestCompleted.Invoke(location, quest);
                 }
             }
         }
