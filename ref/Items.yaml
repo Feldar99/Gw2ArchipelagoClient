@@ -655,7 +655,7 @@ Core:
     Lionguard Cloth Shoes:
       - 4756
       - 4752
-    Sheriff Kaargoth Bloodclaw:
+    Junction Haven Shield:
       - 30456
       - 30476
     "Johan's Heavy Shoulderguard":
@@ -1154,9 +1154,6 @@ The Icebrood Saga:
       - 93732
     Shard of Crystallized Blood of Jormag:
       - 93734
-  Eye of the North:
-    Olmakhan Supply Box:
-      - 94860
 End of Dragons:
   Seitung Province:
     Jaiju Minnow:
@@ -1265,16 +1262,11 @@ Secrets of the Obscure:
       - 100943
 Janthir Wilds:
   Lowland Shore:
-    Lowland Shore Renown Token: 
-      - 102818
-    Curious Lowland Honeycomb: 
-      - 103038
-    "Homestead Recipe Book: Banners": 
-      - 102790
-    "Homestead Recipe Book: Trees": 
-      - 103458
-    Honeycomb-Covered Gear Bag: 
-      - 102592
+    Lowland Shore Renown Token: 102818
+    Curious Lowland Honeycomb: 103038
+    "Homestead Recipe Book: Banners": 102790
+    "Homestead Recipe Book: Trees": 103458
+    Honeycomb-Covered Gear Bag: 102592
     "Lowland Shore Adventure: Bronze":
       - 102465
       - 103318
@@ -1284,15 +1276,12 @@ Janthir Wilds:
     "Lowland Shore Adventure: Gold":
       - 102301
       - 102841
-    "Homestead Recipe Book: Pillars": 
-      - 103208
-    Precious Lowland Shore Gear Box: 
-      - 102346
+    "Homestead Recipe Book: Pillars": 103208
+    Precious Lowland Shore Gear Box: 102346
+    Janthiri Gear Box: 102283
   Janthir Syntri:
-    "Homestead Recipe Book: Guild Arena": 
-      - 102649
-    "Homestead Recipe Book: Paintings and Shelves": 
-      - 102764
+    "Homestead Recipe Book: Guild Arena": 102649
+    "Homestead Recipe Book: Paintings and Shelves": 102764
     "Janthir Syntri Adventure: Gold":
       - 102357
       - 102682
@@ -1302,10 +1291,20 @@ Janthir Wilds:
     "Janthir Syntri Adventure: Bronze":
       - 102774
       - 102845
-    "Homestead Recipe Book: Statues": 
-      - 102461
-    Janthir Syntri Renown Token: 
-      - 102881
-    "Janthir Syntri: Hero's Choice Chest": 
-      - 102265
-
+    "Homestead Recipe Book: Statues": 102461
+    Janthir Syntri Renown Token: 102881
+    "Janthir Syntri: Hero's Choice Chest": 102265
+  Mistburned Barrens:
+    "True Sight Armor Recipe: Masks": 104478
+    Valley of Agony Survey Result Chest: 104431
+    Wrath's Pass Survey Result Chest: 104461
+    Bloodstone Corridor Survey Result Chest: 104440
+    Angler Eel: 104303
+    Hermit Titancrab: 104459
+    "Mistburned Barrens Adventure: Bronze": 104490
+    "Mistburned Barrens Adventure: Silver": 104263
+    "Mistburned Barrens Adventure: Gold": 104401
+  Bava Nisos:
+    Curious Mursaat Remnants: 104829
+    "Bava Nisos: Commander's Choice Chest": 104714
+    Slime-Encrusted Mursaat Strongbox: 104936
