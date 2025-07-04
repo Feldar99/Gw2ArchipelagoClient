@@ -164,7 +164,7 @@ namespace Gw2Archipelago
         public void AddQuests(HashSet<Quest> quests)
         {
             foreach (var quest in quests)
-        {
+            {
                 questStatus.Quests.Add(quest.Id, quest);
             }
         }

@@ -1,5 +1,9 @@
 ﻿
+using Blish_HUD;
 using System;
+using YamlDotNet.Core;
+using YamlDotNet.Core.Events;
+using YamlDotNet.Serialization;
 
 namespace Gw2Archipelago
 {
@@ -51,6 +55,29 @@ namespace Gw2Archipelago
             if (name.Equals("NECROMANCER"))  { return Profession.Necromancer;  }
 
             throw new System.ArgumentException("Invalid Profession");
+        }
+    }
+
+    internal class YamlProfessionConverter : IYamlTypeConverter
+    {
+        private static readonly Logger logger = Logger.GetLogger<YamlProfessionConverter>();
+        public bool Accepts(Type type)
+        {
+            //logger.Debug(type.FullName);
+            return type == typeof(Profession);
+        }
+
+        public object ReadYaml(IParser parser, Type type)
+        {
+            Scalar value = parser.Consume<Scalar>();
+            //logger.Debug(value.Value);
+            return ProfessionExtensions.FromName(value.Value);
+        }
+
+        public void WriteYaml(IEmitter emitter, object value, Type type)
+        {
+            Profession profession = (Profession)value;
+            emitter.Emit(new Scalar(profession.GetName()));
         }
     }
 }

@@ -13,3 +13,5 @@ bin/Release/Gw2Archipelago.bhm
 Gw2Archipelago (0.1.0_bugfixes).bhm
 bin/Release/Gw2Archipelago.bhm
 /.vs/Gw2Archipelago/CopilotIndices
+/.vs
+.vs/Gw2Archipelago/v17/.suo

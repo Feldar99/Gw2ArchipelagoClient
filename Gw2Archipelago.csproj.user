@@ -3,6 +3,6 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <StartAction>Program</StartAction>
     <StartProgram>C:\Users\pschw\OneDrive\Documents\Blish.HUD.1.2.0\Blish HUD.exe</StartProgram>
-    <StartArguments>--debug --module "C:\Users\pschw\OneDrive\Documents\Gw2Archipelago\Client\bin\Debug\Gw2Archipelago.bhm"</StartArguments>
+    <StartArguments>--debug --module "C:\Users\pschw\OneDrive\Documents\GitHub\Gw2Archipelago\Client\bin\Debug\Gw2Archipelago.bhm"</StartArguments>
   </PropertyGroup>
 </Project>

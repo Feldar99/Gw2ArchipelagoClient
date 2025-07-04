@@ -76,6 +76,7 @@ namespace Gw2Archipelago
 
             var deserializer = new DeserializerBuilder()
             .WithNamingConvention(LowerCaseNamingConvention.Instance)
+            .WithTypeConverter(new YamlProfessionConverter())
             .Build();
 
             progress.Report("Reading Skill Ids");
@@ -96,9 +97,9 @@ namespace Gw2Archipelago
             var specialiationIds = new List<int>();
             {
                 var reader = new StreamReader(module.ContentsManager.GetFileStream("Traits.yaml"));
-                var data = deserializer.Deserialize<Dictionary<string, Dictionary<string, SpecializationData>>>(reader);
+                var data = deserializer.Deserialize<Dictionary<Profession, Dictionary<string, SpecializationData>>>(reader);
 
-                specData = data[characterProfession.GetName()];
+                specData = data[characterProfession];
                 foreach (var spec in specData)
                 {
                     specialiationIds.Add(spec.Value.Id);
@@ -359,13 +360,13 @@ namespace Gw2Archipelago
         }
 
         internal void OnItemUnlocked(string itemName, int itemCount)
-            {
+        {
             if (mistFragmentsLabel == null)
-                {
-                    return;
-                }
+            {
+                return;
+            }
             if (itemName.Equals("Mist Fragment"))
-                {
+            {
                 mistFragmentsLabel.Text = "Mist Fragments: " + itemCount + " / " + module.SlotData["MistFragmentsRequired"];
             }
             else if (itemName.EndsWith("Skill"))

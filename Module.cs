@@ -49,7 +49,7 @@ namespace Gw2Archipelago
         private SettingEntry<string> slotName;
         private SettingEntry<string> characterName;
 
-        private string                     filePrefix;
+        private string  filePrefix;
 
         internal LocationChecker LocationChecker { private set; get; }
         internal SlotData SlotData { private set; get; }
@@ -189,16 +189,13 @@ namespace Gw2Archipelago
                 Dictionary<string, PointOfInterest> PoisByName = new Dictionary<string, PointOfInterest>();
                 {
                     var reader = new StreamReader(ContentsManager.GetFileStream("pois.yaml"));
-                    var poiData = deserializer.Deserialize<Dictionary<string, Dictionary<string, Dictionary<string, PointOfInterest>>>>(reader);
+                    var poiData = deserializer.Deserialize<Dictionary<string, Dictionary<string, PointOfInterest>>>(reader);
 
-                    foreach (var storylineData in poiData)
+                    foreach (var mapData in poiData)
                     {
-                        foreach (var mapData in storylineData.Value)
+                        foreach (var poi in mapData.Value)
                         {
-                            foreach (var poi in mapData.Value)
-                            {
-                                PoisByName.Add(poi.Key.Trim(), poi.Value);
-                            }
+                            PoisByName.Add(poi.Key.Trim(), poi.Value);
                         }
                     }
                 }
@@ -308,11 +305,11 @@ namespace Gw2Archipelago
             if (itemName.Equals("Mist Fragment"))
             {
                 if (unlockCount >= (Int64)SlotData["MistFragmentsRequired"])
-            {
-                var statusUpdatePacket = new StatusUpdatePacket();
-                statusUpdatePacket.Status = ArchipelagoClientState.ClientGoal;
+                {
+                    var statusUpdatePacket = new StatusUpdatePacket();
+                    statusUpdatePacket.Status = ArchipelagoClientState.ClientGoal;
                     ApSession.Socket.SendPacket(statusUpdatePacket);
-            }
+                }
             }
         }
 

@@ -119,7 +119,7 @@ namespace Gw2Archipelago
             {
                 return;
             }
-            
+
             RefreshRegions();
             ClearLocations();
             
@@ -212,7 +212,7 @@ namespace Gw2Archipelago
         }
 
         private void CreateRegionButton(Texture2D icon, ref int y, string text, string region, int currentFill, int maxFill)
-            {
+        {
             if (module.MapAccessTracker.IsLocked(region))
             {
                 text += " (Locked)";
@@ -221,33 +221,33 @@ namespace Gw2Archipelago
             {
                 text += " (Out of Logic)";
             }
-                var button = new DetailsButton()
-                {
+            var button = new DetailsButton()
+            {
                 Text = text,
-                    Icon = icon,
+                Icon = icon,
                 ShowFillFraction = (maxFill > 0),
-                    Parent = regionPanel,
-                    Location = new Point(0, y),
+                Parent = regionPanel,
+                Location = new Point(0, y),
                 FillColor = XnaColor.White
-                };
+            };
             if (maxFill > 0)
             {
                 button.MaxFill = maxFill;
                 button.CurrentFill = currentFill;
             }
-                y += button.Height + 5;
-                button.Click += (sender, e) =>
+            y += button.Height + 5;
+            button.Click += (sender, e) =>
+            {
+                if (selectedRegion != null && selectedRegion.Equals(region))
                 {
-                    if (selectedRegion != null && selectedRegion.Equals(region))
-                    {
-                        selectedRegion = null;
-                    }
-                    else
-                    {
-                        selectedRegion = region;
-                    }
-                    Refresh();
-                };
+                    selectedRegion = null;
+                }
+                else
+                {
+                    selectedRegion = region;
+                }
+                Refresh();
+            };
         }
 
         internal void CreateItemLocationButtons(IEnumerable<ItemLocation> itemLocations)
