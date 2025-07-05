@@ -15,6 +15,7 @@ using Gw2Archipelago;
 using YamlDotNet.Serialization;
 using System.IO;
 using ApiMap = Gw2Sharp.WebApi.V2.Models.Map;
+using System.Collections.ObjectModel;
 
 namespace Gw2Archipelago
 {
@@ -241,12 +242,18 @@ namespace Gw2Archipelago
                     //logger.Debug("Distance to {} = {}", poi.LocationName, distanceSq);
                     if (distanceSq <= POI_DISCOVERY_DISTANCE_SQ)
                     {
-                        PoiDiscovered.Invoke(poi);
+                        CompletePoiLocation(poi);
                     }
                 }
             }
             //logger.Debug("Mumble Update Complete");
             
+        }
+
+        private void CompletePoiLocation(PoiLocation poi)
+        {
+            poi.LocationComplete = true;
+            PoiDiscovered.Invoke(poi);
         }
 
         private async Task UpdateCategory<T> (IEnumerable<TokenPermission> permissions, Task<T> task, string name, Action<T> callback)
@@ -318,14 +325,19 @@ namespace Gw2Archipelago
                 logger.Debug("location: {}, quantity: {}, targetQuantity: {}", itemLocation.LocationName, quantity, targetQuantity);
                 if (quantity >= targetQuantity && targetQuantity != -1)
                 {
-
-                    ItemAcquired.Invoke(itemLocation);
+                    CompleteItemLocation(itemLocation);
                 }
                 else
                 {
                     itemLocation.targetQuantities[itemId] = quantity + 1;
                 }
             }
+        }
+
+        private void CompleteItemLocation(ItemLocation itemLocation)
+        {
+            itemLocation.LocationComplete = true;
+            ItemAcquired.Invoke(itemLocation);
         }
 
         private void HandleAchievements(IApiV2ObjectList<AccountAchievement> achievements) 
@@ -372,7 +384,8 @@ namespace Gw2Archipelago
                             || oldRepeated != location.Repeated
                             || oldBitCount != location.BitCount
                             || oldTier != location.Tier
-                        ) {
+                        )
+                        {
                             if (oldDone != location.Done)
                             {
                                 logger.Debug("Done");
@@ -389,13 +402,19 @@ namespace Gw2Archipelago
                             {
                                 logger.Debug("Tier - old: {}, new: {}", oldTier, location.Tier);
                             }
-                            location.LocationComplete = true;
-                            AchievementCompleted.Invoke(location);
+                            CompleteAchievementLocation(location);
                         }
                     }
                 }
             }
         }
+
+        private void CompleteAchievementLocation(AchievementLocation location)
+        {
+            location.LocationComplete = true;
+            AchievementCompleted.Invoke(location);
+        }
+
         private void HandleWorldBosses(IApiV2ObjectList<string> worldBosses) {
             logger.Debug("World Bosses not yet supported");
         }
@@ -412,10 +431,17 @@ namespace Gw2Archipelago
                     var location = questStatus.QuestLocations.Dequeue();
                     Quest quest = questStatus.Quests[questId];
                     questStatus.Quests.Remove(questId);
-                    questStatus.CompleteQuestCount++;
-                    QuestCompleted.Invoke(location, quest);
+                    CompleteQuestLocation(location, quest);
+                    questStatus.AdvanceToFirstIncompleteLocation();
                 }
             }
+        }
+
+        private void CompleteQuestLocation(Location location, Quest quest)
+        {
+            location.LocationComplete = true;
+            questStatus.CompleteQuestCount++;
+            QuestCompleted.Invoke(location, quest);
         }
 
         public int GetCompleteQuestCount()
@@ -442,6 +468,56 @@ namespace Gw2Archipelago
         private void HandleTraining(CharactersTraining training)
         {
             logger.Debug("Training not yet supported");
+        }
+
+        internal void OnLocationChecked(ReadOnlyCollection<long> newCheckedLocations)
+        {
+            HashSet<string> checkedLocationNames = new HashSet<string>();
+            foreach (var locationId in newCheckedLocations)
+            {
+                checkedLocationNames.Add(module.ApSession.Locations.GetLocationNameFromId(locationId));
+            }
+
+            foreach (var achievementLocationPair in achievementLocations)
+            {
+                var achievementLocation = achievementLocationPair.Value;
+                if (!achievementLocation.LocationComplete && checkedLocationNames.Contains(achievementLocation.LocationName))
+                {
+                    CompleteAchievementLocation(achievementLocation);
+                }
+            }
+
+            foreach (var questLocation in questStatus.QuestLocations)
+            {
+                if (!questLocation.LocationComplete && checkedLocationNames.Contains(questLocation.LocationName))
+                {
+                    CompleteQuestLocation(questLocation, null);
+                }
+            }
+
+            questStatus.AdvanceToFirstIncompleteLocation();
+
+            foreach (var itemLocationPair in itemLocations)
+            {
+                var itemLocation = itemLocationPair.Value;
+                if (!itemLocation.LocationComplete && checkedLocationNames.Contains(itemLocation.LocationName))
+                {
+                    CompleteItemLocation(itemLocation);
+                }
+            }
+
+            questStatus.AdvanceToFirstIncompleteLocation();
+
+            foreach (var pointsOfInterestPair in pointsOfInterest)
+            {
+                foreach (var poiLocation in pointsOfInterestPair.Value)
+                {
+                    if (!poiLocation.LocationComplete && checkedLocationNames.Contains(poiLocation.LocationName))
+                    {
+                        CompletePoiLocation(poiLocation);
+                    }
+                }
+            }
         }
     }
 

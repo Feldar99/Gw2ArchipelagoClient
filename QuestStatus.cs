@@ -16,5 +16,13 @@ namespace Gw2Archipelago
         public Dictionary<int, Quest> Quests = new Dictionary<int, Quest>();
         [JsonInclude]
         public int CompleteQuestCount = 0;
+
+        internal void AdvanceToFirstIncompleteLocation()
+        {
+            while (QuestLocations.Peek() != null && QuestLocations.Peek().LocationComplete)
+            {
+                QuestLocations.Dequeue();
+            }
+        }
     }
 }

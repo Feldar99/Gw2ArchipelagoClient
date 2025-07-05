@@ -198,7 +198,7 @@ namespace Gw2Archipelago
             int y = 0;
 
             var storyline = (Storyline)Enum.ToObject(typeof(Storyline), module.SlotData["Storyline"]);
-            var incompleteQuestCount = module.LocationChecker.GetQuestLocations().Count;
+            var incompleteQuestCount = module.LocationChecker.GetQuestLocations().Count(location => !location.LocationComplete);
             var completeQuestCount = module.LocationChecker.GetCompleteQuestCount();
 
             CreateRegionButton(icon, ref y, storyline.GetName() + " Quests", "Quests", completeQuestCount, completeQuestCount + incompleteQuestCount);
@@ -376,22 +376,7 @@ namespace Gw2Archipelago
             {
                 button.CurrentFill = progress.Current;
             }
-            //UpdateAchievementProgress(achievement, location.Progress);
         }
-
-        //internal void UpdateAchievementProgress(Achievement achievement, AccountAchievement progress)
-        //{
-        //    var button = achievementButtons[achievement.Id];
-        //    logger.Debug("Updating Progress Button: {}/{}", progress.Current, progress.Max);
-        //    if (progress.Done)
-        //    {
-        //        button.CurrentFill = button.MaxFill;
-        //    }
-        //    else
-        //    {
-        //        button.CurrentFill = progress.Current;
-        //    }
-        //}
 
         internal void MarkGenericLocationComplete(string locationName)
         {
@@ -410,7 +395,12 @@ namespace Gw2Archipelago
 
         internal void OnQuestComplete(Location location, Quest quest)
         {
-            MarkGenericLocationComplete(quest.Name);
+            if (quest != null)
+            {
+                MarkGenericLocationComplete(quest.Name);
+            }
+
+            // Refresh Regions even if quest is null, because the completed count will update
             RefreshRegions();
         }
 

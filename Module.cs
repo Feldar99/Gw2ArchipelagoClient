@@ -280,6 +280,20 @@ namespace Gw2Archipelago
                     {
                         var file = SystemFile.OpenRead(fileName);
                         var status = await JsonSerializer.DeserializeAsync<QuestStatus>(file);
+                        foreach (var location in status.QuestLocations)
+                        {
+                            if (location.LocationComplete)
+                            {
+                                continue;
+                            }
+                            var locationId = ApSession.Locations.GetLocationIdFromName("Guild Wars 2", location.LocationName);
+                            if (checkedLocations.Contains(locationId))
+                            {
+                                location.LocationComplete = true;
+                                status.CompleteQuestCount++;
+                            }
+                        }
+                        status.AdvanceToFirstIncompleteLocation();
                         LocationChecker.SetQuestStatus(status);
 
                     }
@@ -292,6 +306,8 @@ namespace Gw2Archipelago
                 ItemTracker.Initialize(ApSession);
                 ItemTracker.ItemUnlocked += OnItemUnlocked;
                 MapAccessTracker.Initialize(storyline, characterRace, ItemTracker);
+
+                ApSession.Locations.CheckedLocationsUpdated += LocationChecker.OnLocationChecked;
             }
             else
             {
@@ -781,15 +797,18 @@ namespace Gw2Archipelago
             // Base handler must be called
             base.OnModuleLoaded(e);
 
-            mainWindow = new ArchipelagoWindow(new XnaRectangle(40, 26, 913, 691), new XnaRectangle(70, 71, 839, 605), this);
-
-            logger.Debug("Loading icon");
-            cornerIcon = new CornerIcon
+            if (mainWindow == null)
             {
-                IconName = this.Name,
-                Icon = ContentsManager.GetTexture("archipelago.png")
-            };
-            cornerIcon.Click += ToggleWindow;
+                mainWindow = new ArchipelagoWindow(new XnaRectangle(40, 26, 913, 691), new XnaRectangle(70, 71, 839, 605), this);
+
+                logger.Debug("Loading icon");
+                cornerIcon = new CornerIcon
+                {
+                    IconName = this.Name,
+                    Icon = ContentsManager.GetTexture("archipelago.png")
+                };
+                cornerIcon.Click += ToggleWindow;
+            }
         }
 
         private void UpdateAchievementProgress (AchievementLocation location)
@@ -807,7 +826,7 @@ namespace Gw2Archipelago
 
         private async void SendLocationCompletion(Location location, Quest quest)
         {
-            logger.Debug("Sending location {} for quest {}", location.LocationName, quest.Id);
+            logger.Debug("Sending location {} for quest {}", location.LocationName, (quest == null) ? 0 : quest.Id);
             ApSession.Locations.CompleteLocationChecks(new long[] { ApSession.Locations.GetLocationIdFromName("Guild Wars 2", location.LocationName) });
             location.LocationComplete = true;
             await serialize();
