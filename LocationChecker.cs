@@ -186,6 +186,8 @@ namespace Gw2Archipelago
         {
             achievementLocations.Clear();
             questStatus.QuestLocations.Clear();
+            pointsOfInterest.Clear();
+            itemLocations.Clear();
         }
 
         public bool HasAchievementLocation(int id)
