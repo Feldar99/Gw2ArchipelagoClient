@@ -17,6 +17,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.Composition;
 using System.IO;
 using System.ServiceModel.Channels;
@@ -48,6 +49,8 @@ namespace Gw2Archipelago
         private SettingEntry<string> apServerUrl;
         private SettingEntry<string> slotName;
         private SettingEntry<string> characterName;
+        private SettingEntry<Profession> profession;
+        private SettingEntry<Race> race;
 
         private string  filePrefix;
 
@@ -76,9 +79,24 @@ namespace Gw2Archipelago
         protected override void DefineSettings(SettingCollection settings)
         {
             logger.Debug("Define Settings");
-            apServerUrl = settings.DefineSetting("apServerUrl", "archipelago.gg:<port>", () => "Archipelago Server URL");
-            slotName    = settings.DefineSetting("apSlotName", "", () => "Slot Name");
+            apServerUrl   = settings.DefineSetting("apServerUrl", "archipelago.gg:<port>", () => "Archipelago Server URL");
+            slotName      = settings.DefineSetting("apSlotName", "", () => "Slot Name");
+            profession    = settings.DefineSetting("profession", Profession.Warrior, () => "Profession", () => "The profession of the character you will be using for this Archipelago slot");
+            race          = settings.DefineSetting("race", Race.Human, () => "Profession", () => "The race of the character you will be using for this Archipelago slot");
             characterName = settings.DefineSetting("characterName", "", () => "Character Name", () => "The name of the character you will be using for this Archipelago slot");
+            characterName.PropertyChanged += OnCharacterNameChange;
+
+            profession.SetDisabled(true);
+            race.SetDisabled(true);
+        }
+
+        private void OnCharacterNameChange(object sender, PropertyChangedEventArgs e)
+        {
+            if (savedData != null)
+            {
+                savedData.CharacterName = characterName.Value;
+                serialize();
+            }
         }
 
         protected override void Initialize()
@@ -162,6 +180,9 @@ namespace Gw2Archipelago
                 Race characterRace = (Race)Enum.ToObject(typeof(Race), SlotData["CharacterRace"]);
                 var storyline = (Storyline)Enum.ToObject(typeof(Storyline), SlotData["Storyline"]);
 
+                profession.Value = characterProfession;
+                race.Value       = characterRace;
+
                 var deserializer = new DeserializerBuilder()
                     .WithNamingConvention(LowerCaseNamingConvention.Instance)
                     .Build();
@@ -227,17 +248,13 @@ namespace Gw2Archipelago
                         var file = SystemFile.OpenRead(fileName);
                         savedData = await JsonSerializer.DeserializeAsync<SavedData>(file);
                     }
-                    else
+                    else if (savedData == null)
                     {
                         savedData = new SavedData();
                         savedData.CharacterName = (string)SlotData["Character"];
                     }
-                    if (savedData.CharacterName.Equals("New Character"))
-                    {
 
-                        characterName.Value = characterRace.GetName() + " " + characterProfession.GetName();
-                    }
-                    else
+                    if (!savedData.CharacterName.Equals("New Character"))
                     {
                         characterName.Value = savedData.CharacterName;
                     }
@@ -601,33 +618,40 @@ namespace Gw2Archipelago
             {
                 var season = await Gw2ApiManager.Gw2ApiClient.V2.Stories.Seasons.GetAsync(storyline.GetSeasonId());
                 var storyIds = new HashSet<int>(season.Stories);
-                var quest_progress = new HashSet<int>(await Gw2ApiManager.Gw2ApiClient.V2.Characters[characterName.Value].Quests.GetAsync());
-
-
-                foreach (var quest_id in quest_progress)
+                try
                 {
-                    logger.Debug("Quest Entry: {}", quest_id);
+                    var quest_progress = new HashSet<int>(await Gw2ApiManager.Gw2ApiClient.V2.Characters[characterName.Value].Quests.GetAsync());
+
+
+                    foreach (var quest_id in quest_progress)
+                    {
+                        logger.Debug("Quest Entry: {}", quest_id);
+                    }
+
+                    var all_quests = await Gw2ApiManager.Gw2ApiClient.V2.Quests.AllAsync();
+                    foreach (var quest in all_quests)
+                    {
+                        if (!storyIds.Contains(quest.Story))
+                        {
+                            logger.Debug("Quest not in story: {} ({})", quest.Name, quest.Id);
+                            continue;
+                        }
+
+                        if (quest_progress.Contains(quest.Id))
+                        {
+                            logger.Debug("Quest already done: {}", quest.Name);
+                            continue;
+                        }
+
+
+
+                        logger.Debug("Quest added to list: {} ({})", quest.Name, quest.Id);
+                        quests.Add(quest);
+                    }
                 }
-
-                var all_quests = await Gw2ApiManager.Gw2ApiClient.V2.Quests.AllAsync();
-                foreach (var quest in all_quests)
+                catch (Exception ex)
                 {
-                    if (!storyIds.Contains(quest.Story))
-                    {
-                        logger.Debug("Quest not in story: {} ({})", quest.Name, quest.Id);
-                        continue;
-                    }
-
-                    if (quest_progress.Contains(quest.Id))
-                    {
-                        logger.Debug("Quest already done: {}", quest.Name);
-                        continue;
-                    }
-
-                    
-
-                    logger.Debug("Quest added to list: {} ({})", quest.Name, quest.Id);
-                    quests.Add(quest);
+                    logger.Warn("Could not generate quest locations for {}", characterName.Value);
                 }
 
             }
@@ -781,15 +805,18 @@ namespace Gw2Archipelago
             // Base handler must be called
             base.OnModuleLoaded(e);
 
-            mainWindow = new ArchipelagoWindow(new XnaRectangle(40, 26, 913, 691), new XnaRectangle(70, 71, 839, 605), this);
-
-            logger.Debug("Loading icon");
-            cornerIcon = new CornerIcon
+            if (mainWindow == null)
             {
-                IconName = this.Name,
-                Icon = ContentsManager.GetTexture("archipelago.png")
-            };
-            cornerIcon.Click += ToggleWindow;
+                mainWindow = new ArchipelagoWindow(new XnaRectangle(40, 26, 913, 691), new XnaRectangle(70, 71, 839, 605), this);
+
+                logger.Debug("Loading icon");
+                cornerIcon = new CornerIcon
+                {
+                    IconName = this.Name,
+                    Icon = ContentsManager.GetTexture("archipelago.png")
+                };
+                cornerIcon.Click += ToggleWindow;
+            }
         }
 
         private void UpdateAchievementProgress (AchievementLocation location)
