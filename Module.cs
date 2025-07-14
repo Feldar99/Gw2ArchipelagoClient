@@ -103,7 +103,6 @@ namespace Gw2Archipelago
         {
             logger.Debug("Initialize");
             LocationChecker = new LocationChecker(this, characterName);
-            LocationChecker.AchievementProgressed += UpdateAchievementProgress;
             LocationChecker.AchievementCompleted += SendLocationCompletion;
             LocationChecker.QuestCompleted += SendLocationCompletion;
             LocationChecker.ItemAcquired += SendLocationCompletion;
@@ -836,11 +835,6 @@ namespace Gw2Archipelago
                 };
                 cornerIcon.Click += ToggleWindow;
             }
-        }
-
-        private void UpdateAchievementProgress (AchievementLocation location)
-        {
-            logger.Debug("Updating UI for {name}", location.Achievement.Name);
         }
 
         private async void SendLocationCompletion (AchievementLocation location)
