@@ -81,6 +81,12 @@ namespace Gw2Archipelago
                     {
                         mapsByStoryline[storyline].Add(map);
                     }
+                    else
+                    {
+                        var storylineMap = new List<Map>();
+                        storylineMap.Add(map);
+                        mapsByStoryline.Add(storyline, storylineMap);
+                    }
                 }
                 if (mapEntry.Start != null)
                 {
@@ -218,7 +224,7 @@ namespace Gw2Archipelago
             {
                 if (type.Value == map.Type)
                 {
-                    if (maps[map.Name].state == MapAccessState.Accessible)
+                    if (maps[map.Name].state != MapAccessState.Accessible)
                     {
                         return false;
                     }
