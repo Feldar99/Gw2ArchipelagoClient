@@ -1156,14 +1156,14 @@ The Icebrood Saga:
       - 93734
 End of Dragons:
   Seitung Province:
-    Jaiju Minnow:
+    Haiju Minnow:
       - 96117
-    "Siege Stampede: Bronze":
-      - 99668
-    "Siege Stampede: Silver":
-      - 99661
-    "Siege Stampede: Gold":
-      - 99663
+    # "Siege Stampede: Bronze":
+      # - 99668
+    # "Siege Stampede: Silver":
+      # - 99661
+    # "Siege Stampede: Gold":
+      # - 99663
     Writ of Seitung Province:
       - 96680
     "Swift Skiffs: Bronze":
