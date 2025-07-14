@@ -82,7 +82,7 @@ namespace Gw2Archipelago
             apServerUrl   = settings.DefineSetting("apServerUrl", "archipelago.gg:<port>", () => "Archipelago Server URL");
             slotName      = settings.DefineSetting("apSlotName", "", () => "Slot Name");
             profession    = settings.DefineSetting("profession", Profession.Warrior, () => "Profession", () => "The profession of the character you will be using for this Archipelago slot");
-            race          = settings.DefineSetting("race", Race.Human, () => "Profession", () => "The race of the character you will be using for this Archipelago slot");
+            race          = settings.DefineSetting("race", Race.Human, () => "Race", () => "The race of the character you will be using for this Archipelago slot");
             characterName = settings.DefineSetting("characterName", "", () => "Character Name", () => "The name of the character you will be using for this Archipelago slot");
             characterName.PropertyChanged += OnCharacterNameChange;
 
