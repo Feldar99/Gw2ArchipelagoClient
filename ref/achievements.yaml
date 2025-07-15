@@ -77,7 +77,6 @@ categories:
   112: HeartOfThorns
   116: HeartOfThorns
   117: None # Specializatin Collections
-  118: FRACTAL
   121: HeartOfThorns
   122: HeartOfThorns
   123: HeartOfThorns
@@ -179,7 +178,7 @@ categories:
   257: None
   258: FRACTAL
   260: None
-  261: FRACTAL
+  261: None
   262: None
   263: None
   265: None
@@ -338,7 +337,9 @@ achievments:
   4738: Season4
   4750: Season4
   4752: Season4
+  6029: None
   6077: EndOfDragons
+  6109: None
   6142: EndOfDragons
   6248: EndOfDragons
   6481: EndOfDragons
@@ -569,11 +570,14 @@ achievments:
   2282: HeartOfThorns
   2285: HeartOfThorns
   2290: HeartOfThorns
+  2295: FRACTAL
   2300: HeartOfThorns
   2325: HeartOfThorns
   2332: HeartOfThorns
+  2351: FRACTAL
   2359: HeartOfThorns
   2360: HeartOfThorns
+  2368: FRACTAL
   2402: FRACTAL
   2404: HeartOfThorns
   2407: HeartOfThorns
@@ -583,6 +587,7 @@ achievments:
   2508: HeartOfThorns
   2545: HeartOfThorns
   2548: FRACTAL
+  2557: FRACTAL
   2569: HeartOfThorns
   2572: HeartOfThorns
   2609: HeartOfThorns
@@ -602,6 +607,7 @@ achievments:
   3954: PathOfFire
   7005: SecretsOfTheObscure
   7110: SecretsOfTheObscure
+  7114: None
   7665: SecretsOfTheObscure
   8048: SecretsOfTheObscure
   2163: Warrior
@@ -934,6 +940,7 @@ achievments:
   8635: Janthir Wilds
   8644: Janthir Wilds
   8544: Janthir Wilds
+  8714: Janthir Wilds
   8715: Janthir Wilds
   8725: Janthir Wilds
   8732: Janthir Wilds
@@ -1359,6 +1366,13 @@ achievments:
   5546: STORY #Frozen Tide
   6071: STORY #On the Case
   6080: STORY #Extraction Point
+  6081: STORY #A Woman of Culture
+  6085: STORY #Derring-Do
+  6089: STORY
+  6090: STORY
+  6091: STORY
+  6092: STORY
+  6101: STORY
   6113: STORY #This Isn't Cannon
   6116: STORY #A Raw Deal
   6126: STORY #Outreach

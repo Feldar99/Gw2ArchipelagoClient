@@ -166,7 +166,10 @@ namespace Gw2Archipelago
         {
             foreach (var quest in quests)
             {
-                questStatus.Quests.Add(quest.Id, quest);
+                if (!questStatus.Quests.ContainsKey(quest.Id))
+                {
+                    questStatus.Quests.Add(quest.Id, quest);
+                }
             }
         }
 
@@ -184,6 +187,8 @@ namespace Gw2Archipelago
         {
             achievementLocations.Clear();
             questStatus.QuestLocations.Clear();
+            pointsOfInterest.Clear();
+            itemLocations.Clear();
         }
 
         public bool HasAchievementLocation(int id)
@@ -279,11 +284,6 @@ namespace Gw2Archipelago
             {
                 logger.Warn(ex, "Failed to update {name}", name);
             }
-        }
-
-        private void HandleMap(ApiMap map)
-        {
-            currentMap = map;
         }
 
 

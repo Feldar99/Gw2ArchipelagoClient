@@ -17,6 +17,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.Composition;
 using System.IO;
 using System.ServiceModel.Channels;
@@ -48,6 +49,8 @@ namespace Gw2Archipelago
         private SettingEntry<string> apServerUrl;
         private SettingEntry<string> slotName;
         private SettingEntry<string> characterName;
+        private SettingEntry<Profession> profession;
+        private SettingEntry<Race> race;
 
         private string  filePrefix;
 
@@ -76,16 +79,30 @@ namespace Gw2Archipelago
         protected override void DefineSettings(SettingCollection settings)
         {
             logger.Debug("Define Settings");
-            apServerUrl = settings.DefineSetting("apServerUrl", "archipelago.gg:<port>", () => "Archipelago Server URL");
-            slotName    = settings.DefineSetting("apSlotName", "", () => "Slot Name");
+            apServerUrl   = settings.DefineSetting("apServerUrl", "archipelago.gg:<port>", () => "Archipelago Server URL");
+            slotName      = settings.DefineSetting("apSlotName", "", () => "Slot Name");
+            profession    = settings.DefineSetting("profession", Profession.Warrior, () => "Profession", () => "The profession of the character you will be using for this Archipelago slot");
+            race          = settings.DefineSetting("race", Race.Human, () => "Race", () => "The race of the character you will be using for this Archipelago slot");
             characterName = settings.DefineSetting("characterName", "", () => "Character Name", () => "The name of the character you will be using for this Archipelago slot");
+            characterName.PropertyChanged += OnCharacterNameChange;
+
+            profession.SetDisabled(true);
+            race.SetDisabled(true);
+        }
+
+        private void OnCharacterNameChange(object sender, PropertyChangedEventArgs e)
+        {
+            if (savedData != null)
+            {
+                savedData.CharacterName = characterName.Value;
+                serialize();
+            }
         }
 
         protected override void Initialize()
         {
             logger.Debug("Initialize");
             LocationChecker = new LocationChecker(this, characterName);
-            LocationChecker.AchievementProgressed += UpdateAchievementProgress;
             LocationChecker.AchievementCompleted += SendLocationCompletion;
             LocationChecker.QuestCompleted += SendLocationCompletion;
             LocationChecker.ItemAcquired += SendLocationCompletion;
@@ -162,82 +179,29 @@ namespace Gw2Archipelago
                 Race characterRace = (Race)Enum.ToObject(typeof(Race), SlotData["CharacterRace"]);
                 var storyline = (Storyline)Enum.ToObject(typeof(Storyline), SlotData["Storyline"]);
 
+                profession.Value = characterProfession;
+                race.Value = characterRace;
+
                 var deserializer = new DeserializerBuilder()
                     .WithNamingConvention(LowerCaseNamingConvention.Instance)
                     .Build();
 
-                logger.Debug("Reading Items");
-                Dictionary<string, ItemData> itemDataByName = new Dictionary<string, ItemData>();
-                {
-                    var reader = new StreamReader(ContentsManager.GetFileStream("Items.yaml"));
-                    var itemData = deserializer.Deserialize<Dictionary<string, Dictionary<string, Dictionary<string, List<int>>>>>(reader);
+                await AddNonGenericLocations();
 
-                    foreach (var storylineData in itemData)
-                    {
-                        foreach (var mapData in storylineData.Value)
-                        {
-                            foreach (var itemIds in mapData.Value)
-                            {
-                                logger.Debug(itemIds.Key);
-                                itemDataByName.Add(itemIds.Key, new ItemData { ItemIds = itemIds.Value, Name = itemIds.Key, Region = mapData.Key });
-                            }
-                        }
-                    }
-                }
-
-                logger.Debug("Reading POIs");
-                Dictionary<string, PointOfInterest> PoisByName = new Dictionary<string, PointOfInterest>();
-                {
-                    var reader = new StreamReader(ContentsManager.GetFileStream("pois.yaml"));
-                    var poiData = deserializer.Deserialize<Dictionary<string, Dictionary<string, PointOfInterest>>>(reader);
-
-                    foreach (var mapData in poiData)
-                    {
-                        foreach (var poi in mapData.Value)
-                        {
-                            PoisByName.Add(poi.Key.Trim(), poi.Value);
-                        }
-                    }
-                }
-
-                var tasks = new List<Task>();
-                foreach (long location_id in ApSession.Locations.AllMissingLocations)
-                {
-                    logger.Debug("location_id: {}", location_id);
-                    string locationName = ApSession.Locations.GetLocationNameFromId(location_id);
-                    string[] splitName = locationName.Split(' ');
-                    if (splitName[0].Equals("Item:"))
-                    {
-                        success = true;
-                        ItemData itemData = itemDataByName[locationName.Substring(6)];
-                        LocationChecker.AddItemLocation(false, locationName, itemData.ItemIds, itemData.Region);
-                    }
-                    else if (splitName[0].Equals("POI:"))
-                    {
-                        success = true;
-                        tasks.Add(LocationChecker.AddPoiLocation(false, locationName, PoisByName[locationName.Substring(5).Trim()]));
-                    }
-                }
-                await Task.WhenAll(tasks);
                 filePrefix = DirectoriesManager.GetFullDirectoryPath("ArchipelagoData") + "\\" + ApSession.RoomState.Seed + "_" + slotName.Value + "_";
                 {
-                    string fileName = filePrefix + "savedData.json";
-                    if (SystemFile.Exists(fileName))
+                    var file = waitForFile("savedData.json", 5, true /* readonly */);
+                    if (file != null)
                     {
-                        var file = SystemFile.OpenRead(fileName);
                         savedData = await JsonSerializer.DeserializeAsync<SavedData>(file);
                     }
-                    else
+                    else if (savedData == null)
                     {
                         savedData = new SavedData();
                         savedData.CharacterName = (string)SlotData["Character"];
                     }
-                    if (savedData.CharacterName.Equals("New Character"))
-                    {
 
-                        characterName.Value = characterRace.GetName() + " " + characterProfession.GetName();
-                    }
-                    else
+                    if (!savedData.CharacterName.Equals("New Character"))
                     {
                         characterName.Value = savedData.CharacterName;
                     }
@@ -245,12 +209,11 @@ namespace Gw2Archipelago
 
                 var checkedLocations = new HashSet<long>(ApSession.Locations.AllLocationsChecked);
 
-                tasks.Clear();
+                var tasks = new List<Task>();
                 {
-                    string fileName = filePrefix + "AchievementLocations.json";
-                    if (SystemFile.Exists(fileName))
+                    var file = waitForFile("AchievementLocations.json", 5, true);
+                    if (file != null)
                     {
-                        var file = SystemFile.OpenRead(fileName);
                         var locations = await JsonSerializer.DeserializeAsync<List<AchievementLocation>>(file);
                         foreach (var location in locations)
                         {
@@ -266,7 +229,7 @@ namespace Gw2Archipelago
                             }
                             if (!location.LocationComplete)
                             {
-                                
+
                                 tasks.Add(LocationChecker.AddAchievmentLocation(location));
                             }
                         }
@@ -275,10 +238,10 @@ namespace Gw2Archipelago
                 await Task.WhenAll(tasks);
 
                 {
+                    var file = waitForFile("QuestStatus.json", 5, true);
                     string fileName = filePrefix + "QuestStatus.json";
                     if (SystemFile.Exists(fileName))
                     {
-                        var file = SystemFile.OpenRead(fileName);
                         var status = await JsonSerializer.DeserializeAsync<QuestStatus>(file);
                         foreach (var location in status.QuestLocations)
                         {
@@ -314,6 +277,65 @@ namespace Gw2Archipelago
                 ApSession = null;
                 logger.Debug("Connetion Attempted Failed");
             }
+        }
+
+        private async Task AddNonGenericLocations()
+        {
+            var deserializer = new DeserializerBuilder()
+                .WithNamingConvention(LowerCaseNamingConvention.Instance)
+                .Build();
+
+            logger.Debug("Reading Items");
+            Dictionary<string, ItemData> itemDataByName = new Dictionary<string, ItemData>();
+            {
+                var reader = new StreamReader(ContentsManager.GetFileStream("Items.yaml"));
+                var itemData = deserializer.Deserialize<Dictionary<string, Dictionary<string, Dictionary<string, List<int>>>>>(reader);
+
+                foreach (var storylineData in itemData)
+                {
+                    foreach (var mapData in storylineData.Value)
+                    {
+                        foreach (var itemIds in mapData.Value)
+                        {
+                            logger.Debug(itemIds.Key);
+                            itemDataByName.Add(itemIds.Key, new ItemData { ItemIds = itemIds.Value, Name = itemIds.Key, Region = mapData.Key });
+                        }
+                    }
+                }
+            }
+
+            logger.Debug("Reading POIs");
+            Dictionary<string, PointOfInterest> PoisByName = new Dictionary<string, PointOfInterest>();
+            {
+                var reader = new StreamReader(ContentsManager.GetFileStream("pois.yaml"));
+                var poiData = deserializer.Deserialize<Dictionary<string, Dictionary<string, PointOfInterest>>>(reader);
+
+                foreach (var mapData in poiData)
+                {
+                    foreach (var poi in mapData.Value)
+                    {
+                        PoisByName.Add(poi.Key.Trim(), poi.Value);
+                    }
+                }
+            }
+
+            var tasks = new List<Task>();
+            foreach (long location_id in ApSession.Locations.AllMissingLocations)
+            {
+                logger.Debug("location_id: {}", location_id);
+                string locationName = ApSession.Locations.GetLocationNameFromId(location_id);
+                string[] splitName = locationName.Split(' ');
+                if (splitName[0].Equals("Item:"))
+                {
+                    ItemData itemData = itemDataByName[locationName.Substring(6)];
+                    LocationChecker.AddItemLocation(false, locationName, itemData.ItemIds, itemData.Region);
+                }
+                else if (splitName[0].Equals("POI:"))
+                {
+                    tasks.Add(LocationChecker.AddPoiLocation(false, locationName, PoisByName[locationName.Substring(5).Trim()]));
+                }
+            }
+            await Task.WhenAll(tasks);
         }
 
         private void OnItemUnlocked(string itemName, int unlockCount)
@@ -583,6 +605,8 @@ namespace Gw2Archipelago
                 .WithNamingConvention(UnderscoredNamingConvention.Instance)
                 .Build();
 
+            await AddNonGenericLocations();
+
             var reader = new StreamReader(ContentsManager.GetFileStream("achievements.yaml"));
             achievementData = deserializer.Deserialize<AchievementData>(reader);
 
@@ -617,33 +641,40 @@ namespace Gw2Archipelago
             {
                 var season = await Gw2ApiManager.Gw2ApiClient.V2.Stories.Seasons.GetAsync(storyline.GetSeasonId());
                 var storyIds = new HashSet<int>(season.Stories);
-                var quest_progress = new HashSet<int>(await Gw2ApiManager.Gw2ApiClient.V2.Characters[characterName.Value].Quests.GetAsync());
-
-
-                foreach (var quest_id in quest_progress)
+                try
                 {
-                    logger.Debug("Quest Entry: {}", quest_id);
+                    var quest_progress = new HashSet<int>(await Gw2ApiManager.Gw2ApiClient.V2.Characters[characterName.Value].Quests.GetAsync());
+
+
+                    foreach (var quest_id in quest_progress)
+                    {
+                        logger.Debug("Quest Entry: {}", quest_id);
+                    }
+
+                    var all_quests = await Gw2ApiManager.Gw2ApiClient.V2.Quests.AllAsync();
+                    foreach (var quest in all_quests)
+                    {
+                        if (!storyIds.Contains(quest.Story))
+                        {
+                            logger.Debug("Quest not in story: {} ({})", quest.Name, quest.Id);
+                            continue;
+                        }
+
+                        if (quest_progress.Contains(quest.Id))
+                        {
+                            logger.Debug("Quest already done: {}", quest.Name);
+                            continue;
+                        }
+
+
+
+                        logger.Debug("Quest added to list: {} ({})", quest.Name, quest.Id);
+                        quests.Add(quest);
+                    }
                 }
-
-                var all_quests = await Gw2ApiManager.Gw2ApiClient.V2.Quests.AllAsync();
-                foreach (var quest in all_quests)
+                catch (Exception ex)
                 {
-                    if (!storyIds.Contains(quest.Story))
-                    {
-                        logger.Debug("Quest not in story: {} ({})", quest.Name, quest.Id);
-                        continue;
-                    }
-
-                    if (quest_progress.Contains(quest.Id))
-                    {
-                        logger.Debug("Quest already done: {}", quest.Name);
-                        continue;
-                    }
-
-                    
-
-                    logger.Debug("Quest added to list: {} ({})", quest.Name, quest.Id);
-                    quests.Add(quest);
+                    logger.Warn("Could not generate quest locations for {}", characterName.Value);
                 }
 
             }
@@ -743,13 +774,24 @@ namespace Gw2Archipelago
         }
 
 
-        private FileStream waitForFile(string filename, int timeout)
+        private FileStream waitForFile(string filename, int timeout, bool readOnly)
         {
             for (int i = 0; i < timeout; ++i)
             {
                 try
                 {
-                    return new FileStream(filePrefix + filename, FileMode.Create, FileAccess.Write, FileShare.None);
+                    if (readOnly)
+                    {
+                        if (!SystemFile.Exists(filePrefix + filename))
+                        {
+                            return null;
+                        }
+                        return new FileStream(filePrefix + filename, FileMode.Open, FileAccess.Read, FileShare.Read);
+                    }
+                    else
+                    {
+                        return new FileStream(filePrefix + filename, FileMode.Create, FileAccess.Write, FileShare.None);
+                    }
                 }
                 catch (Exception)
                 {
@@ -763,7 +805,7 @@ namespace Gw2Archipelago
         private async Task serialize()
         {
             {
-                FileStream stream = waitForFile("AchievementLocations.json", 10);
+                FileStream stream = waitForFile("AchievementLocations.json", 10, false);
                 if (stream == null)
                 {
                     return;
@@ -771,7 +813,7 @@ namespace Gw2Archipelago
                 await JsonSerializer.SerializeAsync(stream, LocationChecker.GetAchievementLocations());
             }
             {
-                FileStream stream = waitForFile("QuestStatus.json", 10);
+                FileStream stream = waitForFile("QuestStatus.json", 10, false);
                 if (stream == null)
                 {
                     return;
@@ -779,7 +821,7 @@ namespace Gw2Archipelago
                 await JsonSerializer.SerializeAsync(stream, LocationChecker.GetQuestStatus());
             }
             {
-                FileStream stream = waitForFile("savedData.json", 10);
+                FileStream stream = waitForFile("savedData.json", 10, false);
                 if (stream == null)
                 {
                     return;
@@ -809,11 +851,6 @@ namespace Gw2Archipelago
                 };
                 cornerIcon.Click += ToggleWindow;
             }
-        }
-
-        private void UpdateAchievementProgress (AchievementLocation location)
-        {
-            logger.Debug("Updating UI for {name}", location.Achievement.Name);
         }
 
         private async void SendLocationCompletion (AchievementLocation location)
