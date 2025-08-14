@@ -161,7 +161,7 @@ namespace Gw2Archipelago
                     button.Location = new Point(0, locationPanelY);
                     locationPanelY += button.Height + 5;
                     button.CurrentFill = 0;
-                    genericLocationButtons.Add(quest.Name, button);
+                    genericLocationButtons.Add(quest.Id.ToString(), button);
 
                 }
             }
@@ -410,7 +410,7 @@ namespace Gw2Archipelago
 
         internal void OnQuestComplete(Location location, Quest quest)
         {
-            MarkGenericLocationComplete(quest.Name);
+            MarkGenericLocationComplete(quest.Id.ToString());
             RefreshRegions();
         }
 

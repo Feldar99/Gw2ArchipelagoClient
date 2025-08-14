@@ -1,6 +1,6 @@
 {
   "name": "Archipelago",
-  "version": "0.4.3",
+  "version": "0.4.4",
   "namespace": "feldar.archipelago",
   "package": "Gw2Archipelago.dll",
   "manifest_version": 1,
