@@ -94,7 +94,7 @@ namespace Gw2Archipelago
                     return Storyline.HEART_OF_THORNS;
                 case Storyline.SEASON_4:
                 case Storyline.ICEBROOD_SAGA:
-                    return Storyline.HEART_OF_THORNS;
+                    return Storyline.PATH_OF_FIRE;
                 default:
                     return Storyline.CORE;
             }
