@@ -1,6 +1,7 @@
 ﻿using Blish_HUD;
 using System;
 using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
 using YamlDotNet.Core;
 using YamlDotNet.Core.Events;
 using YamlDotNet.Core.Tokens;
@@ -17,16 +18,43 @@ namespace Gw2Archipelago
         public Dictionary<Guid, string> groups;
     }
 
-    class AnyGroup
+    abstract class LogicGroup
     {
         public HashSet<string> entries = new HashSet<string>();
-        public List<AllGroup> allGroups = new List<AllGroup>();
+
+        protected abstract IEnumerable<LogicGroup> GetSubgroups();
+
+        public HashSet<string> GetEntriesRecursive()
+        {
+            HashSet<string> results = new HashSet<string>(entries);
+            foreach (var group in GetSubgroups())
+            {
+                results.UnionWith(group.GetEntriesRecursive());
+            }
+
+            return results;
+        }
+
     }
 
-    class AllGroup
+    class AnyGroup : LogicGroup
     {
-        public HashSet<string> entries = new HashSet<string>();
+        public List<AllGroup> allGroups = new List<AllGroup>();
+
+        protected override IEnumerable<LogicGroup> GetSubgroups()
+        {
+            return allGroups;
+        }
+    }
+
+    class AllGroup : LogicGroup
+    {
         public List<AnyGroup> anyGroups = new List<AnyGroup>();
+
+        protected override IEnumerable<LogicGroup> GetSubgroups()
+        {
+            return anyGroups;
+        }
     }
 
     enum ProgressBitType
@@ -53,12 +81,14 @@ namespace Gw2Archipelago
 
         public HashSet<string> Tags;
 
+        // regions
         public AnyGroup Disciplines;
         public AnyGroup Maps;
         public AnyGroup Quests;
         public AnyGroup RewardTracks;
         public AnyGroup ContainedIn;
-        public MapType MapType;
+        public AnyGroup SoldBy;
+        public MapType? MapType;
         public string Activity;
 
         // filters
@@ -66,11 +96,38 @@ namespace Gw2Archipelago
         public AnyGroup RequiredItems;
         public AnyGroup RequiredRaces;
         public AnyGroup RequiredAchievements;
-        public AnyGroup SoldBy;
         public Profession RequiredProfession;
         public Festival Festival;
         public Storyline Storyline;
         public Order RequiredOrder;
+
+        public HashSet<string> GetRegions()
+        {
+            HashSet<string> regions = new HashSet<string>();
+
+            if (Disciplines != null)
+            {
+                regions.UnionWith(Disciplines.GetEntriesRecursive());
+            }
+            if (Maps != null)
+            {
+                regions.UnionWith(Maps.GetEntriesRecursive());
+            }
+            if (Quests != null)
+            {
+                regions.UnionWith(Quests.GetEntriesRecursive());
+            }
+            if (MapType.HasValue)
+            {
+                regions.Add(MapType.Value.ToString());
+            }
+            if (!string.IsNullOrEmpty(Activity))
+            {
+                regions.Add(Activity);
+            }
+
+            return regions;
+        }
 
     }
 
@@ -79,32 +136,61 @@ namespace Gw2Archipelago
         public string Name;
 
         public HashSet<string> Tags;
-
         public int? MaxAmount;
+
+        // regions
         public AnyGroup Disciplines;
         public AnyGroup Maps;
         public AnyGroup Quests;
         public AnyGroup RewardTracks;
         public AnyGroup ContainedIn;
-        public MapType MapType;
+        public AnyGroup SoldBy;
+        public MapType? MapType;
         public string Activity;
 
         // filters
         public AnyGroup RequiredItems;
         public AnyGroup RequiredRaces;
         public AnyGroup RequiredAchievements;
-        public AnyGroup SoldBy;
         public Profession RequiredProfession;
         public Festival Festival;
         public Storyline Storyline;
         public Order RequiredOrder;
 
         public List<ProgressBit> bits;
+
+        public HashSet<string> GetRegions()
+        {
+            HashSet<string> regions = new HashSet<string>();
+
+            if (Disciplines != null)
+            {
+                regions.UnionWith(Disciplines.GetEntriesRecursive());
+            }
+            if (Maps != null)
+            {
+                regions.UnionWith(Maps.GetEntriesRecursive());
+            }
+            if (Quests != null)
+            {
+                regions.UnionWith(Quests.GetEntriesRecursive());
+            }
+            if (MapType.HasValue)
+            {
+                regions.Add(MapType.Value.ToString());
+            }
+            if (!string.IsNullOrEmpty(Activity))
+            {
+                regions.Add(Activity);
+            }
+
+            return regions;
+        }
     }
 
-    internal class YamLogicGroupConverter : IYamlTypeConverter
+    internal class YamLogicGroupConverter<T> : IYamlTypeConverter
     {
-        private static readonly Logger logger = Logger.GetLogger<YamLogicGroupConverter>();
+        private static readonly Logger logger = Logger.GetLogger<YamLogicGroupConverter<T>>();
         public bool Accepts(Type type)
         {
             //logger.Debug(type.FullName);

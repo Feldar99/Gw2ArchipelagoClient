@@ -70,7 +70,7 @@ namespace Gw2Archipelago
                 .Union(achievementLocations.Values)
                 .Union(pointsOfInterest.Values.SelectMany(poi => poi))
                 .Union(questStatus.QuestLocations)
-                .Where(loc => loc.Region.Equals(region))
+                .Where(loc => loc.Regions.Contains(region))
                 .ToList();
             return locations;
         }
@@ -85,7 +85,7 @@ namespace Gw2Archipelago
             return questStatus.QuestLocations;
         }
 
-        public async Task AddAchievmentLocation(int achievementId, Achievement achievement, AchievementCategory category, AccountAchievement progress, string name, string region)
+        public async Task AddAchievmentLocation(int achievementId, Achievement achievement, AchievementCategory category, AccountAchievement progress, string name, IEnumerable<string> regions)
         {
             if (achievement == null)
             {
@@ -96,8 +96,8 @@ namespace Gw2Archipelago
             location.Achievement = achievement;
             location.Category = category;
             location.LocationName = name;
-            location.Region = region;
-            Regions.Add(region);
+            location.Regions.UnionWith(regions);
+            Regions.UnionWith(regions);
             // Don't override serialized data on load
             location.Progress = progress;
             location.Id = achievementId;
@@ -109,7 +109,7 @@ namespace Gw2Archipelago
         {
             var id = location.Id;
             location.Achievement = await module.Gw2ApiManager.Gw2ApiClient.V2.Achievements.GetAsync(id);
-            Regions.Add(location.Region);
+            Regions.UnionWith(location.Regions);
             achievementLocations.Add(id, location);
         }
 
@@ -118,7 +118,7 @@ namespace Gw2Archipelago
             Location location = new Location();
             location.LocationName = name;
             location.LocationComplete = complete;
-            location.Region = region;
+            location.Regions.Add(region);
             Regions.Add(region);
             questStatus.QuestLocations.Enqueue(location);
         }
@@ -128,7 +128,7 @@ namespace Gw2Archipelago
             var location = new ItemLocation();
             location.LocationName = name;
             location.LocationComplete = complete;
-            location.Region = region;
+            location.Regions.Add(region);
             Regions.Add(region);
 
             foreach (var id in itemIds)
@@ -145,8 +145,8 @@ namespace Gw2Archipelago
             var location = new PoiLocation(poi);
             location.LocationName = name;
             location.LocationComplete = complete;
-            location.Region = map.Name;
-            Regions.Add(location.Region);
+            location.Regions.Add(map.Name);
+            Regions.UnionWith(location.Regions);
             poiMutex.WaitOne(10_000);
             if (!pointsOfInterest.ContainsKey(poi.mapId))
             {

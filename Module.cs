@@ -20,6 +20,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.Composition;
 using System.IO;
+using System.Linq;
 using System.ServiceModel.Channels;
 using System.Text.Json;
 using System.Threading;
@@ -65,6 +66,7 @@ namespace Gw2Archipelago
 
         private GenericAchievementData genericAchievementData;
         private Dictionary<int, AchievementData> achievementData;
+        private Dictionary<string, int> achievementIdsByName;
         private SavedData savedData;
 
         private Random random = new Random();
@@ -186,7 +188,8 @@ namespace Gw2Archipelago
                 {
                     var deserializer = new DeserializerBuilder()
                         .WithNamingConvention(UnderscoredNamingConvention.Instance)
-                        .WithTypeConverter(new YamLogicGroupConverter())
+                        .WithTypeConverter(new YamLogicGroupConverter<string>())
+                        .WithTypeConverter(new YamLogicGroupConverter<int>())
                         .WithTypeConverter(new YamlMapTypeConverter())
                         .WithTypeConverter(new YamlStorylineConverter())
                         .WithTypeConverter(new YamlFestivalConverter())
@@ -552,7 +555,24 @@ namespace Gw2Archipelago
 
                         }
                         
-                        await LocationChecker.AddAchievmentLocation(achievementId, achievement, category, progress, locationName, region.GetName());
+                        HashSet<string> regions = new HashSet<string>();
+                        regions.Add(region.GetName());
+                        if (achievementData.ContainsKey(achievementId))
+                        {
+                            regions.UnionWith(achievementData[achievementId].GetRegions());
+                            var bits = achievementData[achievementId].bits;
+                            if (bits != null)
+                            {
+                                for (int i = 0; i < bits.Count; i++)
+                                {
+                                    if (!achievementProgress.ContainsKey(achievementId) || !achievementProgress[achievementId].Bits.Contains(i))
+                                    {
+                                        regions.UnionWith(bits[i].GetRegions());
+                                    }
+                                }
+                            }
+                        }
+                        await LocationChecker.AddAchievmentLocation(achievementId, achievement, category, progress, locationName, regions);
                         return true;
 
                     }
