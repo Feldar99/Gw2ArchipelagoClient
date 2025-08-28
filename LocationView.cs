@@ -133,7 +133,7 @@ namespace Gw2Archipelago
             var achievementLocations = module.LocationChecker.GetAchievementLocations();
             foreach (var achievementLocation in achievementLocations)
             {
-                if (selectedRegion == null || selectedRegion.Equals(achievementLocation.Region))
+                if (selectedRegion == null || achievementLocation.Regions.Contains(selectedRegion))
                 {
                     AddAchievementButton(achievementLocation);
                 }
@@ -161,7 +161,7 @@ namespace Gw2Archipelago
                     button.Location = new Point(0, locationPanelY);
                     locationPanelY += button.Height + 5;
                     button.CurrentFill = 0;
-                    genericLocationButtons.Add(quest.Name, button);
+                    genericLocationButtons.Add(quest.Id.ToString(), button);
 
                 }
             }
@@ -257,7 +257,7 @@ namespace Gw2Archipelago
 
             foreach (var location in itemLocations)
             {
-                if (selectedRegion != null && !location.Region.Equals(selectedRegion))
+                if (selectedRegion != null && !location.HasRegion(selectedRegion))
                 {
                     continue;
                 }
@@ -286,7 +286,7 @@ namespace Gw2Archipelago
 
             foreach (var location in poiLocations)
             {
-                if (selectedRegion != null && !location.Region.Equals(selectedRegion))
+                if (selectedRegion != null && !location.HasRegion(selectedRegion))
                 {
                     continue;
                 }
@@ -397,7 +397,7 @@ namespace Gw2Archipelago
         {
             if (quest != null)
             {
-                MarkGenericLocationComplete(quest.Name);
+                MarkGenericLocationComplete(quest.Id.ToString());
             }
 
             // Refresh Regions even if quest is null, because the completed count will update

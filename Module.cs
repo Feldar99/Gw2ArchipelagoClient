@@ -20,6 +20,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.Composition;
 using System.IO;
+using System.Linq;
 using System.ServiceModel.Channels;
 using System.Text.Json;
 using System.Threading;
@@ -63,7 +64,9 @@ namespace Gw2Archipelago
         private CornerIcon                     cornerIcon;
         private ArchipelagoWindow              mainWindow;
 
-        private AchievementData achievementData;
+        private GenericAchievementData genericAchievementData;
+        private Dictionary<int, AchievementData> achievementData;
+        private Dictionary<string, int> achievementIdsByName;
         private SavedData savedData;
 
         private Random random = new Random();
@@ -182,9 +185,19 @@ namespace Gw2Archipelago
                 profession.Value = characterProfession;
                 race.Value = characterRace;
 
-                var deserializer = new DeserializerBuilder()
-                    .WithNamingConvention(LowerCaseNamingConvention.Instance)
-                    .Build();
+                {
+                    var deserializer = new DeserializerBuilder()
+                        .WithNamingConvention(UnderscoredNamingConvention.Instance)
+                        .WithTypeConverter(new YamLogicGroupConverter<string>())
+                        .WithTypeConverter(new YamLogicGroupConverter<int>())
+                        .WithTypeConverter(new YamlMapTypeConverter())
+                        .WithTypeConverter(new YamlStorylineConverter())
+                        .WithTypeConverter(new YamlFestivalConverter())
+                        .Build();
+                    
+                    var reader = new StreamReader(ContentsManager.GetFileStream("Achievements.yaml"));
+                    achievementData = deserializer.Deserialize<Dictionary<int, AchievementData>>(reader);
+                }
 
                 await AddNonGenericLocations();
 
@@ -364,7 +377,7 @@ namespace Gw2Archipelago
             {
                 var groupIndex = random.Next(groups.Count);
                 var groupGuid = groups[groupIndex];
-                var groupReq = achievementData.groups[groupGuid];
+                var groupReq = genericAchievementData.groups[groupGuid];
 
                 var groupRegion = RegionExtensions.FromName(groupReq);
                 var groupStoryline = StorylineExtensions.FromName(groupReq);
@@ -396,9 +409,9 @@ namespace Gw2Archipelago
 
                     Region? categoryRegion = null;
                     Storyline? categoryStoryline = null;
-                    if (achievementData.categories.ContainsKey(categoryId))
+                    if (genericAchievementData.categories.ContainsKey(categoryId))
                     {
-                        var categoryReq = achievementData.categories[categoryId];
+                        var categoryReq = genericAchievementData.categories[categoryId];
 
                         if (categoryReq.Equals("None"))
                         {
@@ -447,9 +460,9 @@ namespace Gw2Archipelago
 
                         Region? achievementRegion = null;
                         Storyline? achievementStoryline = null;
-                        if (achievementData.achievments.ContainsKey(achievementId))
+                        if (genericAchievementData.achievments.ContainsKey(achievementId))
                         {
-                            var achievementReq = achievementData.achievments[achievementId];
+                            var achievementReq = genericAchievementData.achievments[achievementId];
 
                             achievementRegion = RegionExtensions.FromName(achievementReq);
                             achievementStoryline = StorylineExtensions.FromName(achievementReq);
@@ -558,7 +571,24 @@ namespace Gw2Archipelago
 
                         }
                         
-                        await LocationChecker.AddAchievmentLocation(achievementId, achievement, category, progress, locationName, region.GetName());
+                        HashSet<string> regions = new HashSet<string>();
+                        regions.Add(region.GetName());
+                        if (achievementData.ContainsKey(achievementId))
+                        {
+                            regions.UnionWith(achievementData[achievementId].GetRegions());
+                            var bits = achievementData[achievementId].bits;
+                            if (bits != null)
+                            {
+                                for (int i = 0; i < bits.Count; i++)
+                                {
+                                    if (!achievementProgress.ContainsKey(achievementId) || !achievementProgress[achievementId].Bits.Contains(i))
+                                    {
+                                        regions.UnionWith(bits[i].GetRegions());
+                                    }
+                                }
+                            }
+                        }
+                        await LocationChecker.AddAchievmentLocation(achievementId, achievement, category, progress, locationName, regions);
                         return true;
 
                     }
@@ -607,8 +637,8 @@ namespace Gw2Archipelago
 
             await AddNonGenericLocations();
 
-            var reader = new StreamReader(ContentsManager.GetFileStream("achievements.yaml"));
-            achievementData = deserializer.Deserialize<AchievementData>(reader);
+            var reader = new StreamReader(ContentsManager.GetFileStream("achievements_generic.yaml"));
+            genericAchievementData = deserializer.Deserialize<GenericAchievementData>(reader);
 
             foreach (var item in SlotData)
             {
@@ -616,7 +646,7 @@ namespace Gw2Archipelago
             }
             var storyline = (Storyline)Enum.ToObject(typeof(Storyline), SlotData["Storyline"]);
             var storylineName = storyline.GetName();
-            var regionToGroups = new Dictionary<string, List<Guid>>();
+            var groups = new Dictionary<Storyline, Dictionary<string, List<Guid>>>();
             var regionToCategories = new Dictionary<string, HashSet<int>>();
             var achievementProgress = new Dictionary<int, AccountAchievement>();
 
@@ -684,8 +714,8 @@ namespace Gw2Archipelago
             }
             LocationChecker.AddQuests(quests);
 
-            var visitedAchievements = new Dictionary<string, HashSet<int>>();
-            var visitedCategories = new Dictionary<string, HashSet<int>>();
+            var visitedAchievements = new Dictionary<Storyline, Dictionary<string, HashSet<int>>>();
+            var visitedCategories = new Dictionary<Storyline, Dictionary<string, HashSet<int>>>();
             var unsuccessfulLocations = new List<string>();
             var incompleteQuestLocations = 0;
             foreach (long location_id in ApSession.Locations.AllMissingLocations) {
@@ -703,15 +733,21 @@ namespace Gw2Archipelago
                     continue;
                 }
 
-                if (!regionToGroups.ContainsKey(regionName))
+                if (!groups.ContainsKey(storyline))
                 {
-                    regionToGroups[regionName] = new List<Guid>(achievementData.groups.Keys);
-                    visitedAchievements[regionName] = new HashSet<int>();
-                    visitedCategories[regionName] = new HashSet<int>();
+                    groups[storyline] = new Dictionary<string, List<Guid>>();
+                    visitedAchievements[storyline] = new Dictionary<string, HashSet<int>>();
+                    visitedCategories[storyline] = new Dictionary<string, HashSet<int>>();
+                }
+                if (!groups[storyline].ContainsKey(regionName))
+                {
+                    groups[storyline][regionName] = new List<Guid>(genericAchievementData.groups.Keys);
+                    visitedAchievements[storyline][regionName] = new HashSet<int>();
+                    visitedCategories[storyline][regionName] = new HashSet<int>();
                 }
                 if (locationType.Equals("ACHIEVEMENT"))
                 {
-                    success = await randomAchievement(regionToGroups[regionName], achievementProgress, region.Value, storyline, locationName, visitedCategories[regionName], visitedAchievements[regionName]);
+                    success = await randomAchievement(groups[storyline][regionName], achievementProgress, region.Value, storyline, locationName, visitedCategories[storyline][regionName], visitedAchievements[storyline][regionName]);
                 }
                 else if (locationType.Equals("QUEST"))
                 {
@@ -735,11 +771,27 @@ namespace Gw2Archipelago
                 bool success = false;
                 if (locationType.Equals("ACHIEVEMENT"))
                 {
-                    success = await randomAchievement(regionToGroups["OPEN_WORLD"], achievementProgress, Region.OPEN_WORLD, storyline, locationName, visitedCategories["OPEN_WORLD"], visitedAchievements["OPEN_WORLD"]);
+                    success = await randomAchievement(groups[storyline]["OPEN_WORLD"], achievementProgress, Region.OPEN_WORLD, storyline, locationName, visitedCategories[storyline]["OPEN_WORLD"], visitedAchievements[storyline]["OPEN_WORLD"]);
                     var fallbackStoryline = storyline.GetFallback();
                     while (!success && fallbackStoryline != null)
                     {
-                        success = await randomAchievement(regionToGroups["OPEN_WORLD"], achievementProgress, Region.OPEN_WORLD, fallbackStoryline, locationName, visitedCategories["OPEN_WORLD"], visitedAchievements["OPEN_WORLD"]);
+
+                        if (!groups.ContainsKey(fallbackStoryline.Value))
+                        {
+                            groups[fallbackStoryline.Value] = new Dictionary<string, List<Guid>>();
+                            visitedAchievements[fallbackStoryline.Value] = new Dictionary<string, HashSet<int>>();
+                            visitedCategories[fallbackStoryline.Value] = new Dictionary<string, HashSet<int>>();
+                        }
+                        if (!groups[fallbackStoryline.Value].ContainsKey("OPEN_WORLD"))
+                        {
+                            groups[fallbackStoryline.Value]["OPEN_WORLD"] = new List<Guid>(genericAchievementData.groups.Keys);
+                            visitedAchievements[fallbackStoryline.Value]["OPEN_WORLD"] = new HashSet<int>();
+                            visitedCategories[fallbackStoryline.Value]["OPEN_WORLD"] = new HashSet<int>();
+                        }
+
+
+                        success = await randomAchievement(groups[fallbackStoryline.Value]["OPEN_WORLD"], achievementProgress, Region.OPEN_WORLD, fallbackStoryline, locationName, visitedCategories[fallbackStoryline.Value]["OPEN_WORLD"], visitedAchievements[fallbackStoryline.Value]["OPEN_WORLD"]);
+                        fallbackStoryline = fallbackStoryline.Value.GetFallback();
                     }
                 }
 

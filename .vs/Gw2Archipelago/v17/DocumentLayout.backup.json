@@ -3,37 +3,39 @@
   "WorkspaceRootPath": "C:\\Users\\pschw\\OneDrive\\Documents\\GitHub\\Gw2Archipelago\\Client\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{D4F7D87E-488A-4D2F-8846-BFCA015FB381}|Gw2Archipelago.csproj|c:\\users\\pschw\\onedrive\\documents\\github\\gw2archipelago\\client\\manifest.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{D4F7D87E-488A-4D2F-8846-BFCA015FB381}|Gw2Archipelago.csproj|solutionrelative:manifest.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+      "AbsoluteMoniker": "D:0:0:{D4F7D87E-488A-4D2F-8846-BFCA015FB381}|Gw2Archipelago.csproj|C:\\Users\\pschw\\OneDrive\\Documents\\GitHub\\Gw2Archipelago\\Client\\locationview.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D4F7D87E-488A-4D2F-8846-BFCA015FB381}|Gw2Archipelago.csproj|solutionrelative:locationview.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{D4F7D87E-488A-4D2F-8846-BFCA015FB381}|Gw2Archipelago.csproj|C:\\Users\\pschw\\OneDrive\\Documents\\GitHub\\Gw2Archipelago\\Client\\itemview.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D4F7D87E-488A-4D2F-8846-BFCA015FB381}|Gw2Archipelago.csproj|solutionrelative:itemview.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{D4F7D87E-488A-4D2F-8846-BFCA015FB381}|Gw2Archipelago.csproj|c:\\users\\pschw\\onedrive\\documents\\github\\gw2archipelago\\client\\module.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D4F7D87E-488A-4D2F-8846-BFCA015FB381}|Gw2Archipelago.csproj|solutionrelative:module.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{D4F7D87E-488A-4D2F-8846-BFCA015FB381}|Gw2Archipelago.csproj|C:\\Users\\pschw\\OneDrive\\Documents\\GitHub\\Gw2Archipelago\\Client\\itemlocation.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D4F7D87E-488A-4D2F-8846-BFCA015FB381}|Gw2Archipelago.csproj|solutionrelative:itemlocation.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{D4F7D87E-488A-4D2F-8846-BFCA015FB381}|Gw2Archipelago.csproj|C:\\Users\\pschw\\OneDrive\\Documents\\GitHub\\Gw2Archipelago\\Client\\location.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D4F7D87E-488A-4D2F-8846-BFCA015FB381}|Gw2Archipelago.csproj|solutionrelative:location.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{00000000-0000-0000-0000-000000000000}|\u003CSolution\u003E|Gw2Archipelago||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|"
+      "AbsoluteMoniker": "D:0:0:{D4F7D87E-488A-4D2F-8846-BFCA015FB381}|Gw2Archipelago.csproj|c:\\users\\pschw\\onedrive\\documents\\github\\gw2archipelago\\client\\locationchecker.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D4F7D87E-488A-4D2F-8846-BFCA015FB381}|Gw2Archipelago.csproj|solutionrelative:locationchecker.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{D4F7D87E-488A-4D2F-8846-BFCA015FB381}|Gw2Archipelago.csproj|C:\\Users\\pschw\\OneDrive\\Documents\\GitHub\\Gw2Archipelago\\Client\\profession.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D4F7D87E-488A-4D2F-8846-BFCA015FB381}|Gw2Archipelago.csproj|solutionrelative:profession.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{D4F7D87E-488A-4D2F-8846-BFCA015FB381}|Gw2Archipelago.csproj|c:\\users\\pschw\\onedrive\\documents\\github\\gw2archipelago\\client\\achievementdata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D4F7D87E-488A-4D2F-8846-BFCA015FB381}|Gw2Archipelago.csproj|solutionrelative:achievementdata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\pschw\\AppData\\Local\\SourceServer\\c5dcb5e2957d5b4f891ff366db78530993b06acdd415613e6faa1bf23ca51d75\\Blish HUD\\GameServices\\Modules\\Module.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D4F7D87E-488A-4D2F-8846-BFCA015FB381}|Gw2Archipelago.csproj|C:\\Users\\pschw\\OneDrive\\Documents\\GitHub\\Gw2Archipelago\\Client\\map.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D4F7D87E-488A-4D2F-8846-BFCA015FB381}|Gw2Archipelago.csproj|solutionrelative:map.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{D4F7D87E-488A-4D2F-8846-BFCA015FB381}|Gw2Archipelago.csproj|C:\\Users\\pschw\\OneDrive\\Documents\\GitHub\\Gw2Archipelago\\Client\\storyline.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{D4F7D87E-488A-4D2F-8846-BFCA015FB381}|Gw2Archipelago.csproj|solutionrelative:storyline.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\pschw\\AppData\\Local\\Temp\\.vsdbgsrc\\6ac4d04c7f75ecd03c7cfa3696a4fa1958ed6105571a6467484b062446c35824\\Module.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\pschw\\AppData\\Local\\SourceServer\\01a7b5561ab60dde3b8db0bd90c7dea6f8dceaf70735d0a4d857b6d0b92b6d41\\Blish HUD\\Library\\Glide\\Tween.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{D4F7D87E-488A-4D2F-8846-BFCA015FB381}|Gw2Archipelago.csproj|C:\\Users\\pschw\\OneDrive\\Documents\\GitHub\\Gw2Archipelago\\Client\\itemicon.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D4F7D87E-488A-4D2F-8846-BFCA015FB381}|Gw2Archipelago.csproj|solutionrelative:itemicon.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{D4F7D87E-488A-4D2F-8846-BFCA015FB381}|Gw2Archipelago.csproj|C:\\Users\\pschw\\OneDrive\\Documents\\GitHub\\Gw2Archipelago\\Client\\manifest.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{D4F7D87E-488A-4D2F-8846-BFCA015FB381}|Gw2Archipelago.csproj|solutionrelative:manifest.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     }
   ],
   "DocumentGroupContainers": [
@@ -43,47 +45,115 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 3,
+          "SelectedChildIndex": 5,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "Gw2Archipelago",
-              "DocumentMoniker": "C:\\Users\\pschw\\OneDrive\\Documents\\GitHub\\Gw2Archipelago\\Client\\Gw2Archipelago.csproj",
-              "RelativeDocumentMoniker": "Gw2Archipelago.csproj",
-              "ToolTip": "C:\\Users\\pschw\\OneDrive\\Documents\\GitHub\\Gw2Archipelago\\Client\\Gw2Archipelago.csproj",
-              "RelativeToolTip": "Gw2Archipelago.csproj",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2025-06-29T23:41:10.078Z"
+              "DocumentIndex": 4,
+              "Title": "AchievementData.cs",
+              "DocumentMoniker": "C:\\Users\\pschw\\OneDrive\\Documents\\GitHub\\Gw2Archipelago\\Client\\AchievementData.cs",
+              "RelativeDocumentMoniker": "AchievementData.cs",
+              "ToolTip": "C:\\Users\\pschw\\OneDrive\\Documents\\GitHub\\Gw2Archipelago\\Client\\AchievementData.cs",
+              "RelativeToolTip": "AchievementData.cs",
+              "ViewState": "AgIAAFEAAAAAAAAAAAAwwFkAAAAfAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-26T03:30:07.89Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "ItemLocation.cs",
-              "DocumentMoniker": "C:\\Users\\pschw\\OneDrive\\Documents\\GitHub\\Gw2Archipelago\\Client\\ItemLocation.cs",
-              "RelativeDocumentMoniker": "ItemLocation.cs",
-              "ToolTip": "C:\\Users\\pschw\\OneDrive\\Documents\\GitHub\\Gw2Archipelago\\Client\\ItemLocation.cs",
-              "RelativeToolTip": "ItemLocation.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "DocumentIndex": 3,
+              "Title": "LocationChecker.cs",
+              "DocumentMoniker": "C:\\Users\\pschw\\OneDrive\\Documents\\GitHub\\Gw2Archipelago\\Client\\LocationChecker.cs",
+              "RelativeDocumentMoniker": "LocationChecker.cs",
+              "ToolTip": "C:\\Users\\pschw\\OneDrive\\Documents\\GitHub\\Gw2Archipelago\\Client\\LocationChecker.cs",
+              "RelativeToolTip": "LocationChecker.cs",
+              "ViewState": "AgIAAHMAAAAAAAAAAIAywIIAAAAbAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-29T23:37:10.798Z"
+              "WhenOpened": "2025-08-28T12:39:43.429Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Module.cs",
+              "DocumentMoniker": "C:\\Users\\pschw\\OneDrive\\Documents\\GitHub\\Gw2Archipelago\\Client\\Module.cs",
+              "RelativeDocumentMoniker": "Module.cs",
+              "ToolTip": "C:\\Users\\pschw\\OneDrive\\Documents\\GitHub\\Gw2Archipelago\\Client\\Module.cs",
+              "RelativeToolTip": "Module.cs",
+              "ViewState": "AgIAADACAAAAAAAAAAAQwDcCAABWAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-28T00:10:14.769Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 6,
-              "Title": "Module.cs",
-              "DocumentMoniker": "C:\\Users\\pschw\\AppData\\Local\\Temp\\.vsdbgsrc\\6ac4d04c7f75ecd03c7cfa3696a4fa1958ed6105571a6467484b062446c35824\\Module.cs",
-              "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\AppData\\Local\\Temp\\.vsdbgsrc\\6ac4d04c7f75ecd03c7cfa3696a4fa1958ed6105571a6467484b062446c35824\\Module.cs",
-              "ToolTip": "C:\\Users\\pschw\\AppData\\Local\\Temp\\.vsdbgsrc\\6ac4d04c7f75ecd03c7cfa3696a4fa1958ed6105571a6467484b062446c35824\\Module.cs [Read Only]",
-              "RelativeToolTip": "..\\..\\..\\..\\..\\AppData\\Local\\Temp\\.vsdbgsrc\\6ac4d04c7f75ecd03c7cfa3696a4fa1958ed6105571a6467484b062446c35824\\Module.cs [Read Only]",
-              "ViewState": "AgIAAHkAAAAAAAAAAAAlwIgAAAADAAAAAQAAAA==",
+              "Title": "Map.cs",
+              "DocumentMoniker": "C:\\Users\\pschw\\OneDrive\\Documents\\GitHub\\Gw2Archipelago\\Client\\Map.cs",
+              "RelativeDocumentMoniker": "Map.cs",
+              "ToolTip": "C:\\Users\\pschw\\OneDrive\\Documents\\GitHub\\Gw2Archipelago\\Client\\Map.cs",
+              "RelativeToolTip": "Map.cs",
+              "ViewState": "AgIAAD4AAAAAAAAAAAD4v1MAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-29T21:35:06.932Z",
-              "EditorCaption": " [Read Only]"
+              "WhenOpened": "2025-08-26T16:36:03.483Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "Storyline.cs",
+              "DocumentMoniker": "C:\\Users\\pschw\\OneDrive\\Documents\\GitHub\\Gw2Archipelago\\Client\\Storyline.cs",
+              "RelativeDocumentMoniker": "Storyline.cs",
+              "ToolTip": "C:\\Users\\pschw\\OneDrive\\Documents\\GitHub\\Gw2Archipelago\\Client\\Storyline.cs",
+              "RelativeToolTip": "Storyline.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAABgAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-29T21:03:58.669Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "LocationView.cs",
+              "DocumentMoniker": "C:\\Users\\pschw\\OneDrive\\Documents\\GitHub\\Gw2Archipelago\\Client\\LocationView.cs",
+              "RelativeDocumentMoniker": "LocationView.cs",
+              "ToolTip": "C:\\Users\\pschw\\OneDrive\\Documents\\GitHub\\Gw2Archipelago\\Client\\LocationView.cs",
+              "RelativeToolTip": "LocationView.cs",
+              "ViewState": "AgIAAO8AAAAAAAAAAAAuwAMBAAAvAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-28T21:13:22.575Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Location.cs",
+              "DocumentMoniker": "C:\\Users\\pschw\\OneDrive\\Documents\\GitHub\\Gw2Archipelago\\Client\\Location.cs",
+              "RelativeDocumentMoniker": "Location.cs",
+              "ToolTip": "C:\\Users\\pschw\\OneDrive\\Documents\\GitHub\\Gw2Archipelago\\Client\\Location.cs",
+              "RelativeToolTip": "Location.cs",
+              "ViewState": "AgIAAAoAAAAAAAAAAAAQwBEAAAA+AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-19T09:34:26.97Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Module.cs",
+              "DocumentMoniker": "C:\\Users\\pschw\\AppData\\Local\\SourceServer\\c5dcb5e2957d5b4f891ff366db78530993b06acdd415613e6faa1bf23ca51d75\\Blish HUD\\GameServices\\Modules\\Module.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\AppData\\Local\\SourceServer\\c5dcb5e2957d5b4f891ff366db78530993b06acdd415613e6faa1bf23ca51d75\\Blish HUD\\GameServices\\Modules\\Module.cs",
+              "ToolTip": "C:\\Users\\pschw\\AppData\\Local\\SourceServer\\c5dcb5e2957d5b4f891ff366db78530993b06acdd415613e6faa1bf23ca51d75\\Blish HUD\\GameServices\\Modules\\Module.cs [Read Only]",
+              "RelativeToolTip": "..\\..\\..\\..\\..\\AppData\\Local\\SourceServer\\c5dcb5e2957d5b4f891ff366db78530993b06acdd415613e6faa1bf23ca51d75\\Blish HUD\\GameServices\\Modules\\Module.cs [Read Only]",
+              "ViewState": "AgIAAHoAAAAAAAAAAAAjwIoAAAAUAAAAAQAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-28T14:58:05.854Z",
+              "EditorCaption": " [Read Only]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
               "Title": "manifest.json",
               "DocumentMoniker": "C:\\Users\\pschw\\OneDrive\\Documents\\GitHub\\Gw2Archipelago\\Client\\manifest.json",
               "RelativeDocumentMoniker": "manifest.json",
@@ -91,69 +161,7 @@
               "RelativeToolTip": "manifest.json",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAATAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2025-06-29T20:37:08.102Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "Profession.cs",
-              "DocumentMoniker": "C:\\Users\\pschw\\OneDrive\\Documents\\GitHub\\Gw2Archipelago\\Client\\Profession.cs",
-              "RelativeDocumentMoniker": "Profession.cs",
-              "ToolTip": "C:\\Users\\pschw\\OneDrive\\Documents\\GitHub\\Gw2Archipelago\\Client\\Profession.cs",
-              "RelativeToolTip": "Profession.cs",
-              "ViewState": "AgIAADUAAAAAAAAAAAAwwDwAAAAqAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-29T23:51:36.676Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "Storyline.cs",
-              "DocumentMoniker": "C:\\Users\\pschw\\OneDrive\\Documents\\GitHub\\Gw2Archipelago\\Client\\Storyline.cs",
-              "RelativeDocumentMoniker": "Storyline.cs",
-              "ToolTip": "C:\\Users\\pschw\\OneDrive\\Documents\\GitHub\\Gw2Archipelago\\Client\\Storyline.cs",
-              "RelativeToolTip": "Storyline.cs",
-              "ViewState": "AgIAAF4AAAAAAAAAAAAkwGcAAAApAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-29T21:03:58.669Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "ItemView.cs",
-              "DocumentMoniker": "C:\\Users\\pschw\\OneDrive\\Documents\\GitHub\\Gw2Archipelago\\Client\\ItemView.cs",
-              "RelativeDocumentMoniker": "ItemView.cs",
-              "ToolTip": "C:\\Users\\pschw\\OneDrive\\Documents\\GitHub\\Gw2Archipelago\\Client\\ItemView.cs",
-              "RelativeToolTip": "ItemView.cs",
-              "ViewState": "AgIAAFEAAAAAAAAAAAAlwGAAAAACAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-28T16:30:53.939Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "Tween.cs",
-              "DocumentMoniker": "C:\\Users\\pschw\\AppData\\Local\\SourceServer\\01a7b5561ab60dde3b8db0bd90c7dea6f8dceaf70735d0a4d857b6d0b92b6d41\\Blish HUD\\Library\\Glide\\Tween.cs",
-              "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\AppData\\Local\\SourceServer\\01a7b5561ab60dde3b8db0bd90c7dea6f8dceaf70735d0a4d857b6d0b92b6d41\\Blish HUD\\Library\\Glide\\Tween.cs",
-              "ToolTip": "C:\\Users\\pschw\\AppData\\Local\\SourceServer\\01a7b5561ab60dde3b8db0bd90c7dea6f8dceaf70735d0a4d857b6d0b92b6d41\\Blish HUD\\Library\\Glide\\Tween.cs [Read Only]",
-              "RelativeToolTip": "..\\..\\..\\..\\..\\AppData\\Local\\SourceServer\\01a7b5561ab60dde3b8db0bd90c7dea6f8dceaf70735d0a4d857b6d0b92b6d41\\Blish HUD\\Library\\Glide\\Tween.cs [Read Only]",
-              "ViewState": "AgIAAJgAAAAAAAAAAAAlwKEAAAAIAAAAAQAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-28T16:30:01.565Z",
-              "EditorCaption": " [Read Only]"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "ItemIcon.cs",
-              "DocumentMoniker": "C:\\Users\\pschw\\OneDrive\\Documents\\GitHub\\Gw2Archipelago\\Client\\ItemIcon.cs",
-              "RelativeDocumentMoniker": "ItemIcon.cs",
-              "ToolTip": "C:\\Users\\pschw\\OneDrive\\Documents\\GitHub\\Gw2Archipelago\\Client\\ItemIcon.cs",
-              "RelativeToolTip": "ItemIcon.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAASAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-27T16:35:42.451Z"
+              "WhenOpened": "2025-06-29T20:37:08.102Z"
             }
           ]
         }

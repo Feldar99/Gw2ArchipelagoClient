@@ -15,6 +15,11 @@ namespace Gw2Archipelago
         [JsonInclude]
         public bool LocationComplete = false;
         [JsonInclude]
-        public string Region;
+        public HashSet<string> Regions = new HashSet<string>();
+
+        public bool HasRegion(string region)
+        {
+            return Regions.Contains(region);
+        }
     }
 }
