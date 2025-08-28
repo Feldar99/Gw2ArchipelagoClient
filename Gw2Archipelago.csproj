@@ -180,6 +180,7 @@
   <ItemGroup>
     <Compile Include="AchievementData.cs" />
     <Compile Include="ArchipelagoWindow.cs" />
+    <Compile Include="Festival.cs" />
     <Compile Include="ItemIcon.cs" />
     <Compile Include="ItemLocation.cs" />
     <Compile Include="ItemTracker.cs" />

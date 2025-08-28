@@ -1,9 +1,13 @@
-﻿using Gw2Sharp.Models;
+﻿using Blish_HUD;
+using Gw2Sharp.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using YamlDotNet.Core;
+using YamlDotNet.Core.Events;
+using YamlDotNet.Serialization;
 
 namespace Gw2Archipelago
 {
@@ -71,5 +75,28 @@ namespace Gw2Archipelago
             Type = type;
         }
 
+    }
+
+    internal class YamlMapTypeConverter : IYamlTypeConverter
+    {
+        private static readonly Logger logger = Logger.GetLogger<YamlMapTypeConverter>();
+        public bool Accepts(Type type)
+        {
+            //logger.Debug(type.FullName);
+            return type == typeof(MapType);
+        }
+
+        public object ReadYaml(IParser parser, Type type)
+        {
+            Scalar value = parser.Consume<Scalar>();
+            //logger.Debug(value.Value);
+            return MapTypeExtensions.FromName(value.Value);
+        }
+
+        public void WriteYaml(IEmitter emitter, object value, Type type)
+        {
+            MapType mapType = (MapType)value;
+            emitter.Emit(new Scalar(mapType.GetName()));
+        }
     }
 }

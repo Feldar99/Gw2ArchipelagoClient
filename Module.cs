@@ -63,7 +63,8 @@ namespace Gw2Archipelago
         private CornerIcon                     cornerIcon;
         private ArchipelagoWindow              mainWindow;
 
-        private AchievementData genericAchievementData;
+        private GenericAchievementData genericAchievementData;
+        private Dictionary<int, AchievementData> achievementData;
         private SavedData savedData;
 
         private Random random = new Random();
@@ -182,9 +183,18 @@ namespace Gw2Archipelago
                 profession.Value = characterProfession;
                 race.Value = characterRace;
 
-                var deserializer = new DeserializerBuilder()
-                    .WithNamingConvention(LowerCaseNamingConvention.Instance)
-                    .Build();
+                {
+                    var deserializer = new DeserializerBuilder()
+                        .WithNamingConvention(UnderscoredNamingConvention.Instance)
+                        .WithTypeConverter(new YamLogicGroupConverter())
+                        .WithTypeConverter(new YamlMapTypeConverter())
+                        .WithTypeConverter(new YamlStorylineConverter())
+                        .WithTypeConverter(new YamlFestivalConverter())
+                        .Build();
+                    
+                    var reader = new StreamReader(ContentsManager.GetFileStream("Achievements.yaml"));
+                    achievementData = deserializer.Deserialize<Dictionary<int, AchievementData>>(reader);
+                }
 
                 await AddNonGenericLocations();
 
@@ -592,7 +602,7 @@ namespace Gw2Archipelago
             await AddNonGenericLocations();
 
             var reader = new StreamReader(ContentsManager.GetFileStream("achievements_generic.yaml"));
-            genericAchievementData = deserializer.Deserialize<AchievementData>(reader);
+            genericAchievementData = deserializer.Deserialize<GenericAchievementData>(reader);
 
             foreach (var item in SlotData)
             {
