@@ -36,10 +36,10 @@ namespace Gw2Archipelago
         private Panel contentPanel;
         private Scrollbar scrollbar;
 
-        private Dictionary<string, ItemIcon> skillIcons;
-        private Dictionary<string, SpecializationPanel> specializationPanels;
-        private Dictionary<string, List<ItemIcon>> weaponIcons;
-        private Dictionary<string, ItemIcon> equipSlotIcons;
+        private Dictionary<string, ItemIcon> skillIcons = new Dictionary<string, ItemIcon>();
+        private Dictionary<string, SpecializationPanel> specializationPanels = new Dictionary<string, SpecializationPanel>();
+        private Dictionary<string, List<ItemIcon>> weaponIcons = new Dictionary<string, List<ItemIcon>>();
+        private Dictionary<string, ItemIcon> equipSlotIcons = new Dictionary<string, ItemIcon>();
         private Label mistFragmentsLabel;
 
         private Module module;
@@ -115,7 +115,7 @@ namespace Gw2Archipelago
 
             var traitIds = new List<int>();
             var specNames = new Dictionary<int, string>();
-            specializationPanels = new Dictionary<string, SpecializationPanel>();
+            specializationPanels.Clear();
             foreach (var specialization in specializations)
             {
                 var panel = new SpecializationPanel(module.ContentsManager, specialization);
@@ -129,7 +129,7 @@ namespace Gw2Archipelago
 
             progress.Report("Reading Weapons from File");
             logger.Debug("Reading Weapons from File");
-            weaponIcons = new Dictionary<string, List<ItemIcon>>();
+            weaponIcons.Clear();
             weaponIcons.Add("Mainhand", new List<ItemIcon>());
             weaponIcons.Add("Offhand", new List<ItemIcon>());
             weaponIcons.Add("TwoHanded", new List<ItemIcon>());
@@ -184,7 +184,7 @@ namespace Gw2Archipelago
             }
 
             logger.Debug("Creating EquipSlot Icons");
-            equipSlotIcons = new Dictionary<string, ItemIcon>();
+            equipSlotIcons.Clear();
             {
                 equipSlotIcons.Add("Head",          new ItemIcon(module.ContentsManager, 699210,  "Head"));
                 equipSlotIcons.Add("Shoulders",     new ItemIcon(module.ContentsManager, 699208,  "Shoulders"));
@@ -210,7 +210,7 @@ namespace Gw2Archipelago
             progress.Report("Loading Skill Icons");
             logger.Debug("Loading Skill Icons");
             var skills = await skillTask;
-            skillIcons = new Dictionary<string, ItemIcon>();
+            skillIcons.Clear();
             foreach (var skill in skills)
             {
                 logger.Debug("Making icon for {}", skill.Name);
@@ -351,10 +351,10 @@ namespace Gw2Archipelago
 
         protected override void Unload()
         {
-            skillIcons = null;
-            specializationPanels = null;
-            weaponIcons = null;
-            equipSlotIcons = null;
+            skillIcons.Clear();
+            specializationPanels.Clear();
+            weaponIcons.Clear();
+            equipSlotIcons.Clear();
             mistFragmentsLabel = null;
 
         }
