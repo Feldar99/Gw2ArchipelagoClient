@@ -24,6 +24,8 @@ namespace Gw2Archipelago
         public int Tier = 0;
         [JsonInclude]
         public int Id;
+        [JsonInclude]
+        public int Current;
 
         [JsonInclude]
         public int CateoryId;
@@ -47,6 +49,7 @@ namespace Gw2Archipelago
                 progress = value;
                 if (value == null)
                 {
+                    Current = 0;
                     Done = false;
                     Repeated = null;
                     BitCount = 0;
@@ -54,6 +57,7 @@ namespace Gw2Archipelago
                 }
                 else
                 {
+                    Current = progress.Current;
                     Done = progress.Done;
                     Repeated = progress.Repeated;
                     if (progress.Bits == null)

@@ -203,11 +203,11 @@ namespace Gw2Archipelago
             logger.Debug("Character Name: {name}", characterName.Value);
             var achievements = UpdateCategory(new[] { TokenPermission.Account, TokenPermission.Progression                             }, module.Gw2ApiManager.Gw2ApiClient.V2.Account.Achievements.GetAsync(),                        "achievements", HandleAchievements);
             var quests       = UpdateCategory(new[] { TokenPermission.Account, TokenPermission.Characters, TokenPermission.Progression }, module.Gw2ApiManager.Gw2ApiClient.V2.Characters[characterName.Value].Quests.GetAsync(),      "quests",       HandleQuests);
-            var training     = UpdateCategory(new[] { TokenPermission.Account, TokenPermission.Characters, TokenPermission.Builds      }, module.Gw2ApiManager.Gw2ApiClient.V2.Characters[characterName.Value].Training.GetAsync(),    "training",     HandleTraining);
-            var worldBosses  = UpdateCategory(new[] { TokenPermission.Account, TokenPermission.Progression                             }, module.Gw2ApiManager.Gw2ApiClient.V2.Account.WorldBosses.GetAsync(),                         "world bosses", HandleWorldBosses);
+            //var training     = UpdateCategory(new[] { TokenPermission.Account, TokenPermission.Characters, TokenPermission.Builds      }, module.Gw2ApiManager.Gw2ApiClient.V2.Characters[characterName.Value].Training.GetAsync(),    "training",     HandleTraining);
+            //var worldBosses  = UpdateCategory(new[] { TokenPermission.Account, TokenPermission.Progression                             }, module.Gw2ApiManager.Gw2ApiClient.V2.Account.WorldBosses.GetAsync(),                         "world bosses", HandleWorldBosses);
             var items        = UpdateCategory(new[] { TokenPermission.Account, TokenPermission.Characters, TokenPermission.Inventories }, module.Gw2ApiManager.Gw2ApiClient.V2.Characters[characterName.Value].Inventory.GetAsync(),   "items",    HandleItems);
 
-            var tasks = new List<Task> { achievements, quests, training, worldBosses };
+            var tasks = new List<Task> { achievements, quests, /*training, worldBosses*/ };
             await Task.WhenAll(tasks);
             logger.Debug("API Update complete");
         }
@@ -223,7 +223,15 @@ namespace Gw2Archipelago
 
             if (currentMap == null || mapId != currentMap.Id)
             {
-                currentMap = await module.Gw2ApiManager.Gw2ApiClient.V2.Maps.GetAsync(mapId);
+                try
+                {
+                    currentMap = await module.Gw2ApiManager.Gw2ApiClient.V2.Maps.GetAsync(mapId);
+                }
+                catch (Exception ex)
+                {
+                    logger.Warn("Could not find map with id {} on the api", mapId);
+                    return;
+                }
             }
 
             if (module.MapAccessTracker.IsLocked(currentMap.Name))
@@ -348,24 +356,39 @@ namespace Gw2Archipelago
                 {
                     var achievement = location.Achievement;
                     var oldProgress = location.Progress;
+                    var oldValue = location.Current;
                     logger.Debug("Updating {name}", achievement.Name);
+
+                    bool repeatable = false;
+                    foreach (var flag in achievement.Flags)
+                    {
+                        if (flag == AchievementFlag.Repeatable)
+                        {
+                            repeatable = true;
+                        }
+                    }
+                    if (location.Done && !repeatable)
+                    {
+                        logger.Warn("Achievement location {} failed to complete correctly. Retrying", achievement.Name);
+                        CompleteAchievementLocation(location);
+                        continue;
+                    }
 
                     if (oldProgress != null)
                     {
-                        if (progress.Current == oldProgress.Current)
+                        if (progress.Current == oldValue)
                         {
                             logger.Debug("No Change: {oldProgress} {progress}");
                             continue;
                         }
                     }
 
-                    var oldDone = location.Done;
+                    bool oldDone = location.Done;
                     int? oldRepeated = location.Repeated;
-                    var oldBitCount = location.BitCount;
-                    var oldTier = location.Tier;
+                    int oldBitCount = location.BitCount;
+                    int oldTier = location.Tier;
 
                     location.Progress = progress;
-                    achievementLocations[progress.Id] = location;
 
                     if (AchievementProgressed != null)
                     {
@@ -505,8 +528,6 @@ namespace Gw2Archipelago
                     CompleteItemLocation(itemLocation);
                 }
             }
-
-            questStatus.AdvanceToFirstIncompleteLocation();
 
             foreach (var pointsOfInterestPair in pointsOfInterest)
             {

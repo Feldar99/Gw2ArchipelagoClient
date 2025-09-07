@@ -908,7 +908,8 @@ namespace Gw2Archipelago
         private async void SendLocationCompletion (AchievementLocation location)
         {
             logger.Debug("Sending location {} for achievement {}", location.LocationName, location.Achievement.Name);
-            ApSession.Locations.CompleteLocationChecks(new long[] { ApSession.Locations.GetLocationIdFromName("Guild Wars 2", location.LocationName) });
+            long locationId = ApSession.Locations.GetLocationIdFromName("Guild Wars 2", location.LocationName);
+            ApSession.Locations.CompleteLocationChecks(locationId);
             location.LocationComplete = true;
             await serialize();
         }
@@ -916,7 +917,8 @@ namespace Gw2Archipelago
         private async void SendLocationCompletion(Location location, Quest quest)
         {
             logger.Debug("Sending location {} for quest {}", location.LocationName, (quest == null) ? 0 : quest.Id);
-            ApSession.Locations.CompleteLocationChecks(new long[] { ApSession.Locations.GetLocationIdFromName("Guild Wars 2", location.LocationName) });
+            long locationId = ApSession.Locations.GetLocationIdFromName("Guild Wars 2", location.LocationName);
+            ApSession.Locations.CompleteLocationChecks(locationId);
             location.LocationComplete = true;
             await serialize();
         }
