@@ -122,13 +122,6 @@ namespace Gw2Archipelago
 
             RefreshRegions();
             ClearLocations();
-            
-
-            var itemLocations = module.LocationChecker.GetItemLocations();
-            CreateItemLocationButtons(itemLocations);
-
-            var poiLocations = module.LocationChecker.GetPoiLocations();
-            CreatePoiButtons(poiLocations);
 
             var achievementLocations = module.LocationChecker.GetAchievementLocations();
             foreach (var achievementLocation in achievementLocations)
@@ -163,8 +156,25 @@ namespace Gw2Archipelago
                     button.CurrentFill = 0;
                     genericLocationButtons.Add(quest.Id.ToString(), button);
 
+                    button.Click += (sender, e) =>
+                    {
+                        if (module.LocationChecker.Regions.Contains(quest.Name)) {
+                            selectedRegion = quest.Name;
+                            Refresh(); 
+                        }
+                        
+                    };
                 }
+
+
             }
+
+
+            var itemLocations = module.LocationChecker.GetItemLocations();
+            CreateItemLocationButtons(itemLocations);
+
+            var poiLocations = module.LocationChecker.GetPoiLocations();
+            CreatePoiButtons(poiLocations);
         }
 
         private static int CompareQuestsById(Quest questA, Quest questB)
