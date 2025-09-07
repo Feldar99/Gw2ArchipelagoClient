@@ -19,7 +19,7 @@ namespace Gw2Archipelago
 
         internal void AdvanceToFirstIncompleteLocation()
         {
-            while (QuestLocations.Peek() != null && QuestLocations.Peek().LocationComplete)
+            while (QuestLocations.Count > 0 && QuestLocations.Peek().LocationComplete)
             {
                 QuestLocations.Dequeue();
             }
