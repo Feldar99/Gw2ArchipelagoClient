@@ -211,7 +211,7 @@ categories:
   293: Season4
   294: Season3
   295: Season2
-  296: Season1
+  296: None # Hard to find enough people for marionette
   297: Season1
   298: IcebroodSaga
   299: IcebroodSaga
@@ -452,6 +452,9 @@ achievments:
   2202: Season1
   2474: Season1
   2620: Season1
+  1707: None
+  1708: None
+  1709: None
   1711: Core
   1712: FRACTAL
   1734: Core
