@@ -367,6 +367,11 @@ namespace Gw2Archipelago
             var achievement = location.Achievement;
             var progress    = location.Progress;
 
+            if (!achievementButtons.ContainsKey(achievement.Id))
+            {
+                return;
+            }
+
             var button = achievementButtons[achievement.Id];
             if (location.LocationComplete)
             {
