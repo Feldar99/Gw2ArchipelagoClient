@@ -30,6 +30,7 @@ namespace Gw2Archipelago
         private Panel locationPanel;
         private Scrollbar locationScrollbar;
         private int locationPanelY = 0;
+        private Label connectionStatus;
         private StandardButton connectButton;
         private StandardButton generateButton;
         private Dictionary<int, DetailsButton> achievementButtons = new Dictionary<int, DetailsButton>();
@@ -58,28 +59,28 @@ namespace Gw2Archipelago
 
             regionPanel = new Panel()
             {
-                Location = new Point(40, 35),
+                Location = new Point(40, 70),
                 Size = new Point(350, 520),
                 Parent = container,
             };
 
             regionScrollbar = new Scrollbar(regionPanel)
             {
-                Location = new Point(30, 35),
+                Location = new Point(30, 70),
                 Size = new Point(10, 570),
                 Parent = container,
             };
 
             locationPanel = new Panel()
             {
-                Location = new Point(410, 35),
+                Location = new Point(410, 70),
                 Size = new Point(350, 520),
                 Parent = container,
             };
 
             locationScrollbar = new Scrollbar(locationPanel)
             {
-                Location = new Point(400, 35),
+                Location = new Point(400, 70),
                 Size = new Point(10, 570),
                 Parent = container,
             };
@@ -94,6 +95,14 @@ namespace Gw2Archipelago
             };
             connectButton.Click += connect;
             logger.Debug("Connect Button: {}, Parent: {}", connectButton, container);
+
+            connectionStatus = new Label()
+            {
+                Text = module.ApSession == null ? "Not connected" : "Connected",
+                Size = new Point (150,30),
+                Location = new Point(40, 35),
+                Parent = container,
+            };
 
             generateButton = new StandardButton()
             {
@@ -115,10 +124,13 @@ namespace Gw2Archipelago
 
         internal void Refresh()
         {
-            if (module.ApSession == null)
+            if (module.ApSession == null || !module.ApSession.Socket.Connected)
             {
+                connectionStatus.Text = "Not Connected";
                 return;
             }
+
+            connectionStatus.Text = "Connected";
 
             RefreshRegions();
             ClearLocations();
@@ -191,6 +203,11 @@ namespace Gw2Archipelago
 
         internal void RefreshRegions()
         {
+            if (module.ApSession == null)
+            {
+                return;
+            }
+
             regionPanel.ClearChildren();
 
             Texture2D icon = module.ContentsManager.GetTexture("archipelago64.png");
@@ -421,6 +438,7 @@ namespace Gw2Archipelago
 
         private void connect(object sender, MouseEventArgs e)
         {
+            connectionStatus.Text = "Connecting";
             ConnectButtonClick.Invoke(sender, e);
             Refresh();
         }

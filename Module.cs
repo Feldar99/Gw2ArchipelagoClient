@@ -259,7 +259,12 @@ namespace Gw2Archipelago
             else
             {
                 ApSession = null;
-                logger.Debug("Connetion Attempted Failed");
+                LoginFailure failure = (LoginFailure) result;
+                logger.Error("Connetion Attempted Failed");
+                foreach (var error in failure.Errors)
+                {
+                    logger.Error(error);
+                }
             }
         }
 
