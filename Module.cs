@@ -256,11 +256,11 @@ namespace Gw2Archipelago
                 ItemTracker.ItemUnlocked += OnItemUnlocked;
                 MapAccessTracker.Initialize(storyline, characterRace, ItemTracker);
             }
-            else
+            else //success
             {
                 ApSession = null;
                 LoginFailure failure = (LoginFailure) result;
-                logger.Error("Connetion Attempted Failed");
+                logger.Error("Could not connect to slot `{}` at `{}`", slotName.Value, apServerUrl.Value);
                 foreach (var error in failure.Errors)
                 {
                     logger.Error(error);

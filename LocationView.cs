@@ -203,7 +203,7 @@ namespace Gw2Archipelago
 
         internal void RefreshRegions()
         {
-            if (module.ApSession == null)
+            if (module.ApSession == null || module.SlotData == null)
             {
                 return;
             }
