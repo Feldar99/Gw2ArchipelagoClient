@@ -224,13 +224,36 @@ namespace Gw2Archipelago
 
                 var tasks = new List<Task>();
                 {
+
                     var file = waitForFile("AchievementLocations.json", 5, true);
                     if (file != null)
                     {
                         var locations = await JsonSerializer.DeserializeAsync<List<AchievementLocation>>(file);
                         foreach (var location in locations)
                         {
-                            logger.Debug("Loaded Location - BitCount: {}, Tier: {}, Repeated: {}", location.BitCount, location.Tier, location.Repeated);
+                            var achievementId = location.Achievement.Id;
+                            var achievementProgress = location.Progress;
+
+                            HashSet<string> regions = new HashSet<string>();
+                            regions.Add(location.LocationName.Split(' ')[0]);
+                            if (achievementData.ContainsKey(achievementId))
+                            {
+                                regions.UnionWith(achievementData[achievementId].GetRegions());
+                                var bits = achievementData[achievementId].bits;
+                                if (bits != null)
+                                {
+                                    for (int i = 0; i < bits.Count; i++)
+                                    {
+                                        if (achievementProgress == null || achievementProgress.Bits == null || !achievementProgress.Bits.Contains(i))
+                                        {
+                                            regions.UnionWith(bits[i].GetRegions());
+                                        }
+                                    }
+                                }
+                            }
+                            location.Regions = regions;
+
+                            logger.Debug("Loaded Location - BitCount: {}, Tier: {}, Repeated: {}, CategoryId: {}", location.BitCount, location.Tier, location.Repeated, location.CateoryId);
                             if (location.CateoryId != 0)
                             {
                                 location.Category = await Gw2ApiManager.Gw2ApiClient.V2.Achievements.Categories.GetAsync(location.CateoryId);
@@ -581,7 +604,7 @@ namespace Gw2Archipelago
                             {
                                 for (int i = 0; i < bits.Count; i++)
                                 {
-                                    if (!achievementProgress.ContainsKey(achievementId) || !achievementProgress[achievementId].Bits.Contains(i))
+                                    if (!achievementProgress.ContainsKey(achievementId) || achievementProgress[achievementId].Bits == null || !achievementProgress[achievementId].Bits.Contains(i))
                                     {
                                         regions.UnionWith(bits[i].GetRegions());
                                     }

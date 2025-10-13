@@ -1,7 +1,9 @@
 ﻿using Archipelago.MultiClient.Net;
 using Blish_HUD;
+using Blish_HUD.Content;
 using Blish_HUD.Controls;
 using Blish_HUD.Graphics.UI;
+using Blish_HUD.Input;
 using Blish_HUD.Modules.Managers;
 using Gw2Sharp.WebApi.V2.Models;
 using Microsoft.Xna.Framework;
@@ -9,14 +11,12 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Remoting.Channels;
 using System.Text;
 using System.Threading.Tasks;
-
+using SlotData = System.Collections.Generic.Dictionary<string, object>;
 using XnaColor = Microsoft.Xna.Framework.Color;
 using XnaRectangle = Microsoft.Xna.Framework.Rectangle;
-using SlotData = System.Collections.Generic.Dictionary<string, object>;
-using Blish_HUD.Input;
-using System.Runtime.Remoting.Channels;
 
 namespace Gw2Archipelago
 {
@@ -24,6 +24,9 @@ namespace Gw2Archipelago
     {
 
         private static readonly Logger logger = Logger.GetLogger<LocationView>();
+
+        private static AsyncTexture2D TrackedIcon;
+        private static AsyncTexture2D UntrackedIcon;
 
         private Panel regionPanel;
         private Scrollbar regionScrollbar;
@@ -54,6 +57,17 @@ namespace Gw2Archipelago
         }
 
         protected override void Build(Container container) { 
+
+            if (TrackedIcon == null)
+            {
+                TrackedIcon = AsyncTexture2D.FromAssetId(605019);
+            }
+
+            if (UntrackedIcon == null)
+            {
+                UntrackedIcon = AsyncTexture2D.FromAssetId(528726);
+            }
+
             this.container = container;
 
             regionPanel = new Panel()
@@ -363,6 +377,25 @@ namespace Gw2Archipelago
             {
                 button.Icon = module.ContentsManager.GetTexture("archipelago64.png");
             }
+
+            var trackButton = new Image(UntrackedIcon)
+            {
+                Size = new Point(32, 32),
+                Parent = button,
+                Location = new Point(32, 0),
+            };
+
+            trackButton.Click += (sender, e) =>
+            {
+                if (trackButton.Texture == UntrackedIcon)
+                {
+                    trackButton.Texture = TrackedIcon;
+                }
+                else
+                {
+                    trackButton.Texture = UntrackedIcon;
+                }
+            };
 
             achievementButtons.Add(achievement.Id, button);
 
