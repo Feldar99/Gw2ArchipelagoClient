@@ -259,11 +259,14 @@ namespace Gw2Archipelago
             else //success
             {
                 ApSession = null;
-                LoginFailure failure = (LoginFailure) result;
                 logger.Error("Could not connect to slot `{}` at `{}`", slotName.Value, apServerUrl.Value);
-                foreach (var error in failure.Errors)
+                LoginFailure failure = (LoginFailure)result;
+                if (failure != null)
                 {
-                    logger.Error(error);
+                    foreach (var error in failure.Errors)
+                    {
+                        logger.Error(error);
+                    }
                 }
             }
         }
