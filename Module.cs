@@ -231,7 +231,7 @@ namespace Gw2Archipelago
                         var locations = await JsonSerializer.DeserializeAsync<List<AchievementLocation>>(file);
                         foreach (var location in locations)
                         {
-                            var achievementId = location.Achievement.Id;
+                            var achievementId = location.Id;
                             var achievementProgress = location.Progress;
 
                             HashSet<string> regions = new HashSet<string>();
