@@ -254,7 +254,7 @@ namespace Gw2Archipelago
 
                 ItemTracker.Initialize(ApSession);
                 ItemTracker.ItemUnlocked += OnItemUnlocked;
-                MapAccessTracker.Initialize(storyline, characterRace, ItemTracker);
+                MapAccessTracker.Initialize(storyline, characterRace, characterProfession, ItemTracker);
             }
             else //success
             {

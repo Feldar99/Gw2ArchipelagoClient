@@ -17,6 +17,7 @@ groups:
     EFADEE67-588F-412F-A1BD-6C9AFF782988: None
     F59FFE23-4616-47D2-86B4-00F15819AD45: STRIKE
     43167413-6A41-4407-8A42-EEB33825EDC5: Janthir Wilds
+    1869FD2C-6305-4A75-8305-78AE94E1404A: Visions of Eternity
 
 categories:
   1:   Core
@@ -296,6 +297,9 @@ categories:
   448: None #Daily Fooling
   456: Janthir Wilds
   457: Janthir Wilds
+  462: None #Fractal Incursion
+  469: Visions of Eternity
+  471: Visions of Eternity
   
 achievments:
   571: None
@@ -689,7 +693,7 @@ achievments:
   7214: SecretsOfTheObscure
   7219: SecretsOfTheObscure
   7240: SecretsOfTheObscure
-  7796: Core
+  7796: None
   7802: SecretsOfTheObscure
   8064: SecretsOfTheObscure
   8093: SecretsOfTheObscure
@@ -931,23 +935,36 @@ achievments:
   8466: Janthir Wilds
   8475: Janthir Wilds
   8507: Janthir Wilds
-  8501: Janthir Wilds
+  8501: RAID
   8278: None
   8567: Janthir Wilds
   8568: Janthir Wilds
   8599: Janthir Wilds
   8616: Janthir Wilds
   8635: Janthir Wilds
-  8644: Janthir Wilds
+  8636: None
+  8644: None
   8544: Janthir Wilds
-  8714: Janthir Wilds
+  8644: None
+  8714: None
   8715: Janthir Wilds
   8725: Janthir Wilds
-  8732: Janthir Wilds
+  8732: None
+  8733: None
   8741: Janthir Wilds
   8745: Janthir Wilds
   8780: None
+  8782: RAID
   8806: None
+  8807: STORY
+  8808: STORY
+  8853: None
+  8858: Visions of Eternity
+  8869: Visions of Eternity
+  8959: Visions of Eternity
+  8966: Visions of Eternity
+  8965: Visions of Eternity
+  8987: Visions of Eternity
   
   4968: IcebroodSaga #Icebrood Saga Reward Track (PvP)
   4984: IcebroodSaga #Icebrood Saga Reward Track (WvW)
@@ -1546,3 +1563,67 @@ achievments:
   8492: STORY #The Queen of Battle
   8494: STORY #Sweet Moves, You Have
   8509: STORY #Standing Tall: Ura
+  8542: STORY #Conqueror of the Lake
+  8558: STORY #Once Golden, Now Tarnished
+  8559: STORY #Penance for the Past
+  8561: STORY #Wayward Wayfinder
+  8570: STORY #Field Updates
+  8573: STORY #Expert Exterminator
+  8600: STORY #Barren of Mistburned
+  8613: STORY #Told Ya So
+  8614: STORY #Into the Valley of Shadow
+  8618: STORY #So Touchy
+  8629: STORY #Yagon Begone
+  8632: STORY #A Legacy Damned
+  8712: STORY #Evidentiary Standards
+  8716: STORY #Fact Finder
+  8727: STORY #International Cuisine
+  8728: STORY #Efficient Defender
+  8731: STORY #Salvation's Cost
+  8746: STORY #Master Mingler
+  8757: STORY #Diplomatic Relations
+  8759: STORY #Demons Within
+  8760: STORY #Foundry Survivor
+  8764: STORY #Immunocompromiser
+  8775: STORY #True Introvert
+  8855: STORY #This Can't Be Good
+  8871: STORY #Tactical Infiltration
+  8877: STORY #Dazzle Them with Wits
+  8878: STORY #Crew Overboard!
+  8887: STORY #Inquest Insight
+  8891: STORY #Unscheduled Departures
+  8896: STORY #The Enemy of My Enemy Is Still My Enemy
+  8906: STORY #Sand Sweep
+  8907: STORY #Shattered History
+  8925: STORY #Cultural Exchange
+  8931: STORY #Crypt Creeper
+  8936: STORY #On the Sly
+  8940: STORY #Ruins of the Old World
+  8944: STORY #Flawless Hacker
+  8946: STORY #The Doorstep of Divinity
+  8948: STORY #A Fresh Start on Life
+  8949: STORY #Overindulgence
+  8955: STORY #Fumbling in the Dark
+  8970: STORY #Nautical Divination
+  8978: STORY #Wavehawks Are My Passion
+  8979: STORY #Lionguard Ledger
+  8985: STORY #It's So Beautiful
+  8988: STORY #Digging for Knowledge
+  8990: STORY #Wavehawk Fundamentals
+  9005: STORY #A Journal of Mistakes
+  9017: STORY #Beneath the Canopy
+  9023: STORY #Tomb Runner
+  9031: STORY #Solid Ground
+  9036: STORY #Eyes, Ears, and Arms
+  9038: STORY #Truths Unearthed
+  9043: STORY #Accessing Random Memories
+  9060: STORY #Rytlock Knows a Thing or Two
+  9068: STORY #And Stay Out!
+  9070: STORY #No Witnesses
+  9075: STORY #If You Can't Beat 'Em...
+  9076: STORY #Wit and Wisdom
+  9079: STORY #Swift Skimming
+  9080: STORY #Zeba Deserves Better
+  9084: STORY #In for a Copper...
+  9085: STORY #Dazzle Them with Glitz
+

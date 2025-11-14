@@ -23,7 +23,7 @@ namespace Gw2Archipelago
             public string Type;
             public List<string> Entrances;
             public List<Storyline> Storylines;
-            public Dictionary<Storyline, string> Start;
+            public Dictionary<Storyline, HashSet<string>> Start;
         }
 
         public enum MapAccessState
@@ -93,13 +93,18 @@ namespace Gw2Archipelago
                     foreach(var StartPair in mapEntry.Start)
                     {
                         //logger.Debug("({},{})", StartPair.Key, StartPair.Value);
+                        Storyline storyline = StartPair.Key;
+                        HashSet<string> starts = StartPair.Value;
                         Dictionary<string, Map> startMapsForStoryline;
-                        if (!startMaps.TryGetValue(StartPair.Key, out startMapsForStoryline))
+                        if (!startMaps.TryGetValue(storyline, out startMapsForStoryline))
                         {
                             startMapsForStoryline = new Dictionary<string, Map>();
-                            startMaps.Add(StartPair.Key, startMapsForStoryline);
+                            startMaps.Add(storyline, startMapsForStoryline);
                         }
-                        startMapsForStoryline[StartPair.Value.ToUpper()] = map;
+                        foreach (string start in starts)
+                        {
+                            startMapsForStoryline[start.ToUpper()] = map;
+                        }
 
                     }
                 }
@@ -111,7 +116,7 @@ namespace Gw2Archipelago
             }
         }
 
-        public void Initialize(Storyline storyline, Race race, ItemTracker itemTracker)
+        public void Initialize(Storyline storyline, Race race, Profession profession, ItemTracker itemTracker)
         {
             this.storyline = storyline;
             //logger.Debug(storyline.ToString());
@@ -119,7 +124,9 @@ namespace Gw2Archipelago
             Map startMap;
             if (!startMaps[storyline].TryGetValue(race.GetName(), out startMap))
             {
-                startMap = startMaps[storyline]["ANY"];
+                if (!startMaps[storyline].TryGetValue(profession.GetName(), out startMap)) {
+                    startMap = startMaps[storyline]["ANY"];
+                }
             }
             GiveAccess(startMap.Name);
             foreach (var itemCount in itemTracker.ItemCounts)

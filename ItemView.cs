@@ -193,12 +193,13 @@ namespace Gw2Archipelago
                 equipSlotIcons.Add("Legs",          new ItemIcon(module.ContentsManager, 699209,  "Legs"));
                 equipSlotIcons.Add("Boots",         new ItemIcon(module.ContentsManager, 699213,  "Boots"));
                 equipSlotIcons.Add("Back",          new ItemIcon(module.ContentsManager, 61004,   "Back"));
-                equipSlotIcons.Add("Amulet",        new ItemIcon(module.ContentsManager, 455601,  "Amulet"));
                 equipSlotIcons.Add("Accessory 1",   new ItemIcon(module.ContentsManager, 1203063, "Accessory 1"));
                 equipSlotIcons.Add("Accessory 2",   new ItemIcon(module.ContentsManager, 711884,  "Accessory 2"));
+                equipSlotIcons.Add("Relic",         new ItemIcon(module.ContentsManager, 3255567,  "Relic"));
+                equipSlotIcons.Add("Amulet",        new ItemIcon(module.ContentsManager, 455601,  "Amulet"));
                 equipSlotIcons.Add("Ring 1",        new ItemIcon(module.ContentsManager, 455584,  "Ring 1"));
                 equipSlotIcons.Add("Ring 2",        new ItemIcon(module.ContentsManager, 455590,  "Ring 2"));
-                equipSlotIcons.Add("Relic",         new ItemIcon(module.ContentsManager, 961418,  "Relic"));
+                equipSlotIcons.Add("Aqua Breather", new ItemIcon(module.ContentsManager, 61297,   "Aqua Breather"));
             }
 
             foreach (var equipSlot in equipSlotIcons)
