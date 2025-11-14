@@ -308,10 +308,18 @@ namespace Gw2Archipelago
 
                 ApSession.Locations.CheckedLocationsUpdated += LocationChecker.OnLocationChecked;
             }
-            else
+            else //success
             {
                 ApSession = null;
-                logger.Debug("Connetion Attempted Failed");
+                logger.Error("Could not connect to slot `{}` at `{}`", slotName.Value, apServerUrl.Value);
+                LoginFailure failure = (LoginFailure)result;
+                if (failure != null)
+                {
+                    foreach (var error in failure.Errors)
+                    {
+                        logger.Error(error);
+                    }
+                }
             }
         }
 
