@@ -86,7 +86,7 @@ namespace Gw2Archipelago
             return questStatus.QuestLocations;
         }
 
-        public async Task AddAchievmentLocation(int achievementId, Achievement achievement, AchievementCategory category, AccountAchievement progress, string name, IEnumerable<string> regions)
+        public async Task AddAchievementLocation(int achievementId, Achievement achievement, AchievementCategory category, AccountAchievement progress, string name, IEnumerable<string> regions)
         {
             if (achievement == null)
             {
@@ -106,7 +106,7 @@ namespace Gw2Archipelago
 
         }
 
-        public async Task AddAchievmentLocation(AchievementLocation location)
+        public async Task AddAchievementLocation(AchievementLocation location)
         {
             var id = location.Id;
             location.Achievement = await module.Gw2ApiManager.Gw2ApiClient.V2.Achievements.GetAsync(id);

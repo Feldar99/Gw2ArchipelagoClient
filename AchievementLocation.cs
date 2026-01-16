@@ -19,7 +19,7 @@ namespace Gw2Archipelago
         [JsonInclude]
         public int? Repeated = null;
         [JsonInclude]
-        public int BitCount = 0;
+        public HashSet<int> CompleteBits = new HashSet<int>();
         [JsonInclude]
         public int Tier = 0;
         [JsonInclude]
@@ -52,7 +52,6 @@ namespace Gw2Archipelago
                     Current = 0;
                     Done = false;
                     Repeated = null;
-                    BitCount = 0;
                     Tier = 0;
                 }
                 else
@@ -60,19 +59,20 @@ namespace Gw2Archipelago
                     Current = progress.Current;
                     Done = progress.Done;
                     Repeated = progress.Repeated;
-                    if (progress.Bits == null)
+                    if (progress.Bits != null)
                     {
-                        BitCount = 0;
+                        foreach (var bit in progress.Bits)
+                        {
+                            CompleteBits.Add(bit);
+                        }
                     }
-                    else
-                    {
-                        BitCount = progress.Bits.Count;
-                    }
+
                     Tier = CalculateTier();
                 }
             }
         }
-
+        
+        public int BitCount { get { return CompleteBits.Count; } }
 
         public int CalculateTier()
         {

@@ -97,7 +97,7 @@ namespace Gw2Archipelago
         public AnyGroup RequiredRaces;
         public AnyGroup RequiredAchievements;
         public Profession RequiredProfession;
-        public Festival Festival;
+        public Festival? Festival;
         public Storyline Storyline;
         public Order RequiredOrder;
 
@@ -153,7 +153,7 @@ namespace Gw2Archipelago
         public AnyGroup RequiredRaces;
         public AnyGroup RequiredAchievements;
         public Profession RequiredProfession;
-        public Festival Festival;
+        public Festival? Festival;
         public Storyline Storyline;
         public Order RequiredOrder;
 

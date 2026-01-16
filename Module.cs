@@ -116,10 +116,15 @@ namespace Gw2Archipelago
         {
             logger.Debug("Load");
             MapAccessTracker.LoadMaps(ContentsManager);
-            await ConnectToArchipelago();
+            StartReconnectTimer();
         }
 
         internal void StartReconnectTimer(object sender, MouseEventArgs e)
+        {
+            StartReconnectTimer();
+        }
+
+        private void StartReconnectTimer() 
         {
             if (reconnectTimer == null)
             {
@@ -149,6 +154,10 @@ namespace Gw2Archipelago
 
         private async Task ConnectToArchipelago()
         {
+            if (!Gw2ApiManager.HasPermission(TokenPermission.Account))
+            {
+                return;
+            }
             if (ApSession != null)
             {
                 DisconnectFromArchipelago();
@@ -228,29 +237,67 @@ namespace Gw2Archipelago
                     var file = waitForFile("AchievementLocations.json", 5, true);
                     if (file != null)
                     {
+                        var achievementProgress = new Dictionary<int, AccountAchievement>();
+
+                        if (Gw2ApiManager.HasPermissions(new[]
+                                { TokenPermission.Account, TokenPermission.Progression }))
+                        {
+                            var progress = await Gw2ApiManager.Gw2ApiClient.V2.Account.Achievements.GetAsync();
+
+                            foreach (var achievement in progress)
+                            {
+                                achievementProgress[achievement.Id] = achievement;
+                            }
+                        }
+
                         var locations = await JsonSerializer.DeserializeAsync<List<AchievementLocation>>(file);
+                        var achievementsById = new Dictionary<int, Achievement>();
+                        if (locations.Count > 0)
+                        {
+                            var achievements =
+                                await Gw2ApiManager.Gw2ApiClient.V2.Achievements.ManyAsync(
+                                    locations.ConvertAll((a) => a.Id));
+
+                            foreach (var achievement in achievements)
+                            {
+                                achievementsById[achievement.Id] = achievement;
+                            }
+                        }
+
                         foreach (var location in locations)
                         {
                             var achievementId = location.Id;
-                            var achievementProgress = location.Progress;
+                            if (!achievementsById.TryGetValue(achievementId, out location.Achievement))
+                            {
+                                continue;
+                            }
 
-                            HashSet<string> regions = new HashSet<string>();
-                            regions.Add(location.LocationName.Split(' ')[0]);
+                            if (achievementProgress.TryGetValue(achievementId, out var progress))
+                            {
+                                location.Progress = progress;
+                            }
+
+                            var regions = new HashSet<string>();
                             if (achievementData.ContainsKey(achievementId))
                             {
-                                regions.UnionWith(achievementData[achievementId].GetRegions());
+
                                 var bits = achievementData[achievementId].bits;
                                 if (bits != null)
                                 {
                                     for (int i = 0; i < bits.Count; i++)
                                     {
-                                        if (achievementProgress == null || achievementProgress.Bits == null || !achievementProgress.Bits.Contains(i))
+                                        if (progress?.Bits == null || !progress.Bits.Contains(i))
                                         {
                                             regions.UnionWith(bits[i].GetRegions());
                                         }
                                     }
                                 }
+                                if (progress?.Bits == null || progress.Bits.Count == 0 || regions.Count == 0)
+                                {
+                                    regions.UnionWith(achievementData[achievementId].GetRegions());
+                                }
                             }
+                            regions.Add(location.LocationName.Split(' ')[0]);
                             location.Regions = regions;
 
                             logger.Debug("Loaded Location - BitCount: {}, Tier: {}, Repeated: {}, CategoryId: {}", location.BitCount, location.Tier, location.Repeated, location.CateoryId);
@@ -266,7 +313,7 @@ namespace Gw2Archipelago
                             if (!location.LocationComplete)
                             {
 
-                                tasks.Add(LocationChecker.AddAchievmentLocation(location));
+                                tasks.Add(LocationChecker.AddAchievementLocation(location));
                             }
                         }
                     }
@@ -304,7 +351,7 @@ namespace Gw2Archipelago
 
                 ItemTracker.Initialize(ApSession);
                 ItemTracker.ItemUnlocked += OnItemUnlocked;
-                MapAccessTracker.Initialize(storyline, characterRace, ItemTracker);
+                MapAccessTracker.Initialize(storyline, characterRace, characterProfession, ItemTracker);
 
                 ApSession.Locations.CheckedLocationsUpdated += LocationChecker.OnLocationChecked;
             }
@@ -388,16 +435,17 @@ namespace Gw2Archipelago
             {
                 if (unlockCount >= (Int64)SlotData["MistFragmentsRequired"])
                 {
-                    var statusUpdatePacket = new StatusUpdatePacket();
-                    statusUpdatePacket.Status = ArchipelagoClientState.ClientGoal;
+                    var statusUpdatePacket = new StatusUpdatePacket
+                    {
+                        Status = ArchipelagoClientState.ClientGoal
+                    };
                     ApSession.Socket.SendPacket(statusUpdatePacket);
                 }
             }
         }
 
         private async Task<bool> randomAchievement(List<Guid> groups, 
-            Dictionary<int, AccountAchievement> 
-            achievementProgress, 
+            Dictionary<int, AccountAchievement> achievementProgress, 
             Region region,
             Storyline? storyline,
             string locationName,
@@ -419,7 +467,7 @@ namespace Gw2Archipelago
                     && !groupReq.Equals("Any"))
                 {
                     groups.Remove(groupGuid);
-                    logger.Debug("Ignoring Group: {}, {}", groupGuid, groupReq);
+                    // logger.Debug("Ignoring Group: {}, {}", groupGuid, groupReq);
                     continue;
                 }
                 
@@ -434,7 +482,7 @@ namespace Gw2Archipelago
 
                     if (visitedCategories.Contains(categoryId))
                     {
-                        logger.Debug("Ignoring category: {}, already visited", categoryId);
+                        // logger.Debug("Ignoring category: {}, already visited", categoryId);
                         continue;
                     }
 
@@ -447,7 +495,7 @@ namespace Gw2Archipelago
                         if (categoryReq.Equals("None"))
                         {
                             visitedCategories.Add(categoryId);
-                            logger.Debug("Ignoring Category: {}, {}", categoryId, categoryReq);
+                            // logger.Debug("Ignoring Category: {}, {}", categoryId, categoryReq);
                             continue;
                         }
 
@@ -460,13 +508,13 @@ namespace Gw2Archipelago
                             && !categoryReq.Equals("Any"))
                         {
                             visitedCategories.Add(categoryId);
-                            logger.Debug("Ignoring Category: {}, {}", categoryId, categoryReq);
+                            // logger.Debug("Ignoring Category: {}, {}", categoryId, categoryReq);
                             continue;
                         }
                     }
 
                     var category = await Gw2ApiManager.Gw2ApiClient.V2.Achievements.Categories.GetAsync(categoryId);
-                    logger.Debug("Category: {} ({})", category.Name, categoryId);
+                    // logger.Debug("Category: {} ({})", category.Name, categoryId);
                     var achievementList = new List<int>(category.Achievements);
                     while (achievementList.Count > 0)
                     {
@@ -477,14 +525,14 @@ namespace Gw2Archipelago
 
                         if (visitedAchievements.Contains(achievementId))
                         {
-                            logger.Debug("Ignoring achievment: {}, already visited", achievementId);
+                            // logger.Debug("Ignoring achievment: {}, already visited", achievementId);
                             continue;
                         }
                         visitedAchievements.Add(achievementId);
 
                         if (LocationChecker.HasAchievementLocation(achievementId))
                         {
-                            logger.Debug("Ignoring achievment: {}, already selected", achievementId);
+                            // logger.Debug("Ignoring achievment: {}, already selected", achievementId);
                             continue;
                         }
 
@@ -503,7 +551,7 @@ namespace Gw2Archipelago
                                 && !storylineMatch
                                 && !achievementReq.Equals("Any"))
                             {
-                                logger.Debug("Ignoring achievement: {}, {}", achievementId, achievementReq);
+                                // logger.Debug("Ignoring achievement: {}, {}", achievementId, achievementReq);
                                 continue;
                             }
                         }
@@ -512,14 +560,14 @@ namespace Gw2Archipelago
                         var requiredRegion = groupRegion ?? categoryRegion ?? achievementRegion ?? Region.OPEN_WORLD;
                         if (requiredRegion != region)
                         {
-                            logger.Debug("Ignoring achievement: {}, {}", achievementId, requiredRegion.GetName());
+                            // logger.Debug("Ignoring achievement: {}, {}", achievementId, requiredRegion.GetName());
                             continue;
                         }
 
                         var requiredStoryline = groupStoryline ?? categoryStoryline ?? achievementStoryline;
                         if (requiredStoryline != null && storyline != null && requiredStoryline != storyline)
                         {
-                            logger.Debug("Ignoring achievement: {}, {}", achievementId, requiredStoryline.Value.GetName());
+                            // logger.Debug("Ignoring achievement: {}, {}", achievementId, requiredStoryline.Value.GetName());
                             continue;
                         }
 
@@ -545,7 +593,7 @@ namespace Gw2Archipelago
                         }
                         if (metaAchievement)
                         {
-                            logger.Debug("Ignoring achievment: {}, meta achievement", achievementId);
+                            // logger.Debug("Ignoring achievment: {}, meta achievement", achievementId);
                             continue;
                         }
 
@@ -556,7 +604,7 @@ namespace Gw2Archipelago
                             if (requiresUnlock && progress.Unlocked != true)
                             {
                                 visitedAchievements.Add(achievementId);
-                                logger.Debug("Ignoring achievment: {}, locked", achievementId);
+                                // logger.Debug("Ignoring achievment: {}, locked", achievementId);
                                 continue;
                             }
 
@@ -568,7 +616,7 @@ namespace Gw2Archipelago
                                 if (!repeatable)
                                 {
                                     visitedAchievements.Add(achievementId);
-                                    logger.Debug("Ignoring achievment: {}, already done", achievementId);
+                                    // logger.Debug("Ignoring achievment: {}, already done", achievementId);
                                     continue;
                                 }
                             }
@@ -577,7 +625,7 @@ namespace Gw2Archipelago
                         {
                             if (requiresUnlock)
                             {
-                                logger.Debug("Ignoring achievment: {}, locked, no progress", achievementId);
+                                // logger.Debug("Ignoring achievment: {}, locked, no progress", achievementId);
                                 continue;
                             }
 
@@ -588,7 +636,7 @@ namespace Gw2Archipelago
                                 {
                                     if (!achievementProgress.ContainsKey(prereq) || !achievementProgress[prereq].Done) {
                                         missingPrereq = true;
-                                        logger.Debug("Ignoring achievment: {}, missing prereq: {}", achievementId, prereq);
+                                        // logger.Debug("Ignoring achievment: {}, missing prereq: {}", achievementId, prereq);
                                         break;
                                     }
                                 }
@@ -612,14 +660,17 @@ namespace Gw2Archipelago
                             {
                                 for (int i = 0; i < bits.Count; i++)
                                 {
-                                    if (!achievementProgress.ContainsKey(achievementId) || achievementProgress[achievementId].Bits == null || !achievementProgress[achievementId].Bits.Contains(i))
+                                    if (!achievementProgress.ContainsKey(achievementId) || 
+                                        achievementProgress[achievementId].Bits == null || 
+                                        !achievementProgress[achievementId].Bits.Contains(i))
                                     {
+                                        logger.Debug("Achievement {}, Bit: {}", achievementId, i);
                                         regions.UnionWith(bits[i].GetRegions());
                                     }
                                 }
                             }
                         }
-                        await LocationChecker.AddAchievmentLocation(achievementId, achievement, category, progress, locationName, regions);
+                        await LocationChecker.AddAchievementLocation(achievementId, achievement, category, progress, locationName, regions);
                         return true;
 
                     }
@@ -967,6 +1018,10 @@ namespace Gw2Archipelago
         protected void ToggleWindow(object sender, MouseEventArgs e)
         {
             mainWindow.ToggleWindow();
+            if (mainWindow.Visible)
+            {
+                mainWindow.Refresh();
+            }
         }
 
         protected override void Update(GameTime gameTime)

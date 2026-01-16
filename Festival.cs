@@ -53,7 +53,7 @@ namespace Gw2Archipelago
         public bool Accepts(Type type)
         {
             //logger.Debug(type.FullName);
-            return type == typeof(Festival);
+            return type == typeof(Festival) || type == typeof(Festival?);
         }
 
         public object ReadYaml(IParser parser, Type type)
