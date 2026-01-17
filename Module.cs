@@ -128,7 +128,7 @@ namespace Gw2Archipelago
         {
             if (reconnectTimer == null)
             {
-                reconnectTimer = new Timer(ConnectToArchipelago, null, 5000, 60000);
+                reconnectTimer = new Timer(ConnectToArchipelago, null, 0, 10_000);
             }
         }
 
