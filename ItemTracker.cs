@@ -26,6 +26,7 @@ namespace Gw2Archipelago
 
         public void Initialize(ArchipelagoSession apSession)
         {
+            ItemCounts.Clear();
             // We want to maintain the callback list in the event of a disconnect
             if (apSession != null)
             {
