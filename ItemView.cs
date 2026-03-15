@@ -216,6 +216,10 @@ namespace Gw2Archipelago
             {
                 logger.Debug("Making icon for {}", skill.Name);
                 var icon = new ItemIcon(module.ContentsManager, skill);
+                if (skill.Type == null)
+                {
+                    continue; //amalgam profession skills aren't generating yet.
+                }
                 var apName = getApSkillName(skill.Name, skill.Type);
                 icon.Locked = module.ItemTracker.GetUnlockedItemCount(apName) == 0;
                 logger.Debug("skill: {}, locked: {}", apName, icon.Locked);
