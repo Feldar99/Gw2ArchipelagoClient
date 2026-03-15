@@ -8,11 +8,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ed70171c-edc3-4656-b25a-32be16a0309e" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/Gw2Archipelago.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Gw2Archipelago.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ItemTracker.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ItemTracker.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ItemView.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ItemView.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Module.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Module.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages.config" beforeDir="false" afterPath="$PROJECT_DIR$/packages.config" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Gw2Archipelago/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Gw2Archipelago/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ref/Maps.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/ref/Maps.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ref/pois.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/ref/pois.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -28,17 +26,21 @@
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/195c91eba20a44919acedde10775ec171fa00/22/90454bc3/IReceivedItemsHelper.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/683eac0e4ea84d4693a16e39de514eab20200/b9/7ca28a9c/IReceivedItemsHelper.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/7019dab993da41e0a0259a4be7d6aa69531820/15/ae595907/WaitHandle.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/7019dab993da41e0a0259a4be7d6aa69531820/29/7028fdb0/Enum.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/7019dab993da41e0a0259a4be7d6aa69531820/4f/9ace2ec2/ThrowHelper.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/7019dab993da41e0a0259a4be7d6aa69531820/4f/9ace2ec2/ThrowHelper.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/7019dab993da41e0a0259a4be7d6aa69531820/9a/04414f02/List`1.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/7019dab993da41e0a0259a4be7d6aa69531820/e3/b08fc79e/Thread.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/b569e171934c4024a8d6c50dae8496044d5800/96/af620f0f/Gw2ApiManager.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/c6c8374a51994d45a37d1659d5e2b9f017ab98/55/4d4e4a77/HashSet`1.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/13d16279f4aa4942f3524bc645745688aece770c0ffca7ea62cf24acb289c46/IAccountClient.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/21aea479812a7b61313136a8566a0f712191b9969d9d9f163cf1af2c8e74d/Container.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/71a829de25af5bf79abafc9df6b33af58a47cf24fc1dc351be88f92346c81b/IGw2WebApiV2Client.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/766b7bc6b7162b5bf4272f2393d49849a5973ed34db3f46d8b582bcaf3c0bc61/Skill.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/8c2077123c6c5f4fdcc98c7bb4bdda6293774312691d562ae2352d69c796fcb9/ModuleService.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/8eb01ab3cae9e934cdbdb7a2fbdff6c14c41c1a6bbfa161cb68b241f6a9f168b/AccountAchievement.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/91f1889052de8db51da974e5a0853aae863671519a144c8b0795d5bf25652d/Tween.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/962ce3c1fb3beef5775c951a8d89e28fe422f3aaa3bef42736b1b2c92403269/Module.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/962ce3c1fb3beef5775c951a8d89e28fe422f3aaa3bef42736b1b2c92403269/Module.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/a3019659947203cfdb66872f48579b3ec54efc68d68d8453da95036bfa67d78/IBlobClient.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/ad9280bb86dd719d6b82e3625b2244f13c08f70b5ffc29d9a2c60b42347aeed/IGw2WebApiClient.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/b3b47e9ae69d2b7fe519bfe8301df0e76829d4455c74ca7d248401f41c14dc1/IApiV2ObjectList.cs" root0="FORCE_HIGHLIGHTING" />
@@ -62,8 +64,8 @@
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
     "RunOnceActivity.typescript.service.memoryLimit.init": "true",
-    "XThreadsFramesViewSplitterKey": "0.47040498",
-    "git-widget-placeholder": "0.5.0",
+    "XThreadsFramesViewSplitterKey": "0.34890965",
+    "git-widget-placeholder": "master",
     "grid.search.filter.rows": "true",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -108,6 +110,9 @@
       <workItem from="1764966674099" duration="58141000" />
       <workItem from="1766444570315" duration="99559000" />
       <workItem from="1768238655457" duration="60644000" />
+      <workItem from="1771891648066" duration="3052000" />
+      <workItem from="1772310421985" duration="859000" />
+      <workItem from="1772672281032" duration="87739000" />
     </task>
     <servers />
   </component>
@@ -133,46 +138,25 @@
           <properties exception="System.Threading.ThreadAbortException" breakIfHandledByOtherCode="false" displayValue="System.Threading.ThreadAbortException" />
           <option name="timeStamp" value="3" />
         </breakpoint>
+        <breakpoint enabled="true" type="DotNet_Exception_Breakpoints">
+          <properties exception="System.AggregateException" breakIfHandledByUserCode="true" isInternal="false" displayValue="AggregateException" namespaceName="System">
+            <option name="internal" value="false" />
+          </properties>
+          <option name="timeStamp" value="13" />
+        </breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <condition expression="Achievement == null" language="C#" />
           <url>file://$PROJECT_DIR$/AchievementLocation.cs</url>
-          <line>82</line>
+          <line>78</line>
           <properties documentPath="C:\Users\pschw\OneDrive\Documents\GitHub\Gw2Archipelago\Client\AchievementLocation.cs" containingFunctionPresentation="Method 'CalculateTier'">
             <startOffsets>
-              <option value="2145" />
+              <option value="1943" />
             </startOffsets>
             <endOffsets>
-              <option value="2160" />
+              <option value="1958" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="12" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <condition expression="achievementId == 2483" language="C#" />
-          <url>file://$PROJECT_DIR$/LocationChecker.cs</url>
-          <line>90</line>
-          <properties documentPath="C:\Users\pschw\OneDrive\Documents\GitHub\Gw2Archipelago\Client\LocationChecker.cs" containingFunctionPresentation="Method 'AddAchievementLocation'">
-            <startOffsets>
-              <option value="3443" />
-            </startOffsets>
-            <endOffsets>
-              <option value="3467" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="23" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/ItemTracker.cs</url>
-          <line>41</line>
-          <properties documentPath="C:\Users\pschw\OneDrive\Documents\GitHub\Gw2Archipelago\Client\ItemTracker.cs" containingFunctionPresentation="Method 'UnlockItem'">
-            <startOffsets>
-              <option value="1300" />
-            </startOffsets>
-            <endOffsets>
-              <option value="1365" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="50" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
