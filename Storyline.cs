@@ -21,6 +21,7 @@ namespace Gw2Archipelago
         END_OF_DRAGONS,
         SECRETS_OF_THE_OBSCURE,
         JANTHIR_WILDS,
+        VISIONS_OF_ETERNITY,
     }
 
     public static class StorylineExtensions
@@ -42,6 +43,7 @@ namespace Gw2Archipelago
                 case Storyline.END_OF_DRAGONS:          return "EndOfDragons";
                 case Storyline.SECRETS_OF_THE_OBSCURE:  return "SecretsOfTheObscure";
                 case Storyline.JANTHIR_WILDS:           return "JanthirWilds";
+                case Storyline.VISIONS_OF_ETERNITY:     return "VisionsOfEternity";
                 default:
                     throw new System.ArgumentException("Invalid Storyline");
             }
@@ -49,6 +51,8 @@ namespace Gw2Archipelago
 
         public static Guid GetSeasonId(this Storyline storyline)
         {
+            //Scarlet's War: 002C2D90-69B5-41A2-A422-8DB6F2EFC53E
+            //Can be found at https://api.guildwars2.com/v2/stories/seasons
             switch (storyline) { 
                 case Storyline.CORE:                    return new Guid("215AAA0F-CDAC-4F93-86DA-C155A99B5784");
                 case Storyline.SEASON_1:                return new Guid("A49D0CD7-E725-4141-8E10-180F1CED7CAF");
@@ -61,6 +65,7 @@ namespace Gw2Archipelago
                 case Storyline.END_OF_DRAGONS:          return new Guid("D1B709AB-92B6-4EE9-8B40-2B7C628E5022");
                 case Storyline.SECRETS_OF_THE_OBSCURE:  return new Guid("AEE99452-D323-4ABB-8F49-D7C0A752CBD1");
                 case Storyline.JANTHIR_WILDS:           return new Guid("5EFFBB71-7C6D-4594-A87D-88B8CF38FDA3");
+                case Storyline.VISIONS_OF_ETERNITY:     return new Guid("5F35F25C-AE33-4D92-A061-227CE54FA5DC");
 
                 default:
                     throw new System.ArgumentException("Invalid Storyline");
@@ -81,6 +86,7 @@ namespace Gw2Archipelago
             if (lowerName.Equals("endofdragons") || lowerName.Equals("end_of_dragons") || lowerName.Equals("end of dragons") || lowerName.Equals("eod")) return Storyline.END_OF_DRAGONS;
             if (lowerName.Equals("secretsoftheobscure") || lowerName.Equals("secrets_of_the_obscure") || lowerName.Equals("secrets of the obscure") || lowerName.Equals("soto")) return Storyline.SECRETS_OF_THE_OBSCURE;
             if (lowerName.Equals("janthirwilds") || lowerName.Equals("janthir_wilds") || lowerName.Equals("janthir wilds") || lowerName.Equals("jw")) return Storyline.JANTHIR_WILDS;
+            if (lowerName.Equals("visionsofeternity") || lowerName.Equals("visions_of_eternity") || lowerName.Equals("visions of eternity") || lowerName.Equals("voe")) return Storyline.VISIONS_OF_ETERNITY;
             return null;
         }
 
