@@ -50,6 +50,12 @@ namespace Gw2Archipelago
         {
             this.module = module;
             module.MapAccessTracker.MapAccessChanged += OnMapAccessChange;
+            module.ConnectionStatusChanged += OnConnectionStatusChange;
+        }
+
+        private void OnConnectionStatusChange(Status status)
+        {
+            Refresh();
         }
 
         private void OnMapAccessChange(string mapName, MapAccessTracker.MapAccessState state)
@@ -138,13 +144,23 @@ namespace Gw2Archipelago
 
         internal void Refresh()
         {
-            if (module.ApSession == null || !module.ApSession.Socket.Connected)
+            switch (module.Status)
             {
-                connectionStatus.Text = "Not Connected";
-                return;
+                case Status.DISCONNECTED:
+                    connectionStatus.Text = "Not Connected";
+                    return;
+                case Status.CONNECTING:
+                    connectionStatus.Text = "Connecting";
+                    return;
+                case Status.CONNECTED:
+                    connectionStatus.Text = "Connected";
+                    break;
+                case Status.GENERATING_LOCATIONS:
+                    connectionStatus.Text = "Generating Locations";
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
-
-            connectionStatus.Text = "Connected";
 
             RefreshRegions();
             ClearLocations();

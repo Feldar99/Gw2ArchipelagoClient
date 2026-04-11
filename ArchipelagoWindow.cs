@@ -46,7 +46,7 @@ namespace Gw2Archipelago
                 new Tab(GameService.Content.GetTexture("155052"), () => {
                     locationView = new LocationView(module);
                     itemView = null;
-                    locationView.ConnectButtonClick += module.StartReconnectTimer;
+                    locationView.ConnectButtonClick += module.OnConnectButtonClick;
                     locationView.GenerateButtonClick += module.GenerateLocations;
                     return locationView;
                 }, "Locations"));

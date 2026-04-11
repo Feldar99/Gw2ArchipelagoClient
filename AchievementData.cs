@@ -1,7 +1,11 @@
 ﻿using Blish_HUD;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Cryptography.X509Certificates;
+using Blish_HUD;
+using Blish_HUD.Contexts;
+using Gw2Sharp.WebApi.V2.Models;
 using YamlDotNet.Core;
 using YamlDotNet.Core.Events;
 using YamlDotNet.Core.Tokens;
@@ -33,6 +37,16 @@ namespace Gw2Archipelago
             }
 
             return results;
+        }
+
+        public bool HasData()
+        {
+            if (entries.Count > 0)
+            {
+                return true;
+            }
+
+            return GetSubgroups().Any(subgroup => subgroup.HasData());
         }
 
     }
@@ -96,10 +110,70 @@ namespace Gw2Archipelago
         public AnyGroup RequiredItems;
         public AnyGroup RequiredRaces;
         public AnyGroup RequiredAchievements;
-        public Profession RequiredProfession;
+        public Profession? RequiredProfession;
         public Festival? Festival;
-        public Storyline Storyline;
-        public Order RequiredOrder;
+        public Storyline? Storyline;
+        public Order? RequiredOrder;
+
+        public bool HasData()
+        {
+            if (Tags != null && Tags.Count > 0)
+            {
+                return true;
+            }
+
+            if (Disciplines != null && Disciplines.HasData())
+            {
+                return true;
+            }
+
+            if (Maps != null && Maps.HasData())
+            {
+                return true;
+            }
+
+            if (Quests != null && Quests.HasData())
+            {
+                return true;
+            }
+
+            if (RewardTracks != null && RewardTracks.HasData())
+            {
+                return true;
+            }
+
+            if (ContainedIn != null && ContainedIn.HasData())
+            {
+                return true;
+            }
+
+            if (SoldBy != null && SoldBy.HasData())
+            {
+                return true;
+            }
+
+            if (RequiredBits != null && RequiredBits.HasData())
+            {
+                return true;
+            }
+
+            if (RequiredItems != null && RequiredItems.HasData())
+            {
+                return true;
+            }
+
+            if (RequiredRaces != null && RequiredRaces.HasData())
+            {
+                return true;
+            }
+
+            if (RequiredAchievements != null && RequiredAchievements.HasData())
+            {
+                return true;
+            }
+
+            return false;
+        }
 
         public HashSet<string> GetRegions()
         {
@@ -128,7 +202,6 @@ namespace Gw2Archipelago
 
             return regions;
         }
-
     }
 
     class AchievementData
@@ -152,12 +225,72 @@ namespace Gw2Archipelago
         public AnyGroup RequiredItems;
         public AnyGroup RequiredRaces;
         public AnyGroup RequiredAchievements;
-        public Profession RequiredProfession;
+        public Profession? RequiredProfession;
         public Festival? Festival;
-        public Storyline Storyline;
-        public Order RequiredOrder;
+        public Storyline? Storyline;
+        public Order? RequiredOrder;
 
         public List<ProgressBit> bits;
+
+        public bool HasData()
+        {
+            if (Tags != null && Tags.Count > 0)
+            {
+                return true;
+            }
+
+            if (MaxAmount != null || RequiredProfession != null || MapType != null || Festival != null || Storyline != null || RequiredOrder != null || Activity != null)
+            {
+                return true;
+            }
+
+            if (Disciplines != null && Disciplines.HasData())
+            {
+                return true;
+            } 
+
+            if (Maps != null && Maps.HasData())
+            {
+                return true;
+            } 
+
+            if (Quests != null && Quests.HasData())
+            {
+                return true;
+            } 
+
+            if (RewardTracks != null && RewardTracks.HasData())
+            {
+                return true;
+            } 
+
+            if (ContainedIn != null && ContainedIn.HasData())
+            {
+                return true;
+            } 
+
+            if (SoldBy != null && SoldBy.HasData())
+            {
+                return true;
+            } 
+
+            if (RequiredItems != null && RequiredItems.HasData())
+            {
+                return true;
+            } 
+
+            if (RequiredRaces != null && RequiredRaces.HasData())
+            {
+                return true;
+            } 
+
+            if (RequiredAchievements != null && RequiredAchievements.HasData())
+            {
+                return true;
+            }
+
+            return bits != null && bits.Any(bit => bit.HasData());
+        }
 
         public HashSet<string> GetRegions()
         {
@@ -188,9 +321,9 @@ namespace Gw2Archipelago
         }
     }
 
-    internal class YamLogicGroupConverter<T> : IYamlTypeConverter
+    internal class YamlLogicGroupConverter<T> : IYamlTypeConverter
     {
-        private static readonly Logger logger = Logger.GetLogger<YamLogicGroupConverter<T>>();
+        private static readonly Logger logger = Logger.GetLogger<YamlLogicGroupConverter<T>>();
         public bool Accepts(Type type)
         {
             //logger.Debug(type.FullName);

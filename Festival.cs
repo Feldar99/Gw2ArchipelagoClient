@@ -52,14 +52,14 @@ namespace Gw2Archipelago
         private static readonly Logger logger = Logger.GetLogger<YamlFestivalConverter>();
         public bool Accepts(Type type)
         {
-            //logger.Debug(type.FullName);
+            // logger.Debug(type.FullName);
             return type == typeof(Festival) || type == typeof(Festival?);
         }
 
         public object ReadYaml(IParser parser, Type type)
         {
             Scalar value = parser.Consume<Scalar>();
-            //logger.Debug(value.Value);
+            // logger.Debug(value.Value);
             return FestivalExtensions.FromName(value.Value);
         }
 

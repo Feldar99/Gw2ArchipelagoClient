@@ -113,7 +113,7 @@ namespace Gw2Archipelago
         public bool Accepts(Type type)
         {
             //logger.Debug(type.FullName);
-            return type == typeof(Storyline);
+            return type == typeof(Storyline) || type == typeof(Storyline?);
         }
 
         public object ReadYaml(IParser parser, Type type)

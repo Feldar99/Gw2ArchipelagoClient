@@ -40,6 +40,7 @@ namespace Gw2Archipelago
         private ApiMap currentMap;
 
         private Mutex poiMutex = new Mutex();
+        private Mutex achievementMutex = new Mutex();
 
         public delegate void AchievementEvent(AchievementLocation achievementLocation);
         public delegate void QuestEvent(Location questLocation, Quest quest);
@@ -102,8 +103,9 @@ namespace Gw2Archipelago
             // Don't override serialized data on load
             location.Progress = progress;
             location.Id = achievementId;
+            achievementMutex.WaitOne(10_000);
             achievementLocations.Add(achievementId, location);
-
+            achievementMutex.ReleaseMutex();
         }
 
         public async Task AddAchievementLocation(AchievementLocation location)
@@ -111,7 +113,10 @@ namespace Gw2Archipelago
             var id = location.Id;
             location.Achievement = await module.Gw2ApiManager.Gw2ApiClient.V2.Achievements.GetAsync(id);
             Regions.UnionWith(location.Regions);
+            achievementMutex.WaitOne(10_000);
+            logger.Debug("ading achievement location: {}", id);
             achievementLocations.Add(id, location);
+            achievementMutex.ReleaseMutex();
         }
 
         public void AddQuestLocation(bool complete, string name, string region)
@@ -185,7 +190,9 @@ namespace Gw2Archipelago
 
         public void ClearLocations()
         {
+            achievementMutex.WaitOne(10_000);
             achievementLocations.Clear();
+            achievementMutex.ReleaseMutex();
             questStatus.QuestLocations.Clear();
             pointsOfInterest.Clear();
             itemLocations.Clear();
@@ -330,7 +337,7 @@ namespace Gw2Archipelago
                 var targetQuantity = itemLocation.targetQuantities[itemId];
                 var quantity = 0;
                 itemQuantities.TryGetValue(itemId, out quantity);
-                logger.Debug("location: {}, quantity: {}, targetQuantity: {}", itemLocation.LocationName, quantity, targetQuantity);
+                // logger.Debug("location: {}, quantity: {}, targetQuantity: {}", itemLocation.LocationName, quantity, targetQuantity);
                 if (quantity >= targetQuantity && targetQuantity != -1)
                 {
                     CompleteItemLocation(itemLocation);
@@ -357,7 +364,7 @@ namespace Gw2Archipelago
                     var achievement = location.Achievement;
                     var oldProgress = location.Progress;
                     var oldValue = location.Current;
-                    logger.Debug("Updating {name}", achievement.Name);
+                    // logger.Debug("Updating {name}", achievement.Name);
 
                     bool repeatable = false;
                     foreach (var flag in achievement.Flags)
@@ -378,7 +385,7 @@ namespace Gw2Archipelago
                     {
                         if (progress.Current == oldValue)
                         {
-                            logger.Debug("No Change: {oldProgress} {progress}");
+                            // logger.Debug("No Change: {oldProgress} {progress}");
                             continue;
                         }
                     }
@@ -411,19 +418,19 @@ namespace Gw2Archipelago
                         {
                             if (oldDone != location.Done)
                             {
-                                logger.Debug("Done");
+                                // logger.Debug("Done");
                             }
                             if (oldRepeated != location.Repeated)
                             {
-                                logger.Debug("Repeated - old: {}, new: {}", oldRepeated, location.Repeated);
+                                // logger.Debug("Repeated - old: {}, new: {}", oldRepeated, location.Repeated);
                             }
                             if (oldBitCount != location.BitCount)
                             {
-                                logger.Debug("BitCount - old: {}, new: {}", oldBitCount, location.BitCount);
+                                // logger.Debug("BitCount - old: {}, new: {}", oldBitCount, location.BitCount);
                             }
                             if (oldTier != location.Tier)
                             {
-                                logger.Debug("Tier - old: {}, new: {}", oldTier, location.Tier);
+                                // logger.Debug("Tier - old: {}, new: {}", oldTier, location.Tier);
                             }
                             CompleteAchievementLocation(location);
                         }
@@ -448,7 +455,7 @@ namespace Gw2Archipelago
             logger.Debug("Updating Quests");
             foreach (var questId in quests)
             {
-                logger.Debug("questLocations: {}", questStatus.QuestLocations);
+                // logger.Debug("questLocations: {}", questStatus.QuestLocations);
                 if (questStatus.Quests.ContainsKey(questId) && questStatus.QuestLocations.Count > 0)
                 {
                     var location = questStatus.QuestLocations.Dequeue();

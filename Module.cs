@@ -34,6 +34,15 @@ using XnaRectangle = Microsoft.Xna.Framework.Rectangle;
 
 namespace Gw2Archipelago
 {
+
+    public enum Status
+    {
+        DISCONNECTED,
+        CONNECTING,
+        CONNECTED,
+        GENERATING_LOCATIONS,
+    }
+    
     [Export(typeof(Blish_HUD.Modules.Module))]
     public class Module : Blish_HUD.Modules.Module
     {
@@ -59,7 +68,21 @@ namespace Gw2Archipelago
         internal SlotData SlotData { private set; get; }
         internal ArchipelagoSession ApSession { private set; get; }
         internal ItemTracker ItemTracker { private set; get; } = new ItemTracker();
-        internal MapAccessTracker MapAccessTracker { private set; get; } = new MapAccessTracker();
+        internal MapAccessTracker MapAccessTracker { private set; get; } = new MapAccessTracker();        
+        
+        public delegate void ConnectionStatusEvent (Status newStatus);
+
+        public event ConnectionStatusEvent ConnectionStatusChanged;
+
+        public Status Status
+        {
+            get => status;
+            private set
+            {
+                status = value;
+                ConnectionStatusChanged?.Invoke(value);
+            }
+        }
 
         private CornerIcon                     cornerIcon;
         private ArchipelagoWindow              mainWindow;
@@ -75,6 +98,7 @@ namespace Gw2Archipelago
         bool unlockingItems = false;
 
         private Timer reconnectTimer;
+        private Status status = Status.DISCONNECTED;
 
         [ImportingConstructor]
         public Module([Import("ModuleParameters")] ModuleParameters moduleParameters) : base(moduleParameters) { }
@@ -143,6 +167,8 @@ namespace Gw2Archipelago
 
             ApSession = null;
 
+            Status = Status.DISCONNECTED;
+
         }
 
         private struct ItemData
@@ -156,13 +182,16 @@ namespace Gw2Archipelago
         {
             if (!Gw2ApiManager.HasPermission(TokenPermission.Account))
             {
+                logger.Error("Could not connect; API Key not found.  Logging into a character sometimes fixes this");
                 return;
             }
             if (ApSession != null)
             {
                 DisconnectFromArchipelago();
             }
+
             logger.Debug("Connecting to " + apServerUrl.Value);
+            Status = Status.CONNECTING;
             bool success = false;
             LoginResult result = null;
             try
@@ -197,8 +226,8 @@ namespace Gw2Archipelago
                 {
                     var deserializer = new DeserializerBuilder()
                         .WithNamingConvention(UnderscoredNamingConvention.Instance)
-                        .WithTypeConverter(new YamLogicGroupConverter<string>())
-                        .WithTypeConverter(new YamLogicGroupConverter<int>())
+                        .WithTypeConverter(new YamlLogicGroupConverter<string>())
+                        .WithTypeConverter(new YamlLogicGroupConverter<int>())
                         .WithTypeConverter(new YamlMapTypeConverter())
                         .WithTypeConverter(new YamlStorylineConverter())
                         .WithTypeConverter(new YamlFestivalConverter())
@@ -231,7 +260,6 @@ namespace Gw2Archipelago
 
                 var checkedLocations = new HashSet<long>(ApSession.Locations.AllLocationsChecked);
 
-                var tasks = new List<Task>();
                 {
 
                     var file = waitForFile("AchievementLocations.json", 5, true);
@@ -313,12 +341,11 @@ namespace Gw2Archipelago
                             if (!location.LocationComplete)
                             {
 
-                                tasks.Add(LocationChecker.AddAchievementLocation(location));
+                                await LocationChecker.AddAchievementLocation(location);
                             }
                         }
                     }
                 }
-                await Task.WhenAll(tasks);
 
                 {
                     var file = waitForFile("QuestStatus.json", 5, true);
@@ -367,6 +394,7 @@ namespace Gw2Archipelago
                         logger.Error(error);
                     }
                 }
+                Status = Status.DISCONNECTED;
             }
         }
 
@@ -712,6 +740,7 @@ namespace Gw2Archipelago
             LocationChecker.ClearLocations();
 
             logger.Debug("Generating Locations");
+            status = Status.GENERATING_LOCATIONS;
 
             var deserializer = new DeserializerBuilder()
                 .WithNamingConvention(UnderscoredNamingConvention.Instance)
@@ -883,8 +912,20 @@ namespace Gw2Archipelago
                     ApSession.Locations.CompleteLocationChecks(new long[] { ApSession.Locations.GetLocationIdFromName("Guild Wars 2", locationName) });
                 }
             }
-
-
+            
+            switch (status)
+            {
+                case Status.DISCONNECTED:
+                case Status.CONNECTING:
+                case Status.CONNECTED:
+                    logger.Error("Status changed to {} while generating locations.", status);
+                    break;
+                case Status.GENERATING_LOCATIONS:
+                    status = Status.CONNECTED;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
             logger.Debug("Finished Generating Locations");
 
             var totalQuestLocation = incompleteQuestLocations;
@@ -1037,6 +1078,21 @@ namespace Gw2Archipelago
             // All static members must be manually unset
         }
 
+        public void OnConnectButtonClick(object sender, MouseEventArgs e)
+        {
+            switch (status)
+            {
+                case Status.CONNECTING:
+                case Status.GENERATING_LOCATIONS:
+                    break;
+                case Status.DISCONNECTED:
+                case Status.CONNECTED:
+                    ConnectToArchipelago();
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
     }
 
 }
