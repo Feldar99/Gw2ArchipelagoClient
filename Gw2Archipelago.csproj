@@ -33,8 +33,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Archipelago.MultiClient.Net, Version=6.7.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\Archipelago.MultiClient.Net.6.7.0\lib\net45\Archipelago.MultiClient.Net.dll</HintPath>
+    <Reference Include="Archipelago.MultiClient.Net, Version=6.7.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\Archipelago.MultiClient.Net.6.7.1\lib\net45\Archipelago.MultiClient.Net.dll</HintPath>
     </Reference>
     <Reference Include="AsyncClipboardService, Version=1.7.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\AsyncClipboardService.1.7.1\lib\net45\AsyncClipboardService.dll</HintPath>
@@ -69,7 +69,7 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\Archipelago.MultiClient.Net.6.7.0\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>packages\Archipelago.MultiClient.Net.6.7.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX, Version=4.2.0.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
       <HintPath>packages\SharpDX.4.2.0\lib\net45\SharpDX.dll</HintPath>
@@ -120,8 +120,8 @@
     <Reference Include="System.IO.Compression.ZipFile" />
     <Reference Include="System.IO.FileSystem" />
     <Reference Include="System.IO.FileSystem.Primitives" />
-    <Reference Include="System.IO.Pipelines, Version=9.0.0.9, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>packages\System.IO.Pipelines.9.0.9\lib\net462\System.IO.Pipelines.dll</HintPath>
+    <Reference Include="System.IO.Pipelines, Version=10.0.0.6, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>packages\System.IO.Pipelines.10.0.6\lib\net462\System.IO.Pipelines.dll</HintPath>
     </Reference>
     <Reference Include="System.Linq" />
     <Reference Include="System.Linq.Expressions" />
@@ -210,92 +210,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="Content\bin\Windows\Content\atlas\ui-atlas.xnb" />
-    <None Include="Content\bin\Windows\Content\atlas\ui.xnb" />
-    <None Include="Content\bin\Windows\Content\common\button-states.xnb" />
-    <None Include="Content\bin\Windows\Content\common\error.xnb" />
-    <None Include="Content\bin\Windows\Content\common\menomonia.ttf" />
-    <None Include="Content\bin\Windows\Content\common\menomonia.xnb" />
-    <None Include="Content\bin\Windows\Content\effects\alphamask.xnb" />
-    <None Include="Content\bin\Windows\Content\effects\distancedissolve.xnb" />
-    <None Include="Content\bin\Windows\Content\effects\glow.xnb" />
-    <None Include="Content\bin\Windows\Content\effects\gw2master.xnb" />
-    <None Include="Content\bin\Windows\Content\effects\marker.xnb" />
-    <None Include="Content\bin\Windows\Content\effects\menuitem.xnb" />
-    <None Include="Content\bin\Windows\Content\effects\menuitem2.xnb" />
-    <None Include="Content\bin\Windows\Content\effects\silhouette.xnb" />
-    <None Include="Content\bin\Windows\Content\effects\trail.xnb" />
-    <None Include="Content\bin\Windows\Content\fonts\consolas-10-bold.xnb" />
-    <None Include="Content\bin\Windows\Content\fonts\consolas-10.xnb" />
-    <None Include="Content\bin\Windows\Content\fonts\consolas-12-bold.xnb" />
-    <None Include="Content\bin\Windows\Content\fonts\consolas-12.xnb" />
-    <None Include="Content\bin\Windows\Content\fonts\consolas-8-bold.xnb" />
-    <None Include="Content\bin\Windows\Content\fonts\consolas-8.xnb" />
-    <None Include="Content\bin\Windows\Content\fonts\menomonia-8-regular_0.xnb" />
-    <None Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-11-bold.xnb" />
-    <None Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-11-bold_0.xnb" />
-    <None Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-11-italic.xnb" />
-    <None Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-11-italic_0.xnb" />
-    <None Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-11-regular.xnb" />
-    <None Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-11-regular_0.xnb" />
-    <None Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-12-bold.xnb" />
-    <None Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-12-bold_0.xnb" />
-    <None Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-12-italic.xnb" />
-    <None Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-12-italic_0.xnb" />
-    <None Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-12-regular.xnb" />
-    <None Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-12-regular_0.xnb" />
-    <None Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-14-bold.xnb" />
-    <None Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-14-bold_0.xnb" />
-    <None Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-14-italic.xnb" />
-    <None Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-14-italic_0.xnb" />
-    <None Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-14-regular.xnb" />
-    <None Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-14-regular_0.xnb" />
-    <None Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-16-bold.xnb" />
-    <None Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-16-bold_0.xnb" />
-    <None Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-16-italic.xnb" />
-    <None Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-16-italic_0.xnb" />
-    <None Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-16-regular.xnb" />
-    <None Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-16-regular_0.xnb" />
-    <None Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-18-bold.xnb" />
-    <None Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-18-bold_0.xnb" />
-    <None Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-18-italic.xnb" />
-    <None Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-18-italic_0.xnb" />
-    <None Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-18-regular.xnb" />
-    <None Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-18-regular_0.xnb" />
-    <None Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-20-bold.xnb" />
-    <None Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-20-bold_0.xnb" />
-    <None Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-20-regular.xnb" />
-    <None Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-20-regular_0.xnb" />
-    <None Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-22-bold.xnb" />
-    <None Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-22-bold_0.xnb" />
-    <None Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-22-regular.xnb" />
-    <None Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-22-regular_0.xnb" />
-    <None Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-24-bold.xnb" />
-    <None Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-24-bold_0.xnb" />
-    <None Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-24-bold_1.xnb" />
-    <None Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-24-regular.xnb" />
-    <None Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-24-regular_0.xnb" />
-    <None Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-32-regular.xnb" />
-    <None Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-32-regular_0.xnb" />
-    <None Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-32-regular_1.xnb" />
-    <None Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-34-regular.xnb" />
-    <None Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-34-regular_0.xnb" />
-    <None Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-34-regular_1.xnb" />
-    <None Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-36-bold.xnb" />
-    <None Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-36-bold_0.xnb" />
-    <None Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-36-bold_1.xnb" />
-    <None Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-36-regular.xnb" />
-    <None Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-36-regular_0.xnb" />
-    <None Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-36-regular_1.xnb" />
-    <None Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-8-bold.xnb" />
-    <None Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-8-bold_0.xnb" />
-    <None Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-8-italic.xnb" />
-    <None Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-8-italic_0.xnb" />
-    <None Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-8-regular.xnb" />
-    <None Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-8-regular_0.xnb" />
-    <None Include="Content\bin\Windows\Content\fonts\newkrytan\newkrytan-12-regular.xnb" />
-    <None Include="Content\bin\Windows\Content\fonts\newkrytan\newkrytan-12-regular_0.xnb" />
-    <None Include="Content\bin\Windows\Content\fonts\newkrytan\newkrytan-12-regular_1.xnb" />
     <None Include="manifest.json" />
     <None Include="mgfxc.deps.json" />
     <None Include="mgfxc.runtimeconfig.dev.json" />
@@ -303,6 +217,92 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\bin\Windows\Content\atlas\ui-atlas.xnb" />
+    <Content Include="Content\bin\Windows\Content\atlas\ui.xnb" />
+    <Content Include="Content\bin\Windows\Content\common\button-states.xnb" />
+    <Content Include="Content\bin\Windows\Content\common\error.xnb" />
+    <Content Include="Content\bin\Windows\Content\common\menomonia.ttf" />
+    <Content Include="Content\bin\Windows\Content\common\menomonia.xnb" />
+    <Content Include="Content\bin\Windows\Content\effects\alphamask.xnb" />
+    <Content Include="Content\bin\Windows\Content\effects\distancedissolve.xnb" />
+    <Content Include="Content\bin\Windows\Content\effects\glow.xnb" />
+    <Content Include="Content\bin\Windows\Content\effects\gw2master.xnb" />
+    <Content Include="Content\bin\Windows\Content\effects\marker.xnb" />
+    <Content Include="Content\bin\Windows\Content\effects\menuitem.xnb" />
+    <Content Include="Content\bin\Windows\Content\effects\menuitem2.xnb" />
+    <Content Include="Content\bin\Windows\Content\effects\silhouette.xnb" />
+    <Content Include="Content\bin\Windows\Content\effects\trail.xnb" />
+    <Content Include="Content\bin\Windows\Content\fonts\consolas-10-bold.xnb" />
+    <Content Include="Content\bin\Windows\Content\fonts\consolas-10.xnb" />
+    <Content Include="Content\bin\Windows\Content\fonts\consolas-12-bold.xnb" />
+    <Content Include="Content\bin\Windows\Content\fonts\consolas-12.xnb" />
+    <Content Include="Content\bin\Windows\Content\fonts\consolas-8-bold.xnb" />
+    <Content Include="Content\bin\Windows\Content\fonts\consolas-8.xnb" />
+    <Content Include="Content\bin\Windows\Content\fonts\menomonia-8-regular_0.xnb" />
+    <Content Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-11-bold.xnb" />
+    <Content Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-11-bold_0.xnb" />
+    <Content Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-11-italic.xnb" />
+    <Content Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-11-italic_0.xnb" />
+    <Content Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-11-regular.xnb" />
+    <Content Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-11-regular_0.xnb" />
+    <Content Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-12-bold.xnb" />
+    <Content Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-12-bold_0.xnb" />
+    <Content Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-12-italic.xnb" />
+    <Content Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-12-italic_0.xnb" />
+    <Content Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-12-regular.xnb" />
+    <Content Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-12-regular_0.xnb" />
+    <Content Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-14-bold.xnb" />
+    <Content Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-14-bold_0.xnb" />
+    <Content Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-14-italic.xnb" />
+    <Content Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-14-italic_0.xnb" />
+    <Content Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-14-regular.xnb" />
+    <Content Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-14-regular_0.xnb" />
+    <Content Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-16-bold.xnb" />
+    <Content Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-16-bold_0.xnb" />
+    <Content Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-16-italic.xnb" />
+    <Content Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-16-italic_0.xnb" />
+    <Content Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-16-regular.xnb" />
+    <Content Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-16-regular_0.xnb" />
+    <Content Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-18-bold.xnb" />
+    <Content Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-18-bold_0.xnb" />
+    <Content Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-18-italic.xnb" />
+    <Content Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-18-italic_0.xnb" />
+    <Content Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-18-regular.xnb" />
+    <Content Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-18-regular_0.xnb" />
+    <Content Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-20-bold.xnb" />
+    <Content Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-20-bold_0.xnb" />
+    <Content Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-20-regular.xnb" />
+    <Content Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-20-regular_0.xnb" />
+    <Content Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-22-bold.xnb" />
+    <Content Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-22-bold_0.xnb" />
+    <Content Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-22-regular.xnb" />
+    <Content Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-22-regular_0.xnb" />
+    <Content Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-24-bold.xnb" />
+    <Content Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-24-bold_0.xnb" />
+    <Content Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-24-bold_1.xnb" />
+    <Content Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-24-regular.xnb" />
+    <Content Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-24-regular_0.xnb" />
+    <Content Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-32-regular.xnb" />
+    <Content Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-32-regular_0.xnb" />
+    <Content Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-32-regular_1.xnb" />
+    <Content Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-34-regular.xnb" />
+    <Content Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-34-regular_0.xnb" />
+    <Content Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-34-regular_1.xnb" />
+    <Content Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-36-bold.xnb" />
+    <Content Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-36-bold_0.xnb" />
+    <Content Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-36-bold_1.xnb" />
+    <Content Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-36-regular.xnb" />
+    <Content Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-36-regular_0.xnb" />
+    <Content Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-36-regular_1.xnb" />
+    <Content Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-8-bold.xnb" />
+    <Content Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-8-bold_0.xnb" />
+    <Content Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-8-italic.xnb" />
+    <Content Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-8-italic_0.xnb" />
+    <Content Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-8-regular.xnb" />
+    <Content Include="Content\bin\Windows\Content\fonts\menomonia\menomonia-8-regular_0.xnb" />
+    <Content Include="Content\bin\Windows\Content\fonts\newkrytan\newkrytan-12-regular.xnb" />
+    <Content Include="Content\bin\Windows\Content\fonts\newkrytan\newkrytan-12-regular_0.xnb" />
+    <Content Include="Content\bin\Windows\Content\fonts\newkrytan\newkrytan-12-regular_1.xnb" />
     <Content Include="CppNet.dll" />
     <Content Include="libmojoshader_64.dll" />
     <Content Include="mgfxc.dll" />

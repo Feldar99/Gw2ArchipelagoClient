@@ -182,10 +182,6 @@ namespace Gw2Archipelago
                 profession.Value = characterProfession;
                 race.Value = characterRace;
 
-                var deserializer = new DeserializerBuilder()
-                    .WithNamingConvention(LowerCaseNamingConvention.Instance)
-                    .Build();
-
                 await AddNonGenericLocations();
 
                 filePrefix = DirectoriesManager.GetFullDirectoryPath("ArchipelagoData") + "\\" + ApSession.RoomState.Seed + "_" + slotName.Value + "_";
@@ -239,8 +235,7 @@ namespace Gw2Archipelago
 
                 {
                     var file = waitForFile("QuestStatus.json", 5, true);
-                    string fileName = filePrefix + "QuestStatus.json";
-                    if (SystemFile.Exists(fileName))
+                    if (file != null)
                     {
                         var status = await JsonSerializer.DeserializeAsync<QuestStatus>(file);
                         LocationChecker.SetQuestStatus(status);
@@ -816,34 +811,41 @@ namespace Gw2Archipelago
             return null;
         }
 
+        private async Task writeToFile<T>(String filename, T data)
+        {
+            String tempFilename = filename + ".tmp";
+            FileStream stream = waitForFile(tempFilename, 10, false);
+            if (stream == null)
+            {
+                logger.Error("Could not open {} for writing", tempFilename);
+                return;
+            }
+            await JsonSerializer.SerializeAsync(stream, data);
+            try
+            {
+                stream.Dispose();
+                stream = waitForFile(filename, 1, true);
+                await JsonSerializer.DeserializeAsync<T>(stream);
+                stream.Dispose();
+                SystemFile.Delete(filePrefix + filename);
+                SystemFile.Move(filePrefix + tempFilename, filePrefix + filename);
+            }
+            catch (Exception e)
+            {
+                logger.Error(e, "Failed to write AchievementLocations.json");
+            }
+        }
+
         private async Task serialize()
         {
+            List<Task> tasks = new List<Task>
             {
-                FileStream stream = waitForFile("AchievementLocations.json", 10, false);
-                if (stream == null)
-                {
-                    return;
-                }
-                await JsonSerializer.SerializeAsync(stream, LocationChecker.GetAchievementLocations());
-            }
-            {
-                FileStream stream = waitForFile("QuestStatus.json", 10, false);
-                if (stream == null)
-                {
-                    return;
-                }
-                await JsonSerializer.SerializeAsync(stream, LocationChecker.GetQuestStatus());
-            }
-            {
-                FileStream stream = waitForFile("savedData.json", 10, false);
-                if (stream == null)
-                {
-                    return;
-                }
-                savedData.CharacterName = characterName.Value;
+                writeToFile("AchievementLocations.json", LocationChecker.GetAchievementLocations()),
+                writeToFile("QuestStatus.json", LocationChecker.GetQuestStatus()),
+                writeToFile("savedData.json", savedData)
+            };
 
-                await JsonSerializer.SerializeAsync(stream, savedData);
-            }
+            await Task.WhenAll(tasks);
         }
 
         protected override void OnModuleLoaded(EventArgs e)

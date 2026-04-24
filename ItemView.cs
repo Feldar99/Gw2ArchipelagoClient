@@ -53,6 +53,7 @@ namespace Gw2Archipelago
 
         private void addSkillIdsForEntry(string entry, Dictionary<string, Dictionary<string, Dictionary<string, Dictionary<string, int>>>> skillData, Dictionary<string, int> skillIds)
         {
+            logger.Debug("addSkillIdsForEntry");
             foreach (var skillsBySpec in skillData[entry])
             {
                 //logger.Debug("{}", skillsBySpec.Key);
@@ -266,7 +267,8 @@ namespace Gw2Archipelago
 
         protected override void Build(Container container)
         {
-
+            
+            logger.Debug("Building ItemView");
             mistFragmentsLabel = new Label()
             {
                 Text = "Mist Fragments: " + module.ItemTracker.GetUnlockedItemCount("Mist Fragment") + " / " + module.SlotData["MistFragmentsRequired"],
@@ -278,6 +280,7 @@ namespace Gw2Archipelago
             var xPos = 25;
             var yPos = 30;
 
+            logger.Debug("Building contentPanel");
             contentPanel = new Panel()
             {
                 Location = new Point(40, 10),
@@ -285,6 +288,7 @@ namespace Gw2Archipelago
                 Parent = container,
             };
 
+            logger.Debug("Building scrollbar");
             scrollbar = new Scrollbar(contentPanel)
             {
                 Location = new Point(30, 10),
@@ -292,8 +296,10 @@ namespace Gw2Archipelago
                 Parent = container,
             };
 
+            logger.Debug("Building equipSlots");
             foreach (var icon in equipSlotIcons)
             {
+                logger.Debug("Equip Slot: {}", icon.Key);
                 icon.Value.Locked = module.ItemTracker.GetUnlockedItemCount(icon.Key) == 0;
                 icon.Value.Build(contentPanel, new Point(xPos, yPos));
                 xPos += icon.Value.Size.X + 5;
@@ -308,8 +314,10 @@ namespace Gw2Archipelago
             yPos += 60;
 
 
+            logger.Debug("Building skills");
             foreach (var icon in skillIcons)
             {
+                logger.Debug("Skill: {}", icon.Key);
                 icon.Value.Locked = module.ItemTracker.GetUnlockedItemCount(icon.Key) == 0;
                 icon.Value.Build(contentPanel, new Point(xPos, yPos));
                 xPos += icon.Value.Size.X + 5;
@@ -326,8 +334,10 @@ namespace Gw2Archipelago
                 yPos += 75;
             }
 
+            logger.Debug("Build Weapons");
             foreach (var weaponSlot in weaponIcons)
             {
+                logger.Debug("Weapon: {}", weaponSlot.Key);
                 var label = new Label()
                 {
                     Text = weaponSlot.Key,
@@ -347,8 +357,10 @@ namespace Gw2Archipelago
                 yPos += 40;
             }
 
+            logger.Debug("Building specializations");
             foreach (var panel in specializationPanels)
             {
+                logger.Debug("Spec: {}", panel.Key);
                 panel.Value.Build(contentPanel, new Point(xPos, yPos), module.ItemTracker);
                 yPos += 200;
             }
@@ -356,6 +368,7 @@ namespace Gw2Archipelago
 
         protected override void Unload()
         {
+            logger.Debug("Unloading ItemView");
             skillIcons = null;
             specializationPanels = null;
             weaponIcons = null;
@@ -366,6 +379,7 @@ namespace Gw2Archipelago
 
         internal void OnItemUnlocked(string itemName, int itemCount)
         {
+            logger.Debug("OnItemUnlocked: {} x{}", itemName, itemCount);
             if (mistFragmentsLabel == null)
             {
                 return;
