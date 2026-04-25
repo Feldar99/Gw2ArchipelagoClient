@@ -75,6 +75,7 @@ namespace Gw2Archipelago
 
         public void Build(Container container, Point pos, ItemTracker itemTracker)
         {
+            
             var panel = new Panel()
             {
                 ShowBorder = false,
