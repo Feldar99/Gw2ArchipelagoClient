@@ -380,6 +380,7 @@ namespace Gw2Archipelago
                 MapAccessTracker.Initialize(storyline, characterRace, characterProfession, ItemTracker);
 
                 ApSession.Locations.CheckedLocationsUpdated += LocationChecker.OnLocationChecked;
+                Status = Status.CONNECTED;
             }
             else //success
             {
@@ -415,7 +416,6 @@ namespace Gw2Archipelago
                     {
                         foreach (var itemIds in mapData.Value)
                         {
-                            logger.Debug(itemIds.Key);
                             itemDataByName.Add(itemIds.Key, new ItemData { ItemIds = itemIds.Value, Name = itemIds.Key, Region = mapData.Key });
                         }
                     }
@@ -440,7 +440,6 @@ namespace Gw2Archipelago
             var tasks = new List<Task>();
             foreach (long location_id in ApSession.Locations.AllMissingLocations)
             {
-                logger.Debug("location_id: {}", location_id);
                 string locationName = ApSession.Locations.GetLocationNameFromId(location_id);
                 string[] splitName = locationName.Split(' ');
                 if (splitName[0].Equals("Item:"))
@@ -739,7 +738,7 @@ namespace Gw2Archipelago
             LocationChecker.ClearLocations();
 
             logger.Debug("Generating Locations");
-            status = Status.GENERATING_LOCATIONS;
+            Status = Status.GENERATING_LOCATIONS;
 
             var deserializer = new DeserializerBuilder()
                 .WithNamingConvention(UnderscoredNamingConvention.Instance)
@@ -750,10 +749,7 @@ namespace Gw2Archipelago
             var reader = new StreamReader(ContentsManager.GetFileStream("achievements_generic.yaml"));
             genericAchievementData = deserializer.Deserialize<GenericAchievementData>(reader);
 
-            foreach (var item in SlotData)
-            {
-                logger.Debug("{key}: {value}", item.Key, item.Value);
-            }
+
             var storyline = (Storyline)Enum.ToObject(typeof(Storyline), SlotData["Storyline"]);
             var storylineName = storyline.GetName();
             var groups = new Dictionary<Storyline, Dictionary<string, List<Guid>>>();
@@ -912,15 +908,15 @@ namespace Gw2Archipelago
                 }
             }
             
-            switch (status)
+            switch (Status)
             {
                 case Status.DISCONNECTED:
                 case Status.CONNECTING:
                 case Status.CONNECTED:
-                    logger.Error("Status changed to {} while generating locations.", status);
+                    logger.Error("Status changed to {} while generating locations.", Status);
                     break;
                 case Status.GENERATING_LOCATIONS:
-                    status = Status.CONNECTED;
+                    Status = Status.CONNECTED;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -989,7 +985,7 @@ namespace Gw2Archipelago
             try
             {
                 stream.Dispose();
-                stream = waitForFile(filename, 1, true);
+                stream = waitForFile(filename, 10, false);
                 await JsonSerializer.DeserializeAsync<T>(stream);
                 stream.Dispose();
                 SystemFile.Delete(filePrefix + filename);
@@ -997,7 +993,7 @@ namespace Gw2Archipelago
             }
             catch (Exception e)
             {
-                logger.Error(e, "Failed to write AchievementLocations.json");
+                logger.Error(e, "Failed to write {}", filename);
             }
         }
 
@@ -1086,7 +1082,7 @@ namespace Gw2Archipelago
 
         public void OnConnectButtonClick(object sender, MouseEventArgs e)
         {
-            switch (status)
+            switch (Status)
             {
                 case Status.CONNECTING:
                 case Status.GENERATING_LOCATIONS:

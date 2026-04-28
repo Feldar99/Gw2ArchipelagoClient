@@ -111,7 +111,7 @@ namespace Gw2Archipelago
         public AnyGroup RequiredRaces;
         public AnyGroup RequiredAchievements;
         public Profession? RequiredProfession;
-        public Festival? Festival;
+        public FestivalContext.Festival? Festival;
         public Storyline? Storyline;
         public Order? RequiredOrder;
 
@@ -201,6 +201,137 @@ namespace Gw2Archipelago
             }
 
             return regions;
+        }
+    }
+
+    internal class YamLogicGroupConverter<T> : IYamlTypeConverter
+    {
+        private static readonly Logger logger = Logger.GetLogger<YamLogicGroupConverter<T>>();
+        public bool Accepts(Type type)
+        {
+            //logger.Debug(type.FullName);
+            return type == typeof(AnyGroup);
+        }
+
+        public object ReadYaml(IParser parser, Type type)
+        {
+            if (parser.TryConsume<SequenceStart>(out _))
+            {
+                return ParseAnyGroup(parser);
+            }
+            else if (parser.Accept<YamlScalar>(out _))
+            {
+                var scalar = parser.Consume<YamlScalar>();
+                var group = new AnyGroup();
+                group.entries.Add(scalar.Value);
+                return group;
+            }
+             
+            throw new InvalidOperationException(BuildErrorMessage("AnyGroups must be ordered lists or single values", parser));
+        }
+
+        private static string BuildErrorMessage(string errorMessage, IParser parser)
+        {
+            return String.Format("{0}: row {1}, col {2}", errorMessage, parser.Current.Start.Line, parser.Current.Start.Column);
+        }
+
+
+        public static AnyGroup ParseAnyGroup(IParser parser)
+        {
+            var group = new AnyGroup();
+
+            while (!parser.Accept<SequenceEnd>(out _))
+            {
+                if (parser.TryConsume<MappingStart>(out _))
+                {
+                    var key = parser.Consume<YamlScalar>();
+                    if (key.Value.Equals("all"))
+                    {
+                        parser.Consume<SequenceStart>();
+                        var allGroup = ParseAllGroup(parser);
+                        group.allGroups.Add(allGroup);
+                    }
+                    else
+                    {
+                        logger.Error(key.Value);
+                        throw new InvalidOperationException(BuildErrorMessage("Only maps with the key of 'all' may be in AnyGroup lists", parser));
+                    }
+
+                    if (!parser.Accept<MappingEnd>(out _))
+                    {
+                        throw new InvalidOperationException(BuildErrorMessage("Invalid Token, expected MappingEnd", parser));
+                    }
+                    parser.Consume<MappingEnd>();
+                }
+                else if (parser.Accept<YamlScalar>(out _))
+                {
+                    var scalar = parser.Consume<YamlScalar>();
+                    group.entries.Add(scalar.Value);
+                }
+                else
+                {
+                    throw new InvalidOperationException(BuildErrorMessage("AnyGroup lists must contain strings and AllGroups", parser));
+                }
+            }
+
+            if (!parser.Accept<SequenceEnd>(out _))
+            {
+                throw new InvalidOperationException(BuildErrorMessage("Invalid Token, expected SequenceEnd", parser));
+            }
+            parser.Consume<SequenceEnd>();
+            return group;
+        }
+
+
+        public static AllGroup ParseAllGroup(IParser parser)
+        {
+            var group = new AllGroup();
+
+            while (!parser.Accept<SequenceEnd>(out _))
+            {
+                if (parser.TryConsume<MappingStart>(out _))
+                {
+                    var key = parser.Consume<YamlScalar>();
+                    if (key.Value.Equals("any"))
+                    {
+                        parser.Consume<SequenceStart>();
+                        var anyGroup = ParseAnyGroup(parser);
+                        group.anyGroups.Add(anyGroup);
+                    }
+                    else
+                    {
+                        logger.Error(key.Value);
+                        throw new InvalidOperationException(BuildErrorMessage("Only maps with the key of 'any' may be in AllGroup lists", parser));
+                    }
+
+                    if (!parser.Accept<MappingEnd>(out _))
+                    {
+                        throw new InvalidOperationException(BuildErrorMessage("Invalid Token, expected MappingEnd", parser));
+                    }
+                    parser.Consume<MappingEnd>();
+                }
+                else if (parser.Accept<YamlScalar>(out _))
+                {
+                    var scalar = parser.Consume<YamlScalar>();
+                    group.entries.Add(scalar.Value);
+                }
+                else
+                {
+                    throw new InvalidOperationException(BuildErrorMessage("AllGroup lists must contain strings and AnyGroups", parser));
+                }
+            }
+
+            if (!parser.Accept<SequenceEnd>(out _))
+            {
+                throw new InvalidOperationException(BuildErrorMessage("Invalid Token, expected SequenceEnd", parser));
+            }
+            parser.Consume<SequenceEnd>();
+            return group;
+        }
+
+        public void WriteYaml(IEmitter emitter, object value, Type type)
+        {
+            throw new InvalidOperationException("Not Yet Implemented");
         }
     }
 

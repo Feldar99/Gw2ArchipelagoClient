@@ -360,7 +360,14 @@ namespace Gw2Archipelago
                 button.Location = new Point(0, locationPanelY);
                 locationPanelY += button.Height + 5;
                 button.CurrentFill = location.LocationComplete ? 1 : 0;
-                genericLocationButtons.Add(location.LocationName, button);
+                if (genericLocationButtons.ContainsKey(location.LocationName))
+                {
+                    logger.Warn("Duplicate button created for {}", location.LocationName);
+                }
+                else
+                {
+                    genericLocationButtons.Add(location.LocationName, button);
+                }
             }
         }
 

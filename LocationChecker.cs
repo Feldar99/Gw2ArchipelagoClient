@@ -114,7 +114,7 @@ namespace Gw2Archipelago
             location.Achievement = await module.Gw2ApiManager.Gw2ApiClient.V2.Achievements.GetAsync(id);
             Regions.UnionWith(location.Regions);
             achievementMutex.WaitOne(10_000);
-            logger.Debug("ading achievement location: {}", id);
+            logger.Debug("adding achievement location: {}", id);
             achievementLocations.Add(id, location);
             achievementMutex.ReleaseMutex();
         }
