@@ -9,17 +9,7 @@
   <component name="ChangeListManager">
     <list default="true" id="ed70171c-edc3-4656-b25a-32be16a0309e" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Gw2Archipelago/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Gw2Archipelago/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Gw2Archipelago.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Gw2Archipelago.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Gw2Archipelago.sln.DotSettings.user" beforeDir="false" afterPath="$PROJECT_DIR$/Gw2Archipelago.sln.DotSettings.user" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ItemView.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ItemView.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Module.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Module.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SpecializationPanel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SpecializationPanel.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app.config" beforeDir="false" afterPath="$PROJECT_DIR$/app.config" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/manifest.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages.config" beforeDir="false" afterPath="$PROJECT_DIR$/packages.config" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ref/achievements.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/ref/achievements.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ref/achievements_generic.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/ref/achievements_generic.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ref/pois.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/ref/pois.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,6 +31,7 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/178e257b09af4edb8838c51211b1846a43200/c8/7a175caf/TypeConverter.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/195c91eba20a44919acedde10775ec171fa00/22/90454bc3/IReceivedItemsHelper.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/683eac0e4ea84d4693a16e39de514eab20200/b9/7ca28a9c/IReceivedItemsHelper.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/7019dab993da41e0a0259a4be7d6aa69531820/07/c215bf90/ExceptionDispatchInfo.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/7019dab993da41e0a0259a4be7d6aa69531820/0c/b2d8b28f/IProgress`1.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/7019dab993da41e0a0259a4be7d6aa69531820/14/24ec03bf/SynchronizationContext.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/7019dab993da41e0a0259a4be7d6aa69531820/15/ae595907/WaitHandle.cs" root0="FORCE_HIGHLIGHTING" />
@@ -69,7 +60,7 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/766b7bc6b7162b5bf4272f2393d49849a5973ed34db3f46d8b582bcaf3c0bc61/Skill.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/8c2077123c6c5f4fdcc98c7bb4bdda6293774312691d562ae2352d69c796fcb9/ModuleService.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/8eb01ab3cae9e934cdbdb7a2fbdff6c14c41c1a6bbfa161cb68b241f6a9f168b/AccountAchievement.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/91f1889052de8db51da974e5a0853aae863671519a144c8b0795d5bf25652d/Tween.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/91f1889052de8db51da974e5a0853aae863671519a144c8b0795d5bf25652d/Tween.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/962ce3c1fb3beef5775c951a8d89e28fe422f3aaa3bef42736b1b2c92403269/Module.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/a0a02325f3bb6885399e2ce6e26a7e5e4bb18e8b7ffb205e8c46a510da57de/WindowBase2.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/a3019659947203cfdb66872f48579b3ec54efc68d68d8453da95036bfa67d78/IBlobClient.cs" root0="FORCE_HIGHLIGHTING" />
@@ -77,8 +68,42 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/b3b47e9ae69d2b7fe519bfe8301df0e76829d4455c74ca7d248401f41c14dc1/IApiV2ObjectList.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/e6999773fa5f618cb6f41ac3c85b5d8dc4283946a4a24c58b5748e8f80/IBulkExpandableClient.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/eeeda5d3c738e6d12275498de53ef7d2e910b7a21d2a67f73b5ad8322725/IAccountAchievementsClient.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/pschw/OneDrive/Documents/GitHub/Gw2Archipelago/Client/AchievementData.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/pschw/OneDrive/Documents/GitHub/Gw2Archipelago/Client/AchievementData.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/pschw/OneDrive/Documents/GitHub/Gw2Archipelago/Client/AchievementData.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/pschw/OneDrive/Documents/GitHub/Gw2Archipelago/Client/AchievementData.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/pschw/OneDrive/Documents/GitHub/Gw2Archipelago/Client/AchievementData.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/pschw/OneDrive/Documents/GitHub/Gw2Archipelago/Client/AchievementData.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/pschw/OneDrive/Documents/GitHub/Gw2Archipelago/Client/AchievementData.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/pschw/OneDrive/Documents/GitHub/Gw2Archipelago/Client/AchievementData.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/pschw/OneDrive/Documents/GitHub/Gw2Archipelago/Client/ItemView.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/pschw/OneDrive/Documents/GitHub/Gw2Archipelago/Client/ItemView.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/pschw/OneDrive/Documents/GitHub/Gw2Archipelago/Client/ItemView.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/pschw/OneDrive/Documents/GitHub/Gw2Archipelago/Client/ItemView.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/pschw/OneDrive/Documents/GitHub/Gw2Archipelago/Client/ItemView.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/pschw/OneDrive/Documents/GitHub/Gw2Archipelago/Client/LocationChecker.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/pschw/OneDrive/Documents/GitHub/Gw2Archipelago/Client/LocationChecker.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/pschw/OneDrive/Documents/GitHub/Gw2Archipelago/Client/LocationChecker.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/pschw/OneDrive/Documents/GitHub/Gw2Archipelago/Client/LocationChecker.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/pschw/OneDrive/Documents/GitHub/Gw2Archipelago/Client/LocationChecker.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/pschw/OneDrive/Documents/GitHub/Gw2Archipelago/Client/Module.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/pschw/OneDrive/Documents/GitHub/Gw2Archipelago/Client/Module.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/pschw/OneDrive/Documents/GitHub/Gw2Archipelago/Client/Module.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/pschw/OneDrive/Documents/GitHub/Gw2Archipelago/Client/Module.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/pschw/OneDrive/Documents/GitHub/Gw2Archipelago/Client/Module.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/pschw/OneDrive/Documents/GitHub/Gw2Archipelago/Client/Module.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/pschw/OneDrive/Documents/GitHub/Gw2Archipelago/Client/Module.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/pschw/OneDrive/Documents/GitHub/Gw2Archipelago/Client/Module.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/pschw/OneDrive/Documents/GitHub/Gw2Archipelago/Client/Module.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/pschw/OneDrive/Documents/GitHub/Gw2Archipelago/Client/Module.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/pschw/OneDrive/Documents/GitHub/Gw2Archipelago/Client/manifest.json" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/pschw/OneDrive/Documents/GitHub/Gw2Archipelago/Client/manifest.json" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/pschw/OneDrive/Documents/GitHub/Gw2Archipelago/Client/manifest.json" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/pschw/OneDrive/Documents/GitHub/Gw2Archipelago/Client/manifest.json" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/pschw/OneDrive/Documents/GitHub/Gw2Archipelago/Client/manifest.json" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/mgfxc.runtimeconfig.dev.json" root0="SKIP_HIGHLIGHTING" />
   </component>
+  <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="false" />
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 5
 }</component>
@@ -87,26 +112,26 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;.NET Project.Gw2Archipelago.executor&quot;: &quot;Debug&quot;,
-    &quot;Attach to Process.23924:Blish HUD.executor&quot;: &quot;Debug&quot;,
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
-    &quot;XThreadsFramesViewSplitterKey&quot;: &quot;0.34890965&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;grid.search.filter.rows&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    ".NET Project.Gw2Archipelago.executor": "Debug",
+    "Attach to Process.23924:Blish HUD.executor": "Debug",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "XThreadsFramesViewSplitterKey": "0.17757009",
+    "git-widget-placeholder": "master",
+    "grid.search.filter.rows": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RunManager">
     <configuration name="Gw2Archipelago" type="DotNetProject" factoryName=".NET Project">
       <option name="EXE_PATH" value="$PROJECT_DIR$/../../../Blish.HUD.1.2.0/Blish HUD.exe" />
@@ -151,6 +176,7 @@
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="UnityCheckinConfiguration" checkUnsavedScenes="false" />
   <component name="UnityProjectConfiguration" hasMinimizedUI="false" />
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
