@@ -984,10 +984,13 @@ namespace Gw2Archipelago
             await JsonSerializer.SerializeAsync(stream, data);
             try
             {
+                //double check that we can read what we wrote
                 stream.Dispose();
-                stream = waitForFile(filename, 10, false);
+                stream = waitForFile(tempFilename, 10, false);
                 await JsonSerializer.DeserializeAsync<T>(stream);
                 stream.Dispose();
+                
+                //replace permanent file with temp file
                 SystemFile.Delete(filePrefix + filename);
                 SystemFile.Move(filePrefix + tempFilename, filePrefix + filename);
             }
