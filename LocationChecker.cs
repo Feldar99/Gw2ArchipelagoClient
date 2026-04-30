@@ -115,7 +115,15 @@ namespace Gw2Archipelago
             Regions.UnionWith(location.Regions);
             achievementMutex.WaitOne(10_000);
             logger.Debug("adding achievement location: {}", id);
-            achievementLocations.Add(id, location);
+            if (achievementLocations.ContainsKey(id))
+            {
+                logger.Warn("achievement location already exists: {}", id);
+            }
+            else
+            {
+                achievementLocations.Add(id, location);
+            }
+
             achievementMutex.ReleaseMutex();
         }
 

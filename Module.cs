@@ -981,11 +981,13 @@ namespace Gw2Archipelago
                 logger.Error("Could not open {} for writing", tempFilename);
                 return;
             }
-            await JsonSerializer.SerializeAsync(stream, data);
             try
             {
-                //double check that we can read what we wrote
+                //write to temp file
+                await JsonSerializer.SerializeAsync(stream, data);
                 stream.Dispose();
+                
+                //double check that we can read what we wrote
                 stream = waitForFile(tempFilename, 10, false);
                 await JsonSerializer.DeserializeAsync<T>(stream);
                 stream.Dispose();

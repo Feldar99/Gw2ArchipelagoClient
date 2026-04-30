@@ -7,12 +7,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ed70171c-edc3-4656-b25a-32be16a0309e" name="Changes" comment="">
+    <list default="true" id="ed70171c-edc3-4656-b25a-32be16a0309e" name="Changes" comment="Merge branch 'master' into 0.5.0&#10;&#10;# Conflicts:&#10;#&#9;.idea/.idea.Gw2Archipelago/.idea/workspace.xml&#10;#&#9;Module.cs">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Gw2Archipelago/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Gw2Archipelago/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AchievementData.cs" beforeDir="false" afterPath="$PROJECT_DIR$/AchievementData.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Gw2Archipelago.sln.DotSettings.user" beforeDir="false" afterPath="$PROJECT_DIR$/Gw2Archipelago.sln.DotSettings.user" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/LocationChecker.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LocationChecker.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LocationView.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LocationView.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Module.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Module.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -100,6 +98,8 @@
     <setting file="mock://C:/Users/pschw/OneDrive/Documents/GitHub/Gw2Archipelago/Client/Module.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://C:/Users/pschw/OneDrive/Documents/GitHub/Gw2Archipelago/Client/Module.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://C:/Users/pschw/OneDrive/Documents/GitHub/Gw2Archipelago/Client/Module.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/pschw/OneDrive/Documents/GitHub/Gw2Archipelago/Client/Module.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/pschw/OneDrive/Documents/GitHub/Gw2Archipelago/Client/Module.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://C:/Users/pschw/OneDrive/Documents/GitHub/Gw2Archipelago/Client/manifest.json" root0="FORCE_HIGHLIGHTING" />
     <setting file="mock://C:/Users/pschw/OneDrive/Documents/GitHub/Gw2Archipelago/Client/manifest.json" root0="FORCE_HIGHLIGHTING" />
     <setting file="mock://C:/Users/pschw/OneDrive/Documents/GitHub/Gw2Archipelago/Client/manifest.json" root0="FORCE_HIGHLIGHTING" />
@@ -116,28 +116,28 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    ".NET Project.Gw2Archipelago.executor": "Debug",
-    "Attach to Process.23924:Blish HUD.executor": "Debug",
-    "Attach to Process.61740:Blish HUD.executor": "Debug",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
-    "XThreadsFramesViewSplitterKey": "0.17757009",
-    "git-widget-placeholder": "0.5.0",
-    "grid.search.filter.rows": "true",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.sourceCode.C#",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;.NET Project.Gw2Archipelago.executor&quot;: &quot;Debug&quot;,
+    &quot;Attach to Process.23924:Blish HUD.executor&quot;: &quot;Debug&quot;,
+    &quot;Attach to Process.61740:Blish HUD.executor&quot;: &quot;Debug&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;XThreadsFramesViewSplitterKey&quot;: &quot;0.17757009&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;0.5.0&quot;,
+    &quot;grid.search.filter.rows&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.sourceCode.C#&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager">
     <configuration name="Gw2Archipelago" type="DotNetProject" factoryName=".NET Project">
       <option name="EXE_PATH" value="$PROJECT_DIR$/../../../Blish.HUD.1.2.0/Blish HUD.exe" />
@@ -239,16 +239,16 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/Module.cs</url>
-          <line>988</line>
+          <line>976</line>
           <properties documentPath="C:\Users\pschw\OneDrive\Documents\GitHub\Gw2Archipelago\Client\Module.cs" containingFunctionPresentation="Method 'writeToFile'">
             <startOffsets>
-              <option value="43093" />
+              <option value="42619" />
             </startOffsets>
             <endOffsets>
-              <option value="43142" />
+              <option value="42659" />
             </endOffsets>
           </properties>
-          <option name="timeStamp" value="27" />
+          <option name="timeStamp" value="28" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
