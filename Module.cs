@@ -180,6 +180,11 @@ namespace Gw2Archipelago
 
         private async Task ConnectToArchipelago()
         {
+            // Wait for other thread to finish connecting first
+            if (Status == Status.CONNECTING)
+            {
+                return;
+            }
             if (!Gw2ApiManager.HasPermission(TokenPermission.Account))
             {
                 logger.Error("Could not connect; API Key not found.  Logging into a character sometimes fixes this");
@@ -324,6 +329,12 @@ namespace Gw2Archipelago
                                 {
                                     regions.UnionWith(achievementData[achievementId].GetRegions());
                                 }
+
+                                if (location.Target == 0)
+                                {
+                                    location.Target = AchievementLocation.GetTarget(location.Achievement, progress, achievementData[achievementId].MaxAmount);
+                                }
+                                
                             }
                             regions.Add(location.LocationName.Split(' ')[0]);
                             location.Regions = regions;
@@ -678,6 +689,8 @@ namespace Gw2Archipelago
                         
                         HashSet<string> regions = new HashSet<string>();
                         regions.Add(region.GetName());
+
+                        int? maxAmount  = null;
                         if (achievementData.ContainsKey(achievementId))
                         {
                             regions.UnionWith(achievementData[achievementId].GetRegions());
@@ -695,8 +708,16 @@ namespace Gw2Archipelago
                                     }
                                 }
                             }
+
+                            maxAmount = achievementData[achievementId].MaxAmount;
                         }
-                        await LocationChecker.AddAchievementLocation(achievementId, achievement, category, progress, locationName, regions);
+                        await LocationChecker.AddAchievementLocation(achievementId, 
+                            achievement, 
+                            category, 
+                            progress, 
+                            locationName, 
+                            regions, 
+                            AchievementLocation.GetTarget(achievement, progress, maxAmount));
                         return true;
 
                     }
@@ -988,7 +1009,7 @@ namespace Gw2Archipelago
                 stream.Dispose();
                 
                 //double check that we can read what we wrote
-                stream = waitForFile(tempFilename, 10, false);
+                stream = waitForFile(tempFilename, 10, true);
                 await JsonSerializer.DeserializeAsync<T>(stream);
                 stream.Dispose();
                 

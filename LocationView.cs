@@ -380,14 +380,7 @@ namespace Gw2Archipelago
 
             logger.Debug("Create button for Achievement: {}", achievement.Name);
 
-            var maxFill = 0;
-            if (achievementLocation.Done) {
-                maxFill = achievement.Tiers[achievement.Tiers.Count - 1].Count;
-            }
-            else
-            {
-                maxFill = achievement.Tiers[achievementLocation.Tier].Count;
-            }
+            var maxFill = achievementLocation.Target;
 
 
             var button = new DetailsButton()

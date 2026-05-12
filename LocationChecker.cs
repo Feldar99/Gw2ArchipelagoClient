@@ -87,7 +87,14 @@ namespace Gw2Archipelago
             return questStatus.QuestLocations;
         }
 
-        public async Task AddAchievementLocation(int achievementId, Achievement achievement, AchievementCategory category, AccountAchievement progress, string name, IEnumerable<string> regions)
+        public async Task AddAchievementLocation(int achievementId, 
+                                                 Achievement achievement, 
+                                                 AchievementCategory category, 
+                                                 AccountAchievement progress, 
+                                                 string name, 
+                                                 IEnumerable<string> regions,
+                                                 int target
+                                                 )
         {
             if (achievement == null)
             {
@@ -98,6 +105,7 @@ namespace Gw2Archipelago
             location.Achievement = achievement;
             location.Category = category;
             location.LocationName = name;
+            location.Target = target;
             location.Regions.UnionWith(regions);
             Regions.UnionWith(regions);
             // Don't override serialized data on load
@@ -420,26 +428,9 @@ namespace Gw2Archipelago
 
                         if (oldDone != location.Done 
                             || oldRepeated != location.Repeated
-                            || oldBitCount != location.BitCount
-                            || oldTier != location.Tier
+                            || progress.Current == location.Target
                         )
                         {
-                            if (oldDone != location.Done)
-                            {
-                                // logger.Debug("Done");
-                            }
-                            if (oldRepeated != location.Repeated)
-                            {
-                                // logger.Debug("Repeated - old: {}, new: {}", oldRepeated, location.Repeated);
-                            }
-                            if (oldBitCount != location.BitCount)
-                            {
-                                // logger.Debug("BitCount - old: {}, new: {}", oldBitCount, location.BitCount);
-                            }
-                            if (oldTier != location.Tier)
-                            {
-                                // logger.Debug("Tier - old: {}, new: {}", oldTier, location.Tier);
-                            }
                             CompleteAchievementLocation(location);
                         }
                     }

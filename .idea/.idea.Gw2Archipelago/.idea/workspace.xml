@@ -9,8 +9,10 @@
   <component name="ChangeListManager">
     <list default="true" id="ed70171c-edc3-4656-b25a-32be16a0309e" name="Changes" comment="Merge branch 'master' into 0.5.0&#10;&#10;# Conflicts:&#10;#&#9;.idea/.idea.Gw2Archipelago/.idea/workspace.xml&#10;#&#9;Module.cs">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Gw2Archipelago/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Gw2Archipelago/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AchievementLocation.cs" beforeDir="false" afterPath="$PROJECT_DIR$/AchievementLocation.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Gw2Archipelago.sln.DotSettings.user" beforeDir="false" afterPath="$PROJECT_DIR$/Gw2Archipelago.sln.DotSettings.user" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/LocationChecker.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LocationChecker.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LocationView.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LocationView.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Module.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Module.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -58,11 +60,13 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/32a2f8f8b391879d0d8d8cac6651c67268633f22568371311cfc79da7883477/Program.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/4889fa149f36bf79f84aa18a2c86c24ceb65cd6f8c93dc44882d5494ee87ca5/SettingEntry[T].cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/5286b427351edab4585fd8790d61694bbaa78a1b60f8924f21fd65f9f55a85/View[TPresenter].cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/5bb48ebf6205e68ce0286930aec5a34c54c5e983a94dbb06ea474114ad6a6/Achievement.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/71a829de25af5bf79abafc9df6b33af58a47cf24fc1dc351be88f92346c81b/IGw2WebApiV2Client.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/766b7bc6b7162b5bf4272f2393d49849a5973ed34db3f46d8b582bcaf3c0bc61/Skill.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/8c2077123c6c5f4fdcc98c7bb4bdda6293774312691d562ae2352d69c796fcb9/ModuleService.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/8eb01ab3cae9e934cdbdb7a2fbdff6c14c41c1a6bbfa161cb68b241f6a9f168b/AccountAchievement.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/91f1889052de8db51da974e5a0853aae863671519a144c8b0795d5bf25652d/Tween.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/929d329e843b2366e3e2372d4ada855781ffb3b5c893780ff18d84d8eb3cc/AchievementTier.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/962ce3c1fb3beef5775c951a8d89e28fe422f3aaa3bef42736b1b2c92403269/Module.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/a0a02325f3bb6885399e2ce6e26a7e5e4bb18e8b7ffb205e8c46a510da57de/WindowBase2.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/a3019659947203cfdb66872f48579b3ec54efc68d68d8453da95036bfa67d78/IBlobClient.cs" root0="FORCE_HIGHLIGHTING" />
@@ -213,13 +217,13 @@
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <condition expression="Achievement == null" language="C#" />
           <url>file://$PROJECT_DIR$/AchievementLocation.cs</url>
-          <line>74</line>
+          <line>77</line>
           <properties documentPath="C:\Users\pschw\OneDrive\Documents\GitHub\Gw2Archipelago\Client\AchievementLocation.cs" containingFunctionPresentation="Property 'BitCount'">
             <startOffsets>
-              <option value="1968" />
+              <option value="2018" />
             </startOffsets>
             <endOffsets>
-              <option value="1994" />
+              <option value="2044" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="12" />
@@ -236,19 +240,6 @@
             </endOffsets>
           </properties>
           <option name="timeStamp" value="24" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Module.cs</url>
-          <line>976</line>
-          <properties documentPath="C:\Users\pschw\OneDrive\Documents\GitHub\Gw2Archipelago\Client\Module.cs" containingFunctionPresentation="Method 'writeToFile'">
-            <startOffsets>
-              <option value="42619" />
-            </startOffsets>
-            <endOffsets>
-              <option value="42659" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="28" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

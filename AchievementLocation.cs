@@ -30,6 +30,9 @@ namespace Gw2Archipelago
         [JsonInclude]
         public int CateoryId;
 
+        [JsonInclude]
+        public int Target;
+
         [JsonIgnore]
         public AchievementCategory Category
         {
@@ -92,5 +95,30 @@ namespace Gw2Archipelago
             return result;
         }
 
+        public static int GetTarget(Achievement achievement, AccountAchievement progress, int? maxAmount)
+        {
+            int target = 1;
+            int current = progress?.Current ?? 0;
+            if (achievement.Bits != null && progress != null)
+            {
+                target = current + 1;
+            }
+            else if (achievement.Tiers != null)
+            {
+                foreach (var tier in achievement.Tiers)
+                {
+                    if (tier.Count <= current) continue;
+                    target = tier.Count;
+                    break;
+                }
+            }
+
+            if (maxAmount != null && progress != null)
+            {
+                target = Math.Min(target, maxAmount.Value + current);
+            }
+
+            return target;
+        }
     }
 }
