@@ -264,7 +264,7 @@ categories:
   357: SecretsOfTheObscure
   358: SecretsOfTheObscure
   360: SecretsOfTheObscure
-  361: None #Rift Hunter
+  # 361: None #Rift Hunter
   362: SecretsOfTheObscure
   364: SecretsOfTheObscure
   365: None #Weekly Rift Hunting
@@ -289,6 +289,7 @@ categories:
   424: Janthir Wilds
   427: Janthir Wilds
   438: Janthir Wilds
+  440: WVW
   441: Janthir Wilds
   442: Janthir Wilds
   445: Janthir Wilds
@@ -300,6 +301,12 @@ categories:
   462: None #Fractal Incursion
   469: Visions of Eternity
   471: Visions of Eternity
+  473: None
+  475: RAID
+  476: RAID
+  477: RAID
+  480: RAID
+  481: Visions of Eternity
   
 achievments:
   571: None
@@ -982,6 +989,7 @@ achievments:
   8808: STORY
   8853: None
   8858: Visions of Eternity
+  8864: Visions of Eternity
   8869: Visions of Eternity
   8959: Visions of Eternity
   8966: Visions of Eternity
@@ -992,6 +1000,20 @@ achievments:
   9132: Visions of Eternity
   9183: Visions of Eternity
   9195: None
+  9241: Path of Fire
+  9243: Visions of Eternity
+  9262: Visions of Eternity
+  9266: Visions of Eternity
+  9267: Visions of Eternity
+  9271: Visions of Eternity
+  9288: Visions of Eternity
+  9310: Season 4
+  9313: End of Dragons
+  9323: Season 3
+  9331: None #Super Adventure Box
+  9334: Secrets of the Obscure
+  9342: Janthir Wilds
+  9344: Visions of Eternity
   
   4968: IcebroodSaga #Icebrood Saga Reward Track (PvP)
   4984: IcebroodSaga #Icebrood Saga Reward Track (WvW)
@@ -1653,4 +1675,18 @@ achievments:
   9080: STORY #Zeba Deserves Better
   9084: STORY #In for a Copper...
   9085: STORY #Dazzle Them with Glitz
+  9261: STORY #Any Last Thoughts
+  9268: STORY #Alliance Supporter
+  9269: STORY #Astute Candidate
+  9272: STORY #Expert Explorer
+  9275: STORY #A Question of Trust
+  9276: STORY #Surveillance Probe
+  9278: STORY #On the Threshold
+  9284: STORY #Divitium Nava
+  9299: STORY #Honored Guests
+  9300: STORY #DIY Enthusiast
+  9301: STORY #The Path of Ascension
+  9308: STORY #Infiltration Improvisation
+  9332: STORY #Stalwart Candidate
+
 
