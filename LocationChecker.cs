@@ -428,7 +428,7 @@ namespace Gw2Archipelago
 
                         if (oldDone != location.Done 
                             || oldRepeated != location.Repeated
-                            || progress.Current == location.Target
+                            || progress.Current >= location.Target
                         )
                         {
                             CompleteAchievementLocation(location);

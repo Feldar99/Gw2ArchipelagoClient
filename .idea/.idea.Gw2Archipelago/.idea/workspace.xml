@@ -9,11 +9,11 @@
   <component name="ChangeListManager">
     <list default="true" id="ed70171c-edc3-4656-b25a-32be16a0309e" name="Changes" comment="Merge branch 'master' into 0.5.0&#10;&#10;# Conflicts:&#10;#&#9;.idea/.idea.Gw2Archipelago/.idea/workspace.xml&#10;#&#9;Module.cs">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Gw2Archipelago/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Gw2Archipelago/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AchievementLocation.cs" beforeDir="false" afterPath="$PROJECT_DIR$/AchievementLocation.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Gw2Archipelago.sln.DotSettings.user" beforeDir="false" afterPath="$PROJECT_DIR$/Gw2Archipelago.sln.DotSettings.user" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/LocationChecker.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LocationChecker.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LocationView.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LocationView.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Module.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Module.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ref/Maps.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/ref/Maps.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ref/achievements.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/ref/achievements.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ref/achievements_generic.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/ref/achievements_generic.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ref/pois.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/ref/pois.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -74,42 +74,6 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/b3b47e9ae69d2b7fe519bfe8301df0e76829d4455c74ca7d248401f41c14dc1/IApiV2ObjectList.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/e6999773fa5f618cb6f41ac3c85b5d8dc4283946a4a24c58b5748e8f80/IBulkExpandableClient.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/eeeda5d3c738e6d12275498de53ef7d2e910b7a21d2a67f73b5ad8322725/IAccountAchievementsClient.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/pschw/OneDrive/Documents/GitHub/Gw2Archipelago/Client/AchievementData.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/pschw/OneDrive/Documents/GitHub/Gw2Archipelago/Client/AchievementData.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/pschw/OneDrive/Documents/GitHub/Gw2Archipelago/Client/AchievementData.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/pschw/OneDrive/Documents/GitHub/Gw2Archipelago/Client/AchievementData.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/pschw/OneDrive/Documents/GitHub/Gw2Archipelago/Client/AchievementData.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/pschw/OneDrive/Documents/GitHub/Gw2Archipelago/Client/AchievementData.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/pschw/OneDrive/Documents/GitHub/Gw2Archipelago/Client/AchievementData.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/pschw/OneDrive/Documents/GitHub/Gw2Archipelago/Client/AchievementData.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/pschw/OneDrive/Documents/GitHub/Gw2Archipelago/Client/ItemView.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/pschw/OneDrive/Documents/GitHub/Gw2Archipelago/Client/ItemView.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/pschw/OneDrive/Documents/GitHub/Gw2Archipelago/Client/ItemView.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/pschw/OneDrive/Documents/GitHub/Gw2Archipelago/Client/ItemView.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/pschw/OneDrive/Documents/GitHub/Gw2Archipelago/Client/ItemView.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/pschw/OneDrive/Documents/GitHub/Gw2Archipelago/Client/LocationChecker.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/pschw/OneDrive/Documents/GitHub/Gw2Archipelago/Client/LocationChecker.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/pschw/OneDrive/Documents/GitHub/Gw2Archipelago/Client/LocationChecker.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/pschw/OneDrive/Documents/GitHub/Gw2Archipelago/Client/LocationChecker.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/pschw/OneDrive/Documents/GitHub/Gw2Archipelago/Client/LocationChecker.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/pschw/OneDrive/Documents/GitHub/Gw2Archipelago/Client/Module.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/pschw/OneDrive/Documents/GitHub/Gw2Archipelago/Client/Module.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/pschw/OneDrive/Documents/GitHub/Gw2Archipelago/Client/Module.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/pschw/OneDrive/Documents/GitHub/Gw2Archipelago/Client/Module.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/pschw/OneDrive/Documents/GitHub/Gw2Archipelago/Client/Module.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/pschw/OneDrive/Documents/GitHub/Gw2Archipelago/Client/Module.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/pschw/OneDrive/Documents/GitHub/Gw2Archipelago/Client/Module.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/pschw/OneDrive/Documents/GitHub/Gw2Archipelago/Client/Module.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/pschw/OneDrive/Documents/GitHub/Gw2Archipelago/Client/Module.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/pschw/OneDrive/Documents/GitHub/Gw2Archipelago/Client/Module.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/pschw/OneDrive/Documents/GitHub/Gw2Archipelago/Client/Module.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/pschw/OneDrive/Documents/GitHub/Gw2Archipelago/Client/Module.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/pschw/OneDrive/Documents/GitHub/Gw2Archipelago/Client/manifest.json" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/pschw/OneDrive/Documents/GitHub/Gw2Archipelago/Client/manifest.json" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/pschw/OneDrive/Documents/GitHub/Gw2Archipelago/Client/manifest.json" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/pschw/OneDrive/Documents/GitHub/Gw2Archipelago/Client/manifest.json" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/pschw/OneDrive/Documents/GitHub/Gw2Archipelago/Client/manifest.json" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/mgfxc.runtimeconfig.dev.json" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProjectColorInfo">{
@@ -182,6 +146,7 @@
       <workItem from="1772672281032" duration="87739000" />
       <workItem from="1774745702592" duration="9903000" />
       <workItem from="1774983108001" duration="104691000" />
+      <workItem from="1778786015632" duration="41394000" />
     </task>
     <servers />
   </component>
